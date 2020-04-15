@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Centos Install Python Methods</title>
+    <url>/2020/04/13/Centos-Install-Python-Methods/</url>
+    <content><![CDATA[<h2 id="第一种方法通过-IUS-软件源安装"><a href="#第一种方法通过-IUS-软件源安装" class="headerlink" title="第一种方法通过 IUS 软件源安装"></a>第一种方法通过 IUS 软件源安装</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm</span><br><span class="line">sudo  yum makecache</span><br><span class="line">sudo yum install -y python36u</span><br><span class="line">sudo ln -s /bin/python3.6 /bin/python3</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">sudo yum install -y python36u-pip</span><br><span class="line">sudo ln -s /bin/pip3.6 /bin/pip3</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+<h2 id="第二种方法通过源码包安装-py3-7"><a href="#第二种方法通过源码包安装-py3-7" class="headerlink" title="第二种方法通过源码包安装 py3.7"></a>第二种方法通过源码包安装 py3.7</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">yum -y groupinstall "Development tools"</span><br><span class="line">yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br><span class="line">yum install libffi-devel -y</span><br><span class="line">wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tar.xz</span><br><span class="line">tar -xvJf  Python-3.7.7.tar.xz</span><br><span class="line">cd Python-3.7.7</span><br><span class="line">./configure --prefix=/usr/local/python37  --with-ssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">ln -s /usr/local/python37/bin/python3 /usr/local/bin/python3</span><br><span class="line">ln -s /usr/local/python37/bin/pip3 /usr/local/bin/pip3</span><br></pre></td></tr></table></figure>
+
+<p>均可用作制作docker</p>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+        <tag>Centos</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+</search>
