@@ -17,55 +17,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python操作excel-openpyxl</title>
-    <url>/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/</url>
-    <content><![CDATA[<blockquote>
-<p>openpyxl是一个很好用的操作excel的库</p>
-<p>常用的操作：</p>
-<ul>
-<li>添加表头 <strong>add_sheet</strong></li>
-<li>添加数据(元组) <strong>add_data</strong></li>
-<li>设置表头格式(仅字体)  <strong>set_header_font</strong></li>
-<li>删除 <strong>sheet delete_sheet</strong></li>
-<li>保存excel <strong>save</strong></li>
-</ul>
-<p>还有很多友好的操作</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Xlsx():</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.workbook &#x3D; Workbook()</span><br><span class="line">        self.index&#x3D;1</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def add_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        return self.workbook.create_sheet(sheetname,self.index+1)</span><br><span class="line"></span><br><span class="line">    def add_data(self,data,sheet&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        :param sheet :sheet对象</span><br><span class="line">        :param data: data最好是一个元组</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        if isinstance(data,tuple):</span><br><span class="line">            sheet.append(data)</span><br><span class="line">        else:</span><br><span class="line">            sheet.append(tuple(data))</span><br><span class="line"></span><br><span class="line">    def set_header_font(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        格式化行头</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        font &#x3D; Font(u&#39;宋体&#39;, size&#x3D;13, bold&#x3D;True, color&#x3D;&#39;000000&#39;)</span><br><span class="line">        for i in sheetname[&quot;1&quot;]:</span><br><span class="line">            i.font &#x3D; font</span><br><span class="line">            </span><br><span class="line">    def delete_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        删除sheet</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        self.workbook.remove(self.workbook[sheetname])</span><br><span class="line"></span><br><span class="line">    def save(self,filename):</span><br><span class="line">        self.workbook.save(filename)</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx反代简易配置</title>
-    <url>/2020/04/16/Nginx%E5%8F%8D%E4%BB%A3%E7%AE%80%E6%98%93%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<blockquote>
-<p>配置总记不下来</p>
-</blockquote>
-<h3 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name www.madmalls.com;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        # proxy_pass几种方式</span><br><span class="line">        proxy_pass unix:&#x2F;run&#x2F;gunicorn.sock;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;127.0.0.1:9000；</span><br><span class="line">        	  proxy_pass tomcats;</span><br><span class="line">    &#125;</span><br><span class="line">    location &#x2F;static &#123;</span><br><span class="line">        alias  &#x2F;home&#x2F;www&#x2F;flask_project&#x2F;app&#x2F;static&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream tomcats &#123;</span><br><span class="line">    #ip_hash; 每个ip都hash分配</span><br><span class="line">    #fair; 相应是时间短的被分配</span><br><span class="line">    server 192.168.0.100:8080 weight&#x3D;2 max_fails&#x3D;3 fail_timeout&#x3D;15;  </span><br><span class="line"></span><br><span class="line">    server 192.168.0.101:8080 down;   #表示不可用</span><br><span class="line"></span><br><span class="line">    server 192.168.0.102:8080 backup;  #都坏了 启动backup</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="路径匹配规则"><a href="#路径匹配规则" class="headerlink" title="路径匹配规则"></a>路径匹配规则</h2><blockquote>
-<p>首先精确匹配 =</p>
-<p>其次前缀匹配 ^~</p>
-<p>其次是按文件中顺序的正则匹配</p>
-<blockquote>
-<p>~ 为区分大小写匹配</p>
-<p> ~* 为不区分大小写匹配 </p>
-</blockquote>
-</blockquote>
-<blockquote>
-<p>然后匹配不带任何修饰的前缀匹配</p>
-<p>最后是交给 / 通用匹配</p>
-<p>当有匹配成功时候，停止匹配，按当前匹配规则处理请求</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Centos</tag>
-        <tag>nginx</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mysql主从配置及可能问题</title>
     <url>/2020/04/16/Mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%8F%AF%E8%83%BD%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id="从账号"><a href="#从账号" class="headerlink" title="从账号"></a>从账号</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grant replication slave on *.* to slave@192.168.1.8 identified by &#39;123456&#39;;</span><br></pre></td></tr></table></figure>
@@ -103,6 +54,67 @@
       </tags>
   </entry>
   <entry>
+    <title>Nginx反代简易配置</title>
+    <url>/2020/04/16/Nginx%E5%8F%8D%E4%BB%A3%E7%AE%80%E6%98%93%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<blockquote>
+<p>配置总记不下来</p>
+</blockquote>
+<h3 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name www.madmalls.com;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        # proxy_pass几种方式</span><br><span class="line">        proxy_pass unix:&#x2F;run&#x2F;gunicorn.sock;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;127.0.0.1:9000；</span><br><span class="line">        	  proxy_pass tomcats;</span><br><span class="line">    &#125;</span><br><span class="line">    location &#x2F;static &#123;</span><br><span class="line">        alias  &#x2F;home&#x2F;www&#x2F;flask_project&#x2F;app&#x2F;static&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream tomcats &#123;</span><br><span class="line">    #ip_hash; 每个ip都hash分配</span><br><span class="line">    #fair; 相应是时间短的被分配</span><br><span class="line">    server 192.168.0.100:8080 weight&#x3D;2 max_fails&#x3D;3 fail_timeout&#x3D;15;  </span><br><span class="line"></span><br><span class="line">    server 192.168.0.101:8080 down;   #表示不可用</span><br><span class="line"></span><br><span class="line">    server 192.168.0.102:8080 backup;  #都坏了 启动backup</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="路径匹配规则"><a href="#路径匹配规则" class="headerlink" title="路径匹配规则"></a>路径匹配规则</h2><blockquote>
+<p>首先精确匹配 =</p>
+<p>其次前缀匹配 ^~</p>
+<p>其次是按文件中顺序的正则匹配</p>
+<blockquote>
+<p>~ 为区分大小写匹配</p>
+<p> ~* 为不区分大小写匹配 </p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>然后匹配不带任何修饰的前缀匹配</p>
+<p>最后是交给 / 通用匹配</p>
+<p>当有匹配成功时候，停止匹配，按当前匹配规则处理请求</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Centos</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python操作excel-openpyxl</title>
+    <url>/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/</url>
+    <content><![CDATA[<blockquote>
+<p>openpyxl是一个很好用的操作excel的库</p>
+<p>常用的操作：</p>
+<ul>
+<li>添加表头 <strong>add_sheet</strong></li>
+<li>添加数据(元组) <strong>add_data</strong></li>
+<li>设置表头格式(仅字体)  <strong>set_header_font</strong></li>
+<li>删除 <strong>sheet delete_sheet</strong></li>
+<li>保存excel <strong>save</strong></li>
+</ul>
+<p>还有很多友好的操作</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Xlsx():</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.workbook &#x3D; Workbook()</span><br><span class="line">        self.index&#x3D;1</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def add_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        return self.workbook.create_sheet(sheetname,self.index+1)</span><br><span class="line"></span><br><span class="line">    def add_data(self,data,sheet&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        :param sheet :sheet对象</span><br><span class="line">        :param data: data最好是一个元组</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        if isinstance(data,tuple):</span><br><span class="line">            sheet.append(data)</span><br><span class="line">        else:</span><br><span class="line">            sheet.append(tuple(data))</span><br><span class="line"></span><br><span class="line">    def set_header_font(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        格式化行头</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        font &#x3D; Font(u&#39;宋体&#39;, size&#x3D;13, bold&#x3D;True, color&#x3D;&#39;000000&#39;)</span><br><span class="line">        for i in sheetname[&quot;1&quot;]:</span><br><span class="line">            i.font &#x3D; font</span><br><span class="line">            </span><br><span class="line">    def delete_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        删除sheet</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        self.workbook.remove(self.workbook[sheetname])</span><br><span class="line"></span><br><span class="line">    def save(self,filename):</span><br><span class="line">        self.workbook.save(filename)</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu安装chrome脚本</title>
+    <url>/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y libxss1 libappindicator1 libindicator7</span><br><span class="line">wget https:&#x2F;&#x2F;dl.google.com&#x2F;linux&#x2F;direct&#x2F;google-chrome-stable_current_amd64.deb</span><br><span class="line">dpkg -i  google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="如果报错了"><a href="#如果报错了" class="headerlink" title="如果报错了"></a>如果报错了</h3><p><code>apt-get install -y -f</code> 就OK👌了</p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>chrome</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>inotify+rsync同步脚本</title>
     <url>/2020/04/16/inotify+rsync%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC/</url>
     <content><![CDATA[<blockquote>
@@ -118,18 +130,6 @@
         <tag>Centos</tag>
         <tag>inotify</tag>
         <tag>rsync</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu安装chrome脚本</title>
-    <url>/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y libxss1 libappindicator1 libindicator7</span><br><span class="line">wget https:&#x2F;&#x2F;dl.google.com&#x2F;linux&#x2F;direct&#x2F;google-chrome-stable_current_amd64.deb</span><br><span class="line">dpkg -i  google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h3 id="如果报错了"><a href="#如果报错了" class="headerlink" title="如果报错了"></a>如果报错了</h3><p><code>apt-get install -y -f</code> 就OK👌了</p>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
-        <tag>chrome</tag>
       </tags>
   </entry>
   <entry>
@@ -167,15 +167,6 @@
       </tags>
   </entry>
   <entry>
-    <title>logging添加Handler</title>
-    <url>/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/</url>
-    <content><![CDATA[<h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logger &#x3D; logging.getLogger(&#39;what&#39;)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line">#设置日志格式</span><br><span class="line">formater&#x3D;logging.Formatter(fmt&#x3D;&#39;%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s &#39;,datefmt&#x3D;&#39;%Y&#x2F;%m&#x2F;%d %H:%M&#39;)</span><br><span class="line">#文件Handler</span><br><span class="line">fh&#x3D;logging.FileHandler(&#39;test.log&#39;,&#39;a&#39;,encoding&#x3D;&#39;utf-8&#39;)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line">#自定义Handler</span><br><span class="line">th&#x3D;CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line">#终端Handler</span><br><span class="line">ch &#x3D; logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line">#添加Handler</span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure>
-<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class CHandler(logging.Handler):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client&#x3D;pymysql.Connection(host&#x3D;&#39;127.0.0.1&#39;,user&#x3D;&#39;root&#39;,passwd&#x3D;&#39;qweqwe&#39;,db&#x3D;&#39;sharesnews&#39;,charset&#x3D;&#39;utf8mb4&#39;,autocommit&#x3D;True)</span><br><span class="line">        self.cursor&#x3D;self.client.cursor()</span><br><span class="line">    def emit(self, record):</span><br><span class="line">        try:</span><br><span class="line">            sql&#x3D;&#39;insert into exceptions (exception,add_time) VALUES (%s,%s)&#39;</span><br><span class="line">            msg &#x3D; sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        except Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>k8s初始化镜像pull问题</title>
     <url>/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id="因不明原因k8s初始化镜像无法pull-特记录pull脚本"><a href="#因不明原因k8s初始化镜像无法pull-特记录pull脚本" class="headerlink" title="因不明原因k8s初始化镜像无法pull,特记录pull脚本"></a>因不明原因k8s初始化镜像无法pull,特记录pull脚本</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line"># download k8s 1.15.2 images</span><br><span class="line"># get image-list by &#39;kubeadm config images list --kubernetes-version&#x3D;v1.15.2&#39;</span><br><span class="line">images&#x3D;(</span><br><span class="line">kube-apiserver:v1.18.1</span><br><span class="line">kube-controller-manager:v1.18.1</span><br><span class="line">kube-scheduler:v1.18.1</span><br><span class="line">kube-proxy:v1.18.1</span><br><span class="line">pause:3.2</span><br><span class="line">etcd:3.4.3-0</span><br><span class="line">coredns:1.6.7</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
@@ -190,9 +181,10 @@
       </tags>
   </entry>
   <entry>
-    <title>scrapy启动多spider</title>
-    <url>/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/</url>
-    <content><![CDATA[<h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import scrapy</span><br><span class="line">from scrapy.crawler import CrawlerProcess</span><br><span class="line">from scrapy.utils.project import get_project_settings</span><br><span class="line">process &#x3D; CrawlerProcess(get_project_settings())</span><br><span class="line"># 指定多个spider</span><br><span class="line">process.crawl(&quot;fen&quot;)</span><br><span class="line">process.crawl(&quot;fuck&quot;)</span><br><span class="line"># 执行所有 spider</span><br><span class="line"># for spider_name in process.spider_loader.list():</span><br><span class="line">#     print(spider_name)</span><br><span class="line">    # process.crawl(spider_name)</span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure>]]></content>
+    <title>logging添加Handler</title>
+    <url>/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/</url>
+    <content><![CDATA[<h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">logger &#x3D; logging.getLogger(&#39;what&#39;)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line">#设置日志格式</span><br><span class="line">formater&#x3D;logging.Formatter(fmt&#x3D;&#39;%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s &#39;,datefmt&#x3D;&#39;%Y&#x2F;%m&#x2F;%d %H:%M&#39;)</span><br><span class="line">#文件Handler</span><br><span class="line">fh&#x3D;logging.FileHandler(&#39;test.log&#39;,&#39;a&#39;,encoding&#x3D;&#39;utf-8&#39;)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line">#自定义Handler</span><br><span class="line">th&#x3D;CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line">#终端Handler</span><br><span class="line">ch &#x3D; logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line">#添加Handler</span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure>
+<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class CHandler(logging.Handler):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client&#x3D;pymysql.Connection(host&#x3D;&#39;127.0.0.1&#39;,user&#x3D;&#39;root&#39;,passwd&#x3D;&#39;qweqwe&#39;,db&#x3D;&#39;sharesnews&#39;,charset&#x3D;&#39;utf8mb4&#39;,autocommit&#x3D;True)</span><br><span class="line">        self.cursor&#x3D;self.client.cursor()</span><br><span class="line">    def emit(self, record):</span><br><span class="line">        try:</span><br><span class="line">            sql&#x3D;&#39;insert into exceptions (exception,add_time) VALUES (%s,%s)&#39;</span><br><span class="line">            msg &#x3D; sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        except Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>python</tag>
       </tags>
@@ -212,6 +204,14 @@
       <tags>
         <tag>nas</tag>
         <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>scrapy启动多spider</title>
+    <url>/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/</url>
+    <content><![CDATA[<h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import scrapy</span><br><span class="line">from scrapy.crawler import CrawlerProcess</span><br><span class="line">from scrapy.utils.project import get_project_settings</span><br><span class="line">process &#x3D; CrawlerProcess(get_project_settings())</span><br><span class="line"># 指定多个spider</span><br><span class="line">process.crawl(&quot;fen&quot;)</span><br><span class="line">process.crawl(&quot;fuck&quot;)</span><br><span class="line"># 执行所有 spider</span><br><span class="line"># for spider_name in process.spider_loader.list():</span><br><span class="line">#     print(spider_name)</span><br><span class="line">    # process.crawl(spider_name)</span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -243,24 +243,6 @@
       </tags>
   </entry>
   <entry>
-    <title>提取cookies方法总结</title>
-    <url>/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<ul>
-<li><h3 id="方法一-scrapy适用"><a href="#方法一-scrapy适用" class="headerlink" title="方法一(scrapy适用)"></a>方法一(scrapy适用)</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from scrapy.http.cookies import CookieJar</span><br><span class="line">cookie_jar &#x3D; CookieJar()</span><br><span class="line">cookie_jar.extract_cookies(response, response.request)</span><br><span class="line">for i in self.cookie_jar:</span><br><span class="line">    p &#x3D; re.compile(r&#39;&lt;Cookie (.*?) for .*?&gt;&#39;)            </span><br><span class="line">    cookies &#x3D; re.findall(p, str(i))            </span><br><span class="line">    cookies &#x3D; (cookie.split(&#39;&#x3D;&#39;, 1) for cookie in cookies)</span><br><span class="line">    cookies &#x3D; dict(cookies)</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<a id="more"></a>
-
-<ul>
-<li><h3 id="方法二（普适用）"><a href="#方法二（普适用）" class="headerlink" title="方法二（普适用）"></a>方法二（普适用）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def get_cookies(response):</span><br><span class="line">    my_cookies &#x3D; dict()</span><br><span class="line">    # 请求包里带的Cookie</span><br><span class="line">    for cookie in response.request.headers.getlist(&#39;Cookie&#39;):</span><br><span class="line">        for ck in cookie.decode(&#39;utf8&#39;).split(&#39;;&#39;):</span><br><span class="line">            try:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; ck.split(&#39;&#x3D;&#39;)[1].strip()</span><br><span class="line">            except:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; &#39;&#39;</span><br><span class="line">    # 响应包里给的Set-Cookie</span><br><span class="line">    for cookie in response.headers.getlist(&#39;Set-Cookie&#39;):</span><br><span class="line">        for ck in cookie.decode(&#39;utf8&#39;).split(&#39;;&#39;):</span><br><span class="line">            try:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; ck.split(&#39;&#x3D;&#39;)[1].strip()</span><br><span class="line">            except:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; &#39;&#39;</span><br><span class="line">    return my_cookies</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git简易远程仓库部署</title>
     <url>/2020/04/16/%E5%AE%9E%E7%8E%B0%E5%8A%9F%E8%83%BD/</url>
     <content><![CDATA[<h3 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h3><ul>
@@ -286,6 +268,24 @@
 ]]></content>
       <tags>
         <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>提取cookies方法总结</title>
+    <url>/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<ul>
+<li><h3 id="方法一-scrapy适用"><a href="#方法一-scrapy适用" class="headerlink" title="方法一(scrapy适用)"></a>方法一(scrapy适用)</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from scrapy.http.cookies import CookieJar</span><br><span class="line">cookie_jar &#x3D; CookieJar()</span><br><span class="line">cookie_jar.extract_cookies(response, response.request)</span><br><span class="line">for i in self.cookie_jar:</span><br><span class="line">    p &#x3D; re.compile(r&#39;&lt;Cookie (.*?) for .*?&gt;&#39;)            </span><br><span class="line">    cookies &#x3D; re.findall(p, str(i))            </span><br><span class="line">    cookies &#x3D; (cookie.split(&#39;&#x3D;&#39;, 1) for cookie in cookies)</span><br><span class="line">    cookies &#x3D; dict(cookies)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><h3 id="方法二（普适用）"><a href="#方法二（普适用）" class="headerlink" title="方法二（普适用）"></a>方法二（普适用）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def get_cookies(response):</span><br><span class="line">    my_cookies &#x3D; dict()</span><br><span class="line">    # 请求包里带的Cookie</span><br><span class="line">    for cookie in response.request.headers.getlist(&#39;Cookie&#39;):</span><br><span class="line">        for ck in cookie.decode(&#39;utf8&#39;).split(&#39;;&#39;):</span><br><span class="line">            try:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; ck.split(&#39;&#x3D;&#39;)[1].strip()</span><br><span class="line">            except:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; &#39;&#39;</span><br><span class="line">    # 响应包里给的Set-Cookie</span><br><span class="line">    for cookie in response.headers.getlist(&#39;Set-Cookie&#39;):</span><br><span class="line">        for ck in cookie.decode(&#39;utf8&#39;).split(&#39;;&#39;):</span><br><span class="line">            try:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; ck.split(&#39;&#x3D;&#39;)[1].strip()</span><br><span class="line">            except:</span><br><span class="line">                my_cookies[ck.split(&#39;&#x3D;&#39;)[0].strip()] &#x3D; &#39;&#39;</span><br><span class="line">    return my_cookies</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
 </search>
