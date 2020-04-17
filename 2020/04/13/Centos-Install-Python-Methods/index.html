@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python,Centos,Linux," />
+  <meta name="keywords" content="Centos,Python,Linux," />
 
 
 
@@ -89,8 +89,8 @@
 <meta property="article:published_time" content="2020-04-13T12:20:02.000Z">
 <meta property="article:modified_time" content="2020-04-16T03:27:08.941Z">
 <meta property="article:author" content="JustTango">
-<meta property="article:tag" content="Python">
 <meta property="article:tag" content="Centos">
+<meta property="article:tag" content="Python">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
@@ -346,10 +346,10 @@
       
 
       
-        <h2 id="第一种方法通过-IUS-软件源安装"><a href="#第一种方法通过-IUS-软件源安装" class="headerlink" title="第一种方法通过 IUS 软件源安装"></a>第一种方法通过 IUS 软件源安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm</span><br><span class="line">sudo  yum makecache</span><br><span class="line">sudo yum install -y python36u</span><br><span class="line">sudo ln -s /bin/python3.6 /bin/python3</span><br><span class="line">sudo yum install -y python36u-pip</span><br><span class="line">sudo ln -s /bin/pip3.6 /bin/pip3</span><br></pre></td></tr></table></figure>
+        <h2 id="第一种方法通过-IUS-软件源安装"><a href="#第一种方法通过-IUS-软件源安装" class="headerlink" title="第一种方法通过 IUS 软件源安装"></a>第一种方法通过 IUS 软件源安装</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm</span><br><span class="line">sudo  yum makecache</span><br><span class="line">sudo yum install -y python36u</span><br><span class="line">sudo ln -s /bin/python3.6 /bin/python3</span><br><span class="line">sudo yum install -y python36u-pip</span><br><span class="line">sudo ln -s /bin/pip3.6 /bin/pip3</span><br></pre></td></tr></table></figure></div>
 
 <a id="more"></a>
-<h2 id="第二种方法通过源码包安装-py3-7"><a href="#第二种方法通过源码包安装-py3-7" class="headerlink" title="第二种方法通过源码包安装 py3.7"></a>第二种方法通过源码包安装 py3.7</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">yum -y groupinstall "Development tools"</span><br><span class="line">yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br><span class="line">yum install libffi-devel -y</span><br><span class="line">wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tar.xz</span><br><span class="line">tar -xvJf  Python-3.7.7.tar.xz</span><br><span class="line">cd Python-3.7.7</span><br><span class="line">./configure --prefix=/usr/local/python37  --with-ssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">ln -s /usr/local/python37/bin/python3 /usr/local/bin/python3</span><br><span class="line">ln -s /usr/local/python37/bin/pip3 /usr/local/bin/pip3</span><br></pre></td></tr></table></figure>
+<h2 id="第二种方法通过源码包安装-py3-7"><a href="#第二种方法通过源码包安装-py3-7" class="headerlink" title="第二种方法通过源码包安装 py3.7"></a>第二种方法通过源码包安装 py3.7</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">yum -y groupinstall "Development tools"</span><br><span class="line">yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br><span class="line">yum install libffi-devel -y</span><br><span class="line">wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tar.xz</span><br><span class="line">tar -xvJf  Python-3.7.7.tar.xz</span><br><span class="line">cd Python-3.7.7</span><br><span class="line">./configure --prefix=/usr/local/python37  --with-ssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">ln -s /usr/local/python37/bin/python3 /usr/local/bin/python3</span><br><span class="line">ln -s /usr/local/python37/bin/pip3 /usr/local/bin/pip3</span><br></pre></td></tr></table></figure></div>
 
 <p>均可用作制作docker</p>
 
@@ -378,9 +378,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
-          
             <a href="/tags/Centos/" rel="tag"># Centos</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
             <a href="/tags/Linux/" rel="tag"># Linux</a>
           
@@ -480,7 +480,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -493,7 +493,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -275,6 +275,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="url">布隆过滤器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-17T12:00:00+08:00">
+                2020-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
+<p>   <strong>特点:</strong></p>
+<ol>
+<li>不存在的一定不存在，存在的不一定存在。</li>
+<li>添加元素简单，删除很难很难。</li>
+<li>省空间，提升效率。</li>
+</ol>
+<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
+<p>   原先去重调度器和去重队列</p>
+   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
+<pre><code># Ensure use this Scheduler
+   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
+# Ensure all spiders share same duplicates filter through redis
+   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -486,7 +623,7 @@
 </ul>
 <p>还有很多友好的操作</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">class Xlsx():</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.workbook &#x3D; Workbook()</span><br><span class="line">        self.index&#x3D;1</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def add_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        return self.workbook.create_sheet(sheetname,self.index+1)</span><br><span class="line"></span><br><span class="line">    def add_data(self,data,sheet&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        :param sheet :sheet对象</span><br><span class="line">        :param data: data最好是一个元组</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        if isinstance(data,tuple):</span><br><span class="line">            sheet.append(data)</span><br><span class="line">        else:</span><br><span class="line">            sheet.append(tuple(data))</span><br><span class="line"></span><br><span class="line">    def set_header_font(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        格式化行头</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        font &#x3D; Font(u&#39;宋体&#39;, size&#x3D;13, bold&#x3D;True, color&#x3D;&#39;000000&#39;)</span><br><span class="line">        for i in sheetname[&quot;1&quot;]:</span><br><span class="line">            i.font &#x3D; font</span><br><span class="line">            </span><br><span class="line">    def delete_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        删除sheet</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        self.workbook.remove(self.workbook[sheetname])</span><br><span class="line"></span><br><span class="line">    def save(self,filename):</span><br><span class="line">        self.workbook.save(filename)</span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">class Xlsx():</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.workbook &#x3D; Workbook()</span><br><span class="line">        self.index&#x3D;1</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def add_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        return self.workbook.create_sheet(sheetname,self.index+1)</span><br><span class="line"></span><br><span class="line">    def add_data(self,data,sheet&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        :param sheet :sheet对象</span><br><span class="line">        :param data: data最好是一个元组</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        if isinstance(data,tuple):</span><br><span class="line">            sheet.append(data)</span><br><span class="line">        else:</span><br><span class="line">            sheet.append(tuple(data))</span><br><span class="line"></span><br><span class="line">    def set_header_font(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        格式化行头</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        font &#x3D; Font(u&#39;宋体&#39;, size&#x3D;13, bold&#x3D;True, color&#x3D;&#39;000000&#39;)</span><br><span class="line">        for i in sheetname[&quot;1&quot;]:</span><br><span class="line">            i.font &#x3D; font</span><br><span class="line">            </span><br><span class="line">    def delete_sheet(self,sheetname&#x3D;&quot;Sheet&quot;):</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        删除sheet</span><br><span class="line">        :param sheetname:</span><br><span class="line">        :return:</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        self.workbook.remove(self.workbook[sheetname])</span><br><span class="line"></span><br><span class="line">    def save(self,filename):</span><br><span class="line">        self.workbook.save(filename)</span><br></pre></td></tr></table></figure></div>
           
         
       
@@ -607,8 +744,8 @@
       
         
           
-            <h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">logger &#x3D; logging.getLogger(&#39;what&#39;)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line">#设置日志格式</span><br><span class="line">formater&#x3D;logging.Formatter(fmt&#x3D;&#39;%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s &#39;,datefmt&#x3D;&#39;%Y&#x2F;%m&#x2F;%d %H:%M&#39;)</span><br><span class="line">#文件Handler</span><br><span class="line">fh&#x3D;logging.FileHandler(&#39;test.log&#39;,&#39;a&#39;,encoding&#x3D;&#39;utf-8&#39;)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line">#自定义Handler</span><br><span class="line">th&#x3D;CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line">#终端Handler</span><br><span class="line">ch &#x3D; logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line">#添加Handler</span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure>
-<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class CHandler(logging.Handler):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client&#x3D;pymysql.Connection(host&#x3D;&#39;127.0.0.1&#39;,user&#x3D;&#39;root&#39;,passwd&#x3D;&#39;qweqwe&#39;,db&#x3D;&#39;sharesnews&#39;,charset&#x3D;&#39;utf8mb4&#39;,autocommit&#x3D;True)</span><br><span class="line">        self.cursor&#x3D;self.client.cursor()</span><br><span class="line">    def emit(self, record):</span><br><span class="line">        try:</span><br><span class="line">            sql&#x3D;&#39;insert into exceptions (exception,add_time) VALUES (%s,%s)&#39;</span><br><span class="line">            msg &#x3D; sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        except Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure>
+            <h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">logger &#x3D; logging.getLogger(&#39;what&#39;)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line">#设置日志格式</span><br><span class="line">formater&#x3D;logging.Formatter(fmt&#x3D;&#39;%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s &#39;,datefmt&#x3D;&#39;%Y&#x2F;%m&#x2F;%d %H:%M&#39;)</span><br><span class="line">#文件Handler</span><br><span class="line">fh&#x3D;logging.FileHandler(&#39;test.log&#39;,&#39;a&#39;,encoding&#x3D;&#39;utf-8&#39;)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line">#自定义Handler</span><br><span class="line">th&#x3D;CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line">#终端Handler</span><br><span class="line">ch &#x3D; logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line">#添加Handler</span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
+<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class CHandler(logging.Handler):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client&#x3D;pymysql.Connection(host&#x3D;&#39;127.0.0.1&#39;,user&#x3D;&#39;root&#39;,passwd&#x3D;&#39;qweqwe&#39;,db&#x3D;&#39;sharesnews&#39;,charset&#x3D;&#39;utf8mb4&#39;,autocommit&#x3D;True)</span><br><span class="line">        self.cursor&#x3D;self.client.cursor()</span><br><span class="line">    def emit(self, record):</span><br><span class="line">        try:</span><br><span class="line">            sql&#x3D;&#39;insert into exceptions (exception,add_time) VALUES (%s,%s)&#39;</span><br><span class="line">            msg &#x3D; sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        except Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure></div>
           
         
       
@@ -729,7 +866,7 @@
       
         
           
-            <h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import scrapy</span><br><span class="line">from scrapy.crawler import CrawlerProcess</span><br><span class="line">from scrapy.utils.project import get_project_settings</span><br><span class="line">process &#x3D; CrawlerProcess(get_project_settings())</span><br><span class="line"># 指定多个spider</span><br><span class="line">process.crawl(&quot;fen&quot;)</span><br><span class="line">process.crawl(&quot;fuck&quot;)</span><br><span class="line"># 执行所有 spider</span><br><span class="line"># for spider_name in process.spider_loader.list():</span><br><span class="line">#     print(spider_name)</span><br><span class="line">    # process.crawl(spider_name)</span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure>
+            <h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import scrapy</span><br><span class="line">from scrapy.crawler import CrawlerProcess</span><br><span class="line">from scrapy.utils.project import get_project_settings</span><br><span class="line">process &#x3D; CrawlerProcess(get_project_settings())</span><br><span class="line"># 指定多个spider</span><br><span class="line">process.crawl(&quot;fen&quot;)</span><br><span class="line">process.crawl(&quot;fuck&quot;)</span><br><span class="line"># 执行所有 spider</span><br><span class="line"># for spider_name in process.spider_loader.list():</span><br><span class="line">#     print(spider_name)</span><br><span class="line">    # process.crawl(spider_name)</span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
           
         
       
@@ -1110,7 +1247,7 @@
 <p>万古长青的编辑器 <strong>vim</strong></p>
 <p>而且X格满满</p>
 </blockquote>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">set nocompatible  </span><br><span class="line">set hlsearch</span><br><span class="line">set number  </span><br><span class="line">set history&#x3D;1000</span><br><span class="line">set background&#x3D;dark </span><br><span class="line">syntax on  </span><br><span class="line">set autoindent </span><br><span class="line">set tabstop&#x3D;4</span><br><span class="line">set expandtab</span><br><span class="line">set shiftwidth&#x3D;4</span><br><span class="line"></span><br><span class="line">let mapleader&#x3D;&quot;,&quot;</span><br><span class="line"></span><br><span class="line">&quot; colors</span><br><span class="line">set background&#x3D;dark</span><br><span class="line">colorscheme hybrid</span><br><span class="line"></span><br><span class="line">&quot; jklh</span><br><span class="line">map &lt;C-j&gt; &lt;C-W&gt;j</span><br><span class="line">map &lt;C-k&gt; &lt;C-W&gt;k</span><br><span class="line">map &lt;C-h&gt; &lt;C-W&gt;h</span><br><span class="line">map &lt;C-l&gt; &lt;C-W&gt;l</span><br><span class="line"></span><br><span class="line">&quot; vim-plug</span><br><span class="line">call plug#begin(&#39;~&#x2F;.vim&#x2F;plugged&#39;)</span><br><span class="line">Plug &#39;scrooloose&#x2F;nerdtree&#39;, &#123; &#39;on&#39;:  &#39;NERDTreeToggle&#39; &#125;</span><br><span class="line">Plug &#39;yggdroot&#x2F;indentline&#39;</span><br><span class="line">Plug &#39;python-mode&#x2F;python-mode&#39;, &#123; &#39;for&#39;: &#39;python&#39;, &#39;branch&#39;: &#39;develop&#39; &#125;</span><br><span class="line">Plug &#39;majutsushi&#x2F;tagbar&#39;</span><br><span class="line">Plug &#39;tpope&#x2F;vim-commentary&#39;</span><br><span class="line"></span><br><span class="line">call plug#end()</span><br><span class="line">&quot; NERDTree</span><br><span class="line">let NERDTreeWinSize&#x3D;25</span><br><span class="line">map &lt;F9&gt; :NERDTreeToggle&lt;CR&gt;</span><br><span class="line"></span><br><span class="line">&quot; indentline</span><br><span class="line">let g:indentline_char &#x3D; &#39;¦&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; Tagbar</span><br><span class="line">nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;</span><br><span class="line">let g:tagbar_ctags_bin &#x3D; &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ctags&quot;</span><br><span class="line">let g:tagbar_width&#x3D;28</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; python-mode</span><br><span class="line">let g:pymode_rope &#x3D; 1</span><br><span class="line">let g:pymode_rope_completion &#x3D; 1</span><br><span class="line">let g:pymode_rope_complete_on_dot &#x3D; 1</span><br><span class="line">set completeopt&#x3D;menuone,noinsert</span><br><span class="line"></span><br><span class="line">&quot; let g:pymode_rope_completion_bind &#x3D; &#39;&#39;</span><br><span class="line">&quot; Documentation</span><br><span class="line">let g:pymode_doc &#x3D; 0</span><br><span class="line">let g:pymode_doc_key &#x3D; &#39;K&#39;</span><br><span class="line">&quot;Linting</span><br><span class="line">let g:pymode_lint &#x3D; 1</span><br><span class="line">let g:pymode_lint_checker &#x3D; &quot;pyflakes,pep8&quot;</span><br><span class="line">&quot; let g:pymode_lint_on_write &#x3D; 1</span><br><span class="line">&quot; Support virtualenv</span><br><span class="line">let g:pymode_virtualenv &#x3D; 1</span><br><span class="line">&quot; Enable breakpoints plugin</span><br><span class="line">let g:pymode_breakpoint &#x3D; 1</span><br><span class="line">let g:pymode_breakpoint_bind &#x3D; &#39;&lt;leader&gt;b&#39;</span><br><span class="line">&quot; syntax highlighting</span><br><span class="line">let g:pymode_syntax &#x3D; 1</span><br><span class="line">let g:pymode_syntax_all &#x3D; 1</span><br><span class="line">let g:pymode_syntax_indent_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">let g:pymode_syntax_space_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">&quot; Don&#39;t autofold code</span><br><span class="line">let g:pymode_folding &#x3D; 0</span><br><span class="line">let g:pymode_run &#x3D; 1</span><br><span class="line">let g:pymode_run_bind &#x3D; &#39;&lt;leader&gt;r&#39;</span><br><span class="line">&quot; find definition</span><br><span class="line">let g:pymode_rope_goto_definition_bind &#x3D; &#39;&lt;C-c&gt;g&#39;</span><br><span class="line">let g:pymode_rope_goto_definition_cmd &#x3D; &#39;new&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">set nocompatible  </span><br><span class="line">set hlsearch</span><br><span class="line">set number  </span><br><span class="line">set history&#x3D;1000</span><br><span class="line">set background&#x3D;dark </span><br><span class="line">syntax on  </span><br><span class="line">set autoindent </span><br><span class="line">set tabstop&#x3D;4</span><br><span class="line">set expandtab</span><br><span class="line">set shiftwidth&#x3D;4</span><br><span class="line"></span><br><span class="line">let mapleader&#x3D;&quot;,&quot;</span><br><span class="line"></span><br><span class="line">&quot; colors</span><br><span class="line">set background&#x3D;dark</span><br><span class="line">colorscheme hybrid</span><br><span class="line"></span><br><span class="line">&quot; jklh</span><br><span class="line">map &lt;C-j&gt; &lt;C-W&gt;j</span><br><span class="line">map &lt;C-k&gt; &lt;C-W&gt;k</span><br><span class="line">map &lt;C-h&gt; &lt;C-W&gt;h</span><br><span class="line">map &lt;C-l&gt; &lt;C-W&gt;l</span><br><span class="line"></span><br><span class="line">&quot; vim-plug</span><br><span class="line">call plug#begin(&#39;~&#x2F;.vim&#x2F;plugged&#39;)</span><br><span class="line">Plug &#39;scrooloose&#x2F;nerdtree&#39;, &#123; &#39;on&#39;:  &#39;NERDTreeToggle&#39; &#125;</span><br><span class="line">Plug &#39;yggdroot&#x2F;indentline&#39;</span><br><span class="line">Plug &#39;python-mode&#x2F;python-mode&#39;, &#123; &#39;for&#39;: &#39;python&#39;, &#39;branch&#39;: &#39;develop&#39; &#125;</span><br><span class="line">Plug &#39;majutsushi&#x2F;tagbar&#39;</span><br><span class="line">Plug &#39;tpope&#x2F;vim-commentary&#39;</span><br><span class="line"></span><br><span class="line">call plug#end()</span><br><span class="line">&quot; NERDTree</span><br><span class="line">let NERDTreeWinSize&#x3D;25</span><br><span class="line">map &lt;F9&gt; :NERDTreeToggle&lt;CR&gt;</span><br><span class="line"></span><br><span class="line">&quot; indentline</span><br><span class="line">let g:indentline_char &#x3D; &#39;¦&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; Tagbar</span><br><span class="line">nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;</span><br><span class="line">let g:tagbar_ctags_bin &#x3D; &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ctags&quot;</span><br><span class="line">let g:tagbar_width&#x3D;28</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; python-mode</span><br><span class="line">let g:pymode_rope &#x3D; 1</span><br><span class="line">let g:pymode_rope_completion &#x3D; 1</span><br><span class="line">let g:pymode_rope_complete_on_dot &#x3D; 1</span><br><span class="line">set completeopt&#x3D;menuone,noinsert</span><br><span class="line"></span><br><span class="line">&quot; let g:pymode_rope_completion_bind &#x3D; &#39;&#39;</span><br><span class="line">&quot; Documentation</span><br><span class="line">let g:pymode_doc &#x3D; 0</span><br><span class="line">let g:pymode_doc_key &#x3D; &#39;K&#39;</span><br><span class="line">&quot;Linting</span><br><span class="line">let g:pymode_lint &#x3D; 1</span><br><span class="line">let g:pymode_lint_checker &#x3D; &quot;pyflakes,pep8&quot;</span><br><span class="line">&quot; let g:pymode_lint_on_write &#x3D; 1</span><br><span class="line">&quot; Support virtualenv</span><br><span class="line">let g:pymode_virtualenv &#x3D; 1</span><br><span class="line">&quot; Enable breakpoints plugin</span><br><span class="line">let g:pymode_breakpoint &#x3D; 1</span><br><span class="line">let g:pymode_breakpoint_bind &#x3D; &#39;&lt;leader&gt;b&#39;</span><br><span class="line">&quot; syntax highlighting</span><br><span class="line">let g:pymode_syntax &#x3D; 1</span><br><span class="line">let g:pymode_syntax_all &#x3D; 1</span><br><span class="line">let g:pymode_syntax_indent_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">let g:pymode_syntax_space_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">&quot; Don&#39;t autofold code</span><br><span class="line">let g:pymode_folding &#x3D; 0</span><br><span class="line">let g:pymode_run &#x3D; 1</span><br><span class="line">let g:pymode_run_bind &#x3D; &#39;&lt;leader&gt;r&#39;</span><br><span class="line">&quot; find definition</span><br><span class="line">let g:pymode_rope_goto_definition_bind &#x3D; &#39;&lt;C-c&gt;g&#39;</span><br><span class="line">let g:pymode_rope_goto_definition_cmd &#x3D; &#39;new&#39;</span><br></pre></td></tr></table></figure></div>
 
           
         
@@ -1405,138 +1542,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/" itemprop="url">nas中的docker</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:36:00+08:00">
-                2020-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>划水期间发现有趣的bt，如果能扔一个地方自动下载。</p>
-<p>回到家中拉上窗帘，备好吃的喝的，打开投影仪，哇爽啊！</p>
-<p>docker是个好东西啊。</p>
-<p>遂有了 <strong>transmission + jellyfin</strong> 下载和播放，jellyfin还支持投屏。</p>
-<p>当然大佬们还有很多家庭影院服务的组合。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1587,7 +1592,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1600,7 +1605,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
