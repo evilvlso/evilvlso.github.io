@@ -104,18 +104,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Ubuntu安装chrome脚本</title>
-    <url>/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y libxss1 libappindicator1 libindicator7</span><br><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">dpkg -i  google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure></div>
-<a id="more"></a>
-<h3 id="如果报错了"><a href="#如果报错了" class="headerlink" title="如果报错了"></a>如果报错了</h3><p><code>apt-get install -y -f</code> 就OK👌了</p>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
-        <tag>chrome</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>gunicorn配置及使用</title>
     <url>/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p>启动:<br><code>gunicorn -c config.py app:app</code></p>
@@ -126,6 +114,18 @@
 <h3 id="配置-配置文件可是py文件"><a href="#配置-配置文件可是py文件" class="headerlink" title="配置(配置文件可是py文件)"></a>配置(配置文件可是py文件)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">import multiprocessing</span><br><span class="line">import os</span><br><span class="line">base &#x3D; os.path.abspath(os.path.dirname(__file__))</span><br><span class="line">workers &#x3D; multiprocessing.cpu_count() * 2 + 1</span><br><span class="line">threads &#x3D; 6</span><br><span class="line">reload &#x3D; 0.   # debug模式</span><br><span class="line">bind &#x3D; &#39;0.0.0.0:9999&#39;</span><br><span class="line">daemon &#x3D; &#39;false&#39;     #docker中要关闭</span><br><span class="line">worker_class &#x3D; &quot;gevent&quot;    #</span><br><span class="line">worker_connections &#x3D; 2000</span><br><span class="line">loglevel &#x3D; &#39;error&#39;</span><br><span class="line">accesslog &#x3D; os.path.join(base,&quot;gunicorn_acess.log&quot;)</span><br><span class="line">errorlog &#x3D; os.path.join(base,&quot;gunicorn_error.log&quot;)</span><br><span class="line">max_requests&#x3D;300</span><br></pre></td></tr></table></figure></div>]]></content>
       <tags>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu安装chrome脚本</title>
+    <url>/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y libxss1 libappindicator1 libindicator7</span><br><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">dpkg -i  google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure></div>
+<a id="more"></a>
+<h3 id="如果报错了"><a href="#如果报错了" class="headerlink" title="如果报错了"></a>如果报错了</h3><p><code>apt-get install -y -f</code> 就OK👌了</p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>chrome</tag>
       </tags>
   </entry>
   <entry>
@@ -144,6 +144,37 @@
         <tag>Centos</tag>
         <tag>inotify</tag>
         <tag>rsync</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iterm2+expect登录服务器</title>
+    <url>/2020/04/14/iterm2+expect%E7%99%BB%E5%BD%95%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<blockquote>
+<p>个人青睐的一种登录方式</p>
+<p>可自动应对首次登录服务器询问是否保存密钥问题</p>
+</blockquote>
+<h3 id="登录脚本如下"><a href="#登录脚本如下" class="headerlink" title="登录脚本如下"></a>登录脚本如下</h3><a id="more"></a>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/expect</span></span><br><span class="line">set timeout 30</span><br><span class="line">spawn ssh -p [lindex $argv 0] [lindex $argv 1]@[lindex $argv 2]</span><br><span class="line">expect &#123;</span><br><span class="line">        "(yes/no)?"</span><br><span class="line">        &#123;send "yes\n";exp_continue&#125;</span><br><span class="line">        "password:"</span><br><span class="line">        &#123;send "[lindex $argv 3]\n"&#125;</span><br><span class="line">&#125;</span><br><span class="line">interact</span><br></pre></td></tr></table></figure></div>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ul>
+<li>将脚本保存至 ～/.ssh/ 目录下，比如叫做iterm2login.sh</li>
+<li>iterm2中新的profile登录方式添加为: <code>~/.ssh/iterm2login.sh port username ip pwd</code> （做相应替换）</li>
+<li>直接登录</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>mac</tag>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>logging添加Handler</title>
+    <url>/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/</url>
+    <content><![CDATA[<h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">logger = logging.getLogger(<span class="string">'what'</span>)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">formater=logging.Formatter(fmt=<span class="string">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,datefmt=<span class="string">'%Y/%m/%d %H:%M'</span>)</span><br><span class="line"><span class="comment">#文件Handler</span></span><br><span class="line">fh=logging.FileHandler(<span class="string">'test.log'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line"><span class="comment">#自定义Handler</span></span><br><span class="line">th=CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#终端Handler</span></span><br><span class="line">ch = logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line"><span class="comment">#添加Handler</span></span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
+<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CHandler</span><span class="params">(logging.Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client=pymysql.Connection(host=<span class="string">'127.0.0.1'</span>,user=<span class="string">'root'</span>,passwd=<span class="string">'qweqwe'</span>,db=<span class="string">'sharesnews'</span>,charset=<span class="string">'utf8mb4'</span>,autocommit=<span class="literal">True</span>)</span><br><span class="line">        self.cursor=self.client.cursor()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            sql=<span class="string">'insert into exceptions (exception,add_time) VALUES (%s,%s)'</span></span><br><span class="line">            msg = sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -171,6 +202,19 @@
       </tags>
   </entry>
   <entry>
+    <title>vimrc备份</title>
+    <url>/2020/04/16/vimrc%E5%A4%87%E4%BB%BD/</url>
+    <content><![CDATA[<blockquote>
+<p>万古长青的编辑器 <strong>vim</strong></p>
+<p>而且X格满满</p>
+</blockquote>
+<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">set nocompatible  </span><br><span class="line">set hlsearch</span><br><span class="line">set number  </span><br><span class="line">set history&#x3D;1000</span><br><span class="line">set background&#x3D;dark </span><br><span class="line">syntax on  </span><br><span class="line">set autoindent </span><br><span class="line">set tabstop&#x3D;4</span><br><span class="line">set expandtab</span><br><span class="line">set shiftwidth&#x3D;4</span><br><span class="line"></span><br><span class="line">let mapleader&#x3D;&quot;,&quot;</span><br><span class="line"></span><br><span class="line">&quot; colors</span><br><span class="line">set background&#x3D;dark</span><br><span class="line">colorscheme hybrid</span><br><span class="line"></span><br><span class="line">&quot; jklh</span><br><span class="line">map &lt;C-j&gt; &lt;C-W&gt;j</span><br><span class="line">map &lt;C-k&gt; &lt;C-W&gt;k</span><br><span class="line">map &lt;C-h&gt; &lt;C-W&gt;h</span><br><span class="line">map &lt;C-l&gt; &lt;C-W&gt;l</span><br><span class="line"></span><br><span class="line">&quot; vim-plug</span><br><span class="line">call plug#begin(&#39;~&#x2F;.vim&#x2F;plugged&#39;)</span><br><span class="line">Plug &#39;scrooloose&#x2F;nerdtree&#39;, &#123; &#39;on&#39;:  &#39;NERDTreeToggle&#39; &#125;</span><br><span class="line">Plug &#39;yggdroot&#x2F;indentline&#39;</span><br><span class="line">Plug &#39;python-mode&#x2F;python-mode&#39;, &#123; &#39;for&#39;: &#39;python&#39;, &#39;branch&#39;: &#39;develop&#39; &#125;</span><br><span class="line">Plug &#39;majutsushi&#x2F;tagbar&#39;</span><br><span class="line">Plug &#39;tpope&#x2F;vim-commentary&#39;</span><br><span class="line"></span><br><span class="line">call plug#end()</span><br><span class="line">&quot; NERDTree</span><br><span class="line">let NERDTreeWinSize&#x3D;25</span><br><span class="line">map &lt;F9&gt; :NERDTreeToggle&lt;CR&gt;</span><br><span class="line"></span><br><span class="line">&quot; indentline</span><br><span class="line">let g:indentline_char &#x3D; &#39;¦&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; Tagbar</span><br><span class="line">nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;</span><br><span class="line">let g:tagbar_ctags_bin &#x3D; &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ctags&quot;</span><br><span class="line">let g:tagbar_width&#x3D;28</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; python-mode</span><br><span class="line">let g:pymode_rope &#x3D; 1</span><br><span class="line">let g:pymode_rope_completion &#x3D; 1</span><br><span class="line">let g:pymode_rope_complete_on_dot &#x3D; 1</span><br><span class="line">set completeopt&#x3D;menuone,noinsert</span><br><span class="line"></span><br><span class="line">&quot; let g:pymode_rope_completion_bind &#x3D; &#39;&#39;</span><br><span class="line">&quot; Documentation</span><br><span class="line">let g:pymode_doc &#x3D; 0</span><br><span class="line">let g:pymode_doc_key &#x3D; &#39;K&#39;</span><br><span class="line">&quot;Linting</span><br><span class="line">let g:pymode_lint &#x3D; 1</span><br><span class="line">let g:pymode_lint_checker &#x3D; &quot;pyflakes,pep8&quot;</span><br><span class="line">&quot; let g:pymode_lint_on_write &#x3D; 1</span><br><span class="line">&quot; Support virtualenv</span><br><span class="line">let g:pymode_virtualenv &#x3D; 1</span><br><span class="line">&quot; Enable breakpoints plugin</span><br><span class="line">let g:pymode_breakpoint &#x3D; 1</span><br><span class="line">let g:pymode_breakpoint_bind &#x3D; &#39;&lt;leader&gt;b&#39;</span><br><span class="line">&quot; syntax highlighting</span><br><span class="line">let g:pymode_syntax &#x3D; 1</span><br><span class="line">let g:pymode_syntax_all &#x3D; 1</span><br><span class="line">let g:pymode_syntax_indent_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">let g:pymode_syntax_space_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">&quot; Don&#39;t autofold code</span><br><span class="line">let g:pymode_folding &#x3D; 0</span><br><span class="line">let g:pymode_run &#x3D; 1</span><br><span class="line">let g:pymode_run_bind &#x3D; &#39;&lt;leader&gt;r&#39;</span><br><span class="line">&quot; find definition</span><br><span class="line">let g:pymode_rope_goto_definition_bind &#x3D; &#39;&lt;C-c&gt;g&#39;</span><br><span class="line">let g:pymode_rope_goto_definition_cmd &#x3D; &#39;new&#39;</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>vim</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>nas中的docker</title>
     <url>/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/</url>
     <content><![CDATA[<blockquote>
@@ -188,75 +232,6 @@
       </tags>
   </entry>
   <entry>
-    <title>iterm2+expect登录服务器</title>
-    <url>/2020/04/14/iterm2+expect%E7%99%BB%E5%BD%95%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[<blockquote>
-<p>个人青睐的一种登录方式</p>
-<p>可自动应对首次登录服务器询问是否保存密钥问题</p>
-</blockquote>
-<h3 id="登录脚本如下"><a href="#登录脚本如下" class="headerlink" title="登录脚本如下"></a>登录脚本如下</h3><a id="more"></a>
-
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/expect</span></span><br><span class="line">set timeout 30</span><br><span class="line">spawn ssh -p [lindex $argv 0] [lindex $argv 1]@[lindex $argv 2]</span><br><span class="line">expect &#123;</span><br><span class="line">        "(yes/no)?"</span><br><span class="line">        &#123;send "yes\n";exp_continue&#125;</span><br><span class="line">        "password:"</span><br><span class="line">        &#123;send "[lindex $argv 3]\n"&#125;</span><br><span class="line">&#125;</span><br><span class="line">interact</span><br></pre></td></tr></table></figure></div>
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ul>
-<li>将脚本保存至 ～/.ssh/ 目录下，比如叫做iterm2login.sh</li>
-<li>iterm2中新的profile登录方式添加为: <code>~/.ssh/iterm2login.sh port username ip pwd</code> （做相应替换）</li>
-<li>直接登录</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>mac</tag>
-        <tag>ssh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>布隆过滤器</title>
-    <url>/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
-<p>   <strong>特点:</strong></p>
-<ol>
-<li>不存在的一定不存在，存在的不一定存在。</li>
-<li>添加元素简单，删除很难很难。</li>
-<li>省空间，提升效率。</li>
-</ol>
-<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
-<p>   原先去重调度器和去重队列</p>
-   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
-
-<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
-<pre><code># Ensure use this Scheduler
-   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
-# Ensure all spiders share same duplicates filter through redis
-   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
-]]></content>
-      <tags>
-        <tag>python</tag>
-        <tag>bloomfilter</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>logging添加Handler</title>
-    <url>/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/</url>
-    <content><![CDATA[<h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">logger = logging.getLogger(<span class="string">'what'</span>)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">formater=logging.Formatter(fmt=<span class="string">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,datefmt=<span class="string">'%Y/%m/%d %H:%M'</span>)</span><br><span class="line"><span class="comment">#文件Handler</span></span><br><span class="line">fh=logging.FileHandler(<span class="string">'test.log'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line"><span class="comment">#自定义Handler</span></span><br><span class="line">th=CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#终端Handler</span></span><br><span class="line">ch = logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line"><span class="comment">#添加Handler</span></span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
-<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CHandler</span><span class="params">(logging.Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client=pymysql.Connection(host=<span class="string">'127.0.0.1'</span>,user=<span class="string">'root'</span>,passwd=<span class="string">'qweqwe'</span>,db=<span class="string">'sharesnews'</span>,charset=<span class="string">'utf8mb4'</span>,autocommit=<span class="literal">True</span>)</span><br><span class="line">        self.cursor=self.client.cursor()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            sql=<span class="string">'insert into exceptions (exception,add_time) VALUES (%s,%s)'</span></span><br><span class="line">            msg = sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vimrc备份</title>
-    <url>/2020/04/16/vimrc%E5%A4%87%E4%BB%BD/</url>
-    <content><![CDATA[<blockquote>
-<p>万古长青的编辑器 <strong>vim</strong></p>
-<p>而且X格满满</p>
-</blockquote>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">set nocompatible  </span><br><span class="line">set hlsearch</span><br><span class="line">set number  </span><br><span class="line">set history&#x3D;1000</span><br><span class="line">set background&#x3D;dark </span><br><span class="line">syntax on  </span><br><span class="line">set autoindent </span><br><span class="line">set tabstop&#x3D;4</span><br><span class="line">set expandtab</span><br><span class="line">set shiftwidth&#x3D;4</span><br><span class="line"></span><br><span class="line">let mapleader&#x3D;&quot;,&quot;</span><br><span class="line"></span><br><span class="line">&quot; colors</span><br><span class="line">set background&#x3D;dark</span><br><span class="line">colorscheme hybrid</span><br><span class="line"></span><br><span class="line">&quot; jklh</span><br><span class="line">map &lt;C-j&gt; &lt;C-W&gt;j</span><br><span class="line">map &lt;C-k&gt; &lt;C-W&gt;k</span><br><span class="line">map &lt;C-h&gt; &lt;C-W&gt;h</span><br><span class="line">map &lt;C-l&gt; &lt;C-W&gt;l</span><br><span class="line"></span><br><span class="line">&quot; vim-plug</span><br><span class="line">call plug#begin(&#39;~&#x2F;.vim&#x2F;plugged&#39;)</span><br><span class="line">Plug &#39;scrooloose&#x2F;nerdtree&#39;, &#123; &#39;on&#39;:  &#39;NERDTreeToggle&#39; &#125;</span><br><span class="line">Plug &#39;yggdroot&#x2F;indentline&#39;</span><br><span class="line">Plug &#39;python-mode&#x2F;python-mode&#39;, &#123; &#39;for&#39;: &#39;python&#39;, &#39;branch&#39;: &#39;develop&#39; &#125;</span><br><span class="line">Plug &#39;majutsushi&#x2F;tagbar&#39;</span><br><span class="line">Plug &#39;tpope&#x2F;vim-commentary&#39;</span><br><span class="line"></span><br><span class="line">call plug#end()</span><br><span class="line">&quot; NERDTree</span><br><span class="line">let NERDTreeWinSize&#x3D;25</span><br><span class="line">map &lt;F9&gt; :NERDTreeToggle&lt;CR&gt;</span><br><span class="line"></span><br><span class="line">&quot; indentline</span><br><span class="line">let g:indentline_char &#x3D; &#39;¦&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; Tagbar</span><br><span class="line">nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;</span><br><span class="line">let g:tagbar_ctags_bin &#x3D; &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ctags&quot;</span><br><span class="line">let g:tagbar_width&#x3D;28</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; python-mode</span><br><span class="line">let g:pymode_rope &#x3D; 1</span><br><span class="line">let g:pymode_rope_completion &#x3D; 1</span><br><span class="line">let g:pymode_rope_complete_on_dot &#x3D; 1</span><br><span class="line">set completeopt&#x3D;menuone,noinsert</span><br><span class="line"></span><br><span class="line">&quot; let g:pymode_rope_completion_bind &#x3D; &#39;&#39;</span><br><span class="line">&quot; Documentation</span><br><span class="line">let g:pymode_doc &#x3D; 0</span><br><span class="line">let g:pymode_doc_key &#x3D; &#39;K&#39;</span><br><span class="line">&quot;Linting</span><br><span class="line">let g:pymode_lint &#x3D; 1</span><br><span class="line">let g:pymode_lint_checker &#x3D; &quot;pyflakes,pep8&quot;</span><br><span class="line">&quot; let g:pymode_lint_on_write &#x3D; 1</span><br><span class="line">&quot; Support virtualenv</span><br><span class="line">let g:pymode_virtualenv &#x3D; 1</span><br><span class="line">&quot; Enable breakpoints plugin</span><br><span class="line">let g:pymode_breakpoint &#x3D; 1</span><br><span class="line">let g:pymode_breakpoint_bind &#x3D; &#39;&lt;leader&gt;b&#39;</span><br><span class="line">&quot; syntax highlighting</span><br><span class="line">let g:pymode_syntax &#x3D; 1</span><br><span class="line">let g:pymode_syntax_all &#x3D; 1</span><br><span class="line">let g:pymode_syntax_indent_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">let g:pymode_syntax_space_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">&quot; Don&#39;t autofold code</span><br><span class="line">let g:pymode_folding &#x3D; 0</span><br><span class="line">let g:pymode_run &#x3D; 1</span><br><span class="line">let g:pymode_run_bind &#x3D; &#39;&lt;leader&gt;r&#39;</span><br><span class="line">&quot; find definition</span><br><span class="line">let g:pymode_rope_goto_definition_bind &#x3D; &#39;&lt;C-c&gt;g&#39;</span><br><span class="line">let g:pymode_rope_goto_definition_cmd &#x3D; &#39;new&#39;</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <tags>
-        <tag>vim</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>uwsgi配置使用</title>
     <url>/2020/04/16/uwsgi%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">uwsgi --ini uwsgi.ini             # 启动</span><br><span class="line">uwsgi --reload uwsgi.pid          # 重启</span><br><span class="line">uwsgi --stop uwsgi.pid            # 关闭</span><br></pre></td></tr></table></figure></div>
@@ -266,25 +241,6 @@
 <blockquote>
 <p>参考 <a href="https://www.jianshu.com/p/c3b13b5ad3d7" target="_blank" rel="noopener">https://www.jianshu.com/p/c3b13b5ad3d7</a></p>
 </blockquote>
-]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>提取cookies方法总结</title>
-    <url>/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<ul>
-<li><h3 id="方法一-scrapy适用"><a href="#方法一-scrapy适用" class="headerlink" title="方法一(scrapy适用)"></a>方法一(scrapy适用)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.http.cookies <span class="keyword">import</span> CookieJar</span><br><span class="line">cookie_jar = CookieJar()</span><br><span class="line">cookie_jar.extract_cookies(response, response.request)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> self.cookie_jar:</span><br><span class="line">    p = re.compile(<span class="string">r'&lt;Cookie (.*?) for .*?&gt;'</span>)            </span><br><span class="line">    cookies = re.findall(p, str(i))            </span><br><span class="line">    cookies = (cookie.split(<span class="string">'='</span>, <span class="number">1</span>) <span class="keyword">for</span> cookie <span class="keyword">in</span> cookies)</span><br><span class="line">    cookies = dict(cookies)</span><br></pre></td></tr></table></figure></div>
-
-</li>
-</ul>
-<a id="more"></a>
-
-<ul>
-<li><h3 id="方法二（普适用）"><a href="#方法二（普适用）" class="headerlink" title="方法二（普适用）"></a>方法二（普适用）</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cookies</span><span class="params">(response)</span>:</span></span><br><span class="line">    my_cookies = dict()</span><br><span class="line">    <span class="comment"># 请求包里带的Cookie</span></span><br><span class="line">    <span class="keyword">for</span> cookie <span class="keyword">in</span> response.request.headers.getlist(<span class="string">'Cookie'</span>):</span><br><span class="line">        <span class="keyword">for</span> ck <span class="keyword">in</span> cookie.decode(<span class="string">'utf8'</span>).split(<span class="string">';'</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = ck.split(<span class="string">'='</span>)[<span class="number">1</span>].strip()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = <span class="string">''</span></span><br><span class="line">    <span class="comment"># 响应包里给的Set-Cookie</span></span><br><span class="line">    <span class="keyword">for</span> cookie <span class="keyword">in</span> response.headers.getlist(<span class="string">'Set-Cookie'</span>):</span><br><span class="line">        <span class="keyword">for</span> ck <span class="keyword">in</span> cookie.decode(<span class="string">'utf8'</span>).split(<span class="string">';'</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = ck.split(<span class="string">'='</span>)[<span class="number">1</span>].strip()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = <span class="string">''</span></span><br><span class="line">    <span class="keyword">return</span> my_cookies</span><br></pre></td></tr></table></figure></div>
-</li>
-</ul>
 ]]></content>
       <tags>
         <tag>python</tag>
@@ -316,6 +272,50 @@
 ]]></content>
       <tags>
         <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>布隆过滤器</title>
+    <url>/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
+<p>   <strong>特点:</strong></p>
+<ol>
+<li>不存在的一定不存在，存在的不一定存在。</li>
+<li>添加元素简单，删除很难很难。</li>
+<li>省空间，提升效率。</li>
+</ol>
+<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
+<p>   原先去重调度器和去重队列</p>
+   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
+<pre><code># Ensure use this Scheduler
+   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
+# Ensure all spiders share same duplicates filter through redis
+   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
+]]></content>
+      <tags>
+        <tag>python</tag>
+        <tag>bloomfilter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>提取cookies方法总结</title>
+    <url>/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<ul>
+<li><h3 id="方法一-scrapy适用"><a href="#方法一-scrapy适用" class="headerlink" title="方法一(scrapy适用)"></a>方法一(scrapy适用)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.http.cookies <span class="keyword">import</span> CookieJar</span><br><span class="line">cookie_jar = CookieJar()</span><br><span class="line">cookie_jar.extract_cookies(response, response.request)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> self.cookie_jar:</span><br><span class="line">    p = re.compile(<span class="string">r'&lt;Cookie (.*?) for .*?&gt;'</span>)            </span><br><span class="line">    cookies = re.findall(p, str(i))            </span><br><span class="line">    cookies = (cookie.split(<span class="string">'='</span>, <span class="number">1</span>) <span class="keyword">for</span> cookie <span class="keyword">in</span> cookies)</span><br><span class="line">    cookies = dict(cookies)</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><h3 id="方法二（普适用）"><a href="#方法二（普适用）" class="headerlink" title="方法二（普适用）"></a>方法二（普适用）</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cookies</span><span class="params">(response)</span>:</span></span><br><span class="line">    my_cookies = dict()</span><br><span class="line">    <span class="comment"># 请求包里带的Cookie</span></span><br><span class="line">    <span class="keyword">for</span> cookie <span class="keyword">in</span> response.request.headers.getlist(<span class="string">'Cookie'</span>):</span><br><span class="line">        <span class="keyword">for</span> ck <span class="keyword">in</span> cookie.decode(<span class="string">'utf8'</span>).split(<span class="string">';'</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = ck.split(<span class="string">'='</span>)[<span class="number">1</span>].strip()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = <span class="string">''</span></span><br><span class="line">    <span class="comment"># 响应包里给的Set-Cookie</span></span><br><span class="line">    <span class="keyword">for</span> cookie <span class="keyword">in</span> response.headers.getlist(<span class="string">'Set-Cookie'</span>):</span><br><span class="line">        <span class="keyword">for</span> ck <span class="keyword">in</span> cookie.decode(<span class="string">'utf8'</span>).split(<span class="string">';'</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = ck.split(<span class="string">'='</span>)[<span class="number">1</span>].strip()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = <span class="string">''</span></span><br><span class="line">    <span class="keyword">return</span> my_cookies</span><br></pre></td></tr></table></figure></div>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
 </search>
