@@ -320,6 +320,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -384,8 +394,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/04/16/uwsgi%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/" rel="next" title="uwsgi配置使用">
-                <i class="fa fa-chevron-left"></i> uwsgi配置使用
+              <a href="/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/" rel="next" title="logging添加Handler">
+                <i class="fa fa-chevron-left"></i> logging添加Handler
               </a>
             
           </div>
@@ -394,8 +404,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/" rel="prev" title="logging添加Handler">
-                logging添加Handler <i class="fa fa-chevron-right"></i>
+              <a href="/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/" rel="prev" title="Python操作excel-openpyxl">
+                Python操作excel-openpyxl <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -424,6 +434,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -721,6 +738,48 @@
 
 
 
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'evilvlso',
+            repo: 'blogcomm',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'b7e694658ba07a8f3b70e25cba191e4bf2e8b6d6',
+            
+                client_id: 'Iv1.8b99830efcac6179'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
 
 
 
