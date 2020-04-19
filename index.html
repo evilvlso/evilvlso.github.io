@@ -320,16 +320,6 @@
 
           
             
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -467,16 +457,6 @@
 
           
             
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -604,16 +584,6 @@
           
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/" itemprop="commentCount"></span>
-                </a>
-              </span>
             
           
 
@@ -749,16 +719,6 @@
 
           
             
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -787,138 +747,6 @@
           
             <h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">logger = logging.getLogger(<span class="string">'what'</span>)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">formater=logging.Formatter(fmt=<span class="string">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,datefmt=<span class="string">'%Y/%m/%d %H:%M'</span>)</span><br><span class="line"><span class="comment">#文件Handler</span></span><br><span class="line">fh=logging.FileHandler(<span class="string">'test.log'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line"><span class="comment">#自定义Handler</span></span><br><span class="line">th=CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#终端Handler</span></span><br><span class="line">ch = logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line"><span class="comment">#添加Handler</span></span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
 <h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CHandler</span><span class="params">(logging.Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client=pymysql.Connection(host=<span class="string">'127.0.0.1'</span>,user=<span class="string">'root'</span>,passwd=<span class="string">'qweqwe'</span>,db=<span class="string">'sharesnews'</span>,charset=<span class="string">'utf8mb4'</span>,autocommit=<span class="literal">True</span>)</span><br><span class="line">        self.cursor=self.client.cursor()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            sql=<span class="string">'insert into exceptions (exception,add_time) VALUES (%s,%s)'</span></span><br><span class="line">            msg = sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure></div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/" itemprop="url">scrapy启动多spider</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:45:00+08:00">
-                2020-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.crawler <span class="keyword">import</span> CrawlerProcess</span><br><span class="line"><span class="keyword">from</span> scrapy.utils.project <span class="keyword">import</span> get_project_settings</span><br><span class="line">process = CrawlerProcess(get_project_settings())</span><br><span class="line"><span class="comment"># 指定多个spider</span></span><br><span class="line">process.crawl(<span class="string">"fen"</span>)</span><br><span class="line">process.crawl(<span class="string">"fuck"</span>)</span><br><span class="line"><span class="comment"># 执行所有 spider</span></span><br><span class="line"><span class="comment"># for spider_name in process.spider_loader.list():</span></span><br><span class="line"><span class="comment">#     print(spider_name)</span></span><br><span class="line">    <span class="comment"># process.crawl(spider_name)</span></span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
 
           
         
@@ -1014,16 +842,6 @@
 
           
             
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/uwsgi%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/uwsgi%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -1057,6 +875,128 @@
             </a>
           </div>
           <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/" itemprop="url">scrapy启动多spider</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:45:00+08:00">
+                2020-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.crawler <span class="keyword">import</span> CrawlerProcess</span><br><span class="line"><span class="keyword">from</span> scrapy.utils.project <span class="keyword">import</span> get_project_settings</span><br><span class="line">process = CrawlerProcess(get_project_settings())</span><br><span class="line"><span class="comment"># 指定多个spider</span></span><br><span class="line">process.crawl(<span class="string">"fen"</span>)</span><br><span class="line">process.crawl(<span class="string">"fuck"</span>)</span><br><span class="line"><span class="comment"># 执行所有 spider</span></span><br><span class="line"><span class="comment"># for spider_name in process.spider_loader.list():</span></span><br><span class="line"><span class="comment">#     print(spider_name)</span></span><br><span class="line">    <span class="comment"># process.crawl(spider_name)</span></span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
+
+          
         
       
     </div>
@@ -1149,16 +1089,6 @@
           
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
-                </a>
-              </span>
             
           
 
@@ -1290,16 +1220,6 @@
 
           
             
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/vimrc%E5%A4%87%E4%BB%BD/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/vimrc%E5%A4%87%E4%BB%BD/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -1426,16 +1346,6 @@
 
           
             
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -1561,16 +1471,6 @@
           
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/inotify+rsync%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/inotify+rsync%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
-                </a>
-              </span>
             
           
 
@@ -1947,30 +1847,26 @@
 
 
 
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
 
 
 
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-  
-  <script type="text/javascript">
-    var GUEST = ['nick','mail','link'];
-    var guest = 'nick';
-    guest = guest.split(',').filter(item=>{
-      return GUEST.indexOf(item)>-1;
-    });
-    new Valine({
-        el: '#comments' ,
-        verify: false,
-        notify: true,
-        appId: 'QGxq6QbTJ95IzGgeeXlc5gM7-gzGzoHsz',
-        appKey: 'CLcPsS7OADikuhRPdfvX7Juz',
-        placeholder: 'Just go go',
-        avatar:'mm',
-        guest_info:guest,
-        pageSize:'10' || 10,
-    });
-  </script>
+
 
 
 
