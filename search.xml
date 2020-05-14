@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Centos Install Python Methods</title>
-    <url>/2020/04/13/Centos-Install-Python-Methods/</url>
-    <content><![CDATA[<h2 id="第一种方法通过-IUS-软件源安装"><a href="#第一种方法通过-IUS-软件源安装" class="headerlink" title="第一种方法通过 IUS 软件源安装"></a>第一种方法通过 IUS 软件源安装</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line">sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm</span><br><span class="line">sudo  yum makecache</span><br><span class="line">sudo yum install -y python36u</span><br><span class="line">sudo ln -s /bin/python3.6 /bin/python3</span><br><span class="line">sudo yum install -y python36u-pip</span><br><span class="line">sudo ln -s /bin/pip3.6 /bin/pip3</span><br></pre></td></tr></table></figure></div>
-
-<a id="more"></a>
-<h2 id="第二种方法通过源码包安装-py3-7"><a href="#第二种方法通过源码包安装-py3-7" class="headerlink" title="第二种方法通过源码包安装 py3.7"></a>第二种方法通过源码包安装 py3.7</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">yum -y groupinstall "Development tools"</span><br><span class="line">yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br><span class="line">yum install libffi-devel -y</span><br><span class="line">wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tar.xz</span><br><span class="line">tar -xvJf  Python-3.7.7.tar.xz</span><br><span class="line">cd Python-3.7.7</span><br><span class="line">./configure --prefix=/usr/local/python37  --with-ssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">ln -s /usr/local/python37/bin/python3 /usr/local/bin/python3</span><br><span class="line">ln -s /usr/local/python37/bin/pip3 /usr/local/bin/pip3</span><br></pre></td></tr></table></figure></div>
-
-<p>均可用作制作docker</p>
-]]></content>
-      <tags>
-        <tag>Python</tag>
-        <tag>Centos</tag>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mysql主从配置及可能问题</title>
     <url>/2020/04/16/Mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%8F%AF%E8%83%BD%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id="从账号"><a href="#从账号" class="headerlink" title="从账号"></a>从账号</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">grant replication slave on *.* to slave@192.168.1.8 identified by &#39;123456&#39;;</span><br></pre></td></tr></table></figure></div>
@@ -51,6 +35,22 @@
       <tags>
         <tag>Centos</tag>
         <tag>Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos Install Python Methods</title>
+    <url>/2020/04/13/Centos-Install-Python-Methods/</url>
+    <content><![CDATA[<h2 id="第一种方法通过-IUS-软件源安装"><a href="#第一种方法通过-IUS-软件源安装" class="headerlink" title="第一种方法通过 IUS 软件源安装"></a>第一种方法通过 IUS 软件源安装</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line">sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm</span><br><span class="line">sudo  yum makecache</span><br><span class="line">sudo yum install -y python36u</span><br><span class="line">sudo ln -s /bin/python3.6 /bin/python3</span><br><span class="line">sudo yum install -y python36u-pip</span><br><span class="line">sudo ln -s /bin/pip3.6 /bin/pip3</span><br></pre></td></tr></table></figure></div>
+
+<a id="more"></a>
+<h2 id="第二种方法通过源码包安装-py3-7"><a href="#第二种方法通过源码包安装-py3-7" class="headerlink" title="第二种方法通过源码包安装 py3.7"></a>第二种方法通过源码包安装 py3.7</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">yum -y groupinstall "Development tools"</span><br><span class="line">yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br><span class="line">yum install libffi-devel -y</span><br><span class="line">wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tar.xz</span><br><span class="line">tar -xvJf  Python-3.7.7.tar.xz</span><br><span class="line">cd Python-3.7.7</span><br><span class="line">./configure --prefix=/usr/local/python37  --with-ssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">ln -s /usr/local/python37/bin/python3 /usr/local/bin/python3</span><br><span class="line">ln -s /usr/local/python37/bin/pip3 /usr/local/bin/pip3</span><br></pre></td></tr></table></figure></div>
+
+<p>均可用作制作docker</p>
+]]></content>
+      <tags>
+        <tag>Centos</tag>
+        <tag>Python</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -147,21 +147,6 @@
       </tags>
   </entry>
   <entry>
-    <title>k8s初始化镜像pull问题</title>
-    <url>/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h3 id="因不明原因k8s初始化镜像无法pull-特记录pull脚本"><a href="#因不明原因k8s初始化镜像无法pull-特记录pull脚本" class="headerlink" title="因不明原因k8s初始化镜像无法pull,特记录pull脚本"></a>因不明原因k8s初始化镜像无法pull,特记录pull脚本</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download k8s 1.15.2 images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> get image-list by <span class="string">'kubeadm config images list --kubernetes-version=v1.15.2'</span></span></span><br><span class="line">images=(</span><br><span class="line">kube-apiserver:v1.18.1</span><br><span class="line">kube-controller-manager:v1.18.1</span><br><span class="line">kube-scheduler:v1.18.1</span><br><span class="line">kube-proxy:v1.18.1</span><br><span class="line">pause:3.2</span><br><span class="line">etcd:3.4.3-0</span><br><span class="line">coredns:1.6.7</span><br><span class="line">)</span><br><span class="line">```Shell</span><br><span class="line">&lt;!--more--&gt;</span><br></pre></td></tr></table></figure></div>
-<p>for imageName in ${images[@]};do<br>docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>    docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName k8s.gcr.io/$imageName<br>    docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>done</p>
-<pre><code>## OR 使用这个一句话搞定
-`kubeadm init --apiserver-advertise-address=192.168.1.224 **--image-repository registry.aliyuncs.com/google_containers** --kubernetes-version v1.15.0  --pod-network-cidr=10.244.0.0/16`
-
-**pod-network:10.244.0.0/16**是 **flannel** 插件所需要的。视情况而定
-</code></pre>]]></content>
-      <tags>
-        <tag>Centos</tag>
-        <tag>k8s</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>iterm2+expect登录服务器</title>
     <url>/2020/04/14/iterm2+expect%E7%99%BB%E5%BD%95%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
     <content><![CDATA[<blockquote>
@@ -183,13 +168,18 @@
       </tags>
   </entry>
   <entry>
-    <title>logging添加Handler</title>
-    <url>/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/</url>
-    <content><![CDATA[<h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">logger = logging.getLogger(<span class="string">'what'</span>)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">formater=logging.Formatter(fmt=<span class="string">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,datefmt=<span class="string">'%Y/%m/%d %H:%M'</span>)</span><br><span class="line"><span class="comment">#文件Handler</span></span><br><span class="line">fh=logging.FileHandler(<span class="string">'test.log'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line"><span class="comment">#自定义Handler</span></span><br><span class="line">th=CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#终端Handler</span></span><br><span class="line">ch = logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line"><span class="comment">#添加Handler</span></span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
-<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CHandler</span><span class="params">(logging.Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client=pymysql.Connection(host=<span class="string">'127.0.0.1'</span>,user=<span class="string">'root'</span>,passwd=<span class="string">'qweqwe'</span>,db=<span class="string">'sharesnews'</span>,charset=<span class="string">'utf8mb4'</span>,autocommit=<span class="literal">True</span>)</span><br><span class="line">        self.cursor=self.client.cursor()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            sql=<span class="string">'insert into exceptions (exception,add_time) VALUES (%s,%s)'</span></span><br><span class="line">            msg = sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure></div>
-]]></content>
+    <title>k8s初始化镜像pull问题</title>
+    <url>/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id="因不明原因k8s初始化镜像无法pull-特记录pull脚本"><a href="#因不明原因k8s初始化镜像无法pull-特记录pull脚本" class="headerlink" title="因不明原因k8s初始化镜像无法pull,特记录pull脚本"></a>因不明原因k8s初始化镜像无法pull,特记录pull脚本</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download k8s 1.15.2 images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> get image-list by <span class="string">'kubeadm config images list --kubernetes-version=v1.15.2'</span></span></span><br><span class="line">images=(</span><br><span class="line">kube-apiserver:v1.18.1</span><br><span class="line">kube-controller-manager:v1.18.1</span><br><span class="line">kube-scheduler:v1.18.1</span><br><span class="line">kube-proxy:v1.18.1</span><br><span class="line">pause:3.2</span><br><span class="line">etcd:3.4.3-0</span><br><span class="line">coredns:1.6.7</span><br><span class="line">)</span><br><span class="line">```Shell</span><br><span class="line">&lt;!--more--&gt;</span><br></pre></td></tr></table></figure></div>
+<p>for imageName in ${images[@]};do<br>docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>    docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName k8s.gcr.io/$imageName<br>    docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>done</p>
+<pre><code>## OR 使用这个一句话搞定
+`kubeadm init --apiserver-advertise-address=192.168.1.224 **--image-repository registry.aliyuncs.com/google_containers** --kubernetes-version v1.15.0  --pod-network-cidr=10.244.0.0/16`
+
+**pod-network:10.244.0.0/16**是 **flannel** 插件所需要的。视情况而定
+</code></pre>]]></content>
       <tags>
-        <tag>python</tag>
+        <tag>Centos</tag>
+        <tag>k8s</tag>
       </tags>
   </entry>
   <entry>
@@ -201,6 +191,33 @@
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> elemtype int</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">	elemtype data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;Node</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Reverse</span><span class="params">(Node L)</span></span>&#123;</span><br><span class="line"> # L为带head节点的单链表</span><br><span class="line">Node *p=L-&gt;next，*r;</span><br><span class="line">L.next=Null;</span><br><span class="line"><span class="keyword">while</span>(p)&#123;</span><br><span class="line">	r=p-&gt;next;</span><br><span class="line">	p-&gt;next=L.next;</span><br><span class="line">	L.next=p;</span><br><span class="line">	p=r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>]]></content>
       <tags>
         <tag>algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>scrapy启动多spider</title>
+    <url>/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/</url>
+    <content><![CDATA[<h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.crawler <span class="keyword">import</span> CrawlerProcess</span><br><span class="line"><span class="keyword">from</span> scrapy.utils.project <span class="keyword">import</span> get_project_settings</span><br><span class="line">process = CrawlerProcess(get_project_settings())</span><br><span class="line"><span class="comment"># 指定多个spider</span></span><br><span class="line">process.crawl(<span class="string">"fen"</span>)</span><br><span class="line">process.crawl(<span class="string">"fuck"</span>)</span><br><span class="line"><span class="comment"># 执行所有 spider</span></span><br><span class="line"><span class="comment"># for spider_name in process.spider_loader.list():</span></span><br><span class="line"><span class="comment">#     print(spider_name)</span></span><br><span class="line">    <span class="comment"># process.crawl(spider_name)</span></span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sort</title>
+    <url>/2020/05/12/sort/</url>
+    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//插入排序: 每次将待排序列记录插入到前面已经排好的子序列中</span></span><br><span class="line"><span class="comment">//稳定算法 时间复杂度O(n2)</span></span><br><span class="line"><span class="comment">//最好比较n-1  最坏比较（n+2）(n-1)/2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_insert</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,k,j;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">	k=x[i];</span><br><span class="line">	<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span>&amp;&amp;x[j]&gt;k;j--)</span><br><span class="line">		&#123;</span><br><span class="line">			x[j+<span class="number">1</span>] = x[j];</span><br><span class="line">		&#125;</span><br><span class="line">	x[j+<span class="number">1</span>] = k;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//选择排序:在n-i+1个待排序列中选取最小元素作为前面有序序列的第i个元素</span></span><br><span class="line"><span class="comment">//不稳定</span></span><br><span class="line"><span class="comment">//时间复杂度 O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_select</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,<span class="built_in">min</span>,j,tmp;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">min</span>=i;</span><br><span class="line">		<span class="keyword">for</span>(j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">			&#123;</span><br><span class="line">			<span class="keyword">if</span>(x[j]&lt;x[i])</span><br><span class="line">				<span class="built_in">min</span>=j;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">min</span>!=i)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">		tmp=x[i];</span><br><span class="line">		x[i]=x[<span class="built_in">min</span>];</span><br><span class="line">		x[<span class="built_in">min</span>]=tmp;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序:从后往前或从前往后俩俩比较相邻元素的值，若为逆序交换他们直到序列比较完，成为一趟冒泡。下一趟前面确定的元素不参与比较。 最多n-1躺比较完毕</span></span><br><span class="line"><span class="comment">//稳定</span></span><br><span class="line"><span class="comment">//时间复杂度：O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sort_bubble</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> flag,i,j;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			flag=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(j=length<span class="number">-1</span>;j&gt;=i+<span class="number">1</span>;j--)</span><br><span class="line">				&#123;</span><br><span class="line">				<span class="keyword">if</span>(x[j]&lt;x[j<span class="number">-1</span>])</span><br><span class="line">					&#123;flag=<span class="number">1</span>;</span><br><span class="line">					swap(x,j);&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			<span class="keyword">if</span>(flag==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> x[],<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> tmp;</span><br><span class="line">tmp=x[j];</span><br><span class="line">x[j]=x[j<span class="number">-1</span>];</span><br><span class="line">x[j<span class="number">-1</span>]=tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">" %d"</span>,x[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[]=&#123;<span class="number">3</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">62</span>,<span class="number">35</span>,<span class="number">2</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> length;</span><br><span class="line">length=<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(a[<span class="number">0</span>]);</span><br><span class="line"><span class="comment">//sort_select(length,a);</span></span><br><span class="line"><span class="comment">//sort_insert(length,a);</span></span><br><span class="line"><span class="comment">//sort_bubble(length,a);</span></span><br><span class="line">show(length,a);</span><br><span class="line">getchar();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>]]></content>
+      <tags>
+        <tag>algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>logging添加Handler</title>
+    <url>/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/</url>
+    <content><![CDATA[<h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">logger = logging.getLogger(<span class="string">'what'</span>)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">formater=logging.Formatter(fmt=<span class="string">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,datefmt=<span class="string">'%Y/%m/%d %H:%M'</span>)</span><br><span class="line"><span class="comment">#文件Handler</span></span><br><span class="line">fh=logging.FileHandler(<span class="string">'test.log'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line"><span class="comment">#自定义Handler</span></span><br><span class="line">th=CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#终端Handler</span></span><br><span class="line">ch = logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line"><span class="comment">#添加Handler</span></span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
+<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CHandler</span><span class="params">(logging.Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client=pymysql.Connection(host=<span class="string">'127.0.0.1'</span>,user=<span class="string">'root'</span>,passwd=<span class="string">'qweqwe'</span>,db=<span class="string">'sharesnews'</span>,charset=<span class="string">'utf8mb4'</span>,autocommit=<span class="literal">True</span>)</span><br><span class="line">        self.cursor=self.client.cursor()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            sql=<span class="string">'insert into exceptions (exception,add_time) VALUES (%s,%s)'</span></span><br><span class="line">            msg = sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -221,9 +238,24 @@
       </tags>
   </entry>
   <entry>
-    <title>scrapy启动多spider</title>
-    <url>/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/</url>
-    <content><![CDATA[<h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.crawler <span class="keyword">import</span> CrawlerProcess</span><br><span class="line"><span class="keyword">from</span> scrapy.utils.project <span class="keyword">import</span> get_project_settings</span><br><span class="line">process = CrawlerProcess(get_project_settings())</span><br><span class="line"><span class="comment"># 指定多个spider</span></span><br><span class="line">process.crawl(<span class="string">"fen"</span>)</span><br><span class="line">process.crawl(<span class="string">"fuck"</span>)</span><br><span class="line"><span class="comment"># 执行所有 spider</span></span><br><span class="line"><span class="comment"># for spider_name in process.spider_loader.list():</span></span><br><span class="line"><span class="comment">#     print(spider_name)</span></span><br><span class="line">    <span class="comment"># process.crawl(spider_name)</span></span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
+    <title>雪花算法</title>
+    <url>/2020/04/22/snowflake/</url>
+    <content><![CDATA[<blockquote>
+<p><code>7uQJnf1B3NnRjV</code> 像这种掺杂数字字母的字符串就是雪花算法生成的。根据设计复杂度，可保证高效性，唯一性。</p>
+</blockquote>
+<blockquote>
+<p><code>48671012016476608855539715</code> 前端可能见到这种形式。</p>
+</blockquote>
+<p>根据业务场景分配位数和意义,比如这里:</p>
+<p><code>[worker_id 8位]</code> <code>[_cur_ms 42位 存储好几十年]</code> <code>[_seq_id 6位 63/ms]</code></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">seq_id_lock = threading.RLock()</span><br><span class="line">seq_id = <span class="number">1</span></span><br><span class="line">base_time_ms = <span class="number">1414713600000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_seq_id</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> seq_id</span><br><span class="line">    <span class="keyword">with</span> seq_id_lock:</span><br><span class="line">        seq_id = seq_id + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> seq_id &gt; <span class="number">63</span>:</span><br><span class="line">            seq_id = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> seq_id</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_cur_ms</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> int(time.time() * <span class="number">1000</span>) - base_time_ms</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_worker_id</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> os.getpid() &amp; <span class="number">0xFF</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_order</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    位运算 三部分组合起来</span></span><br><span class="line"><span class="string">    :return: 48671012016476608855539715</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    order = next_seq_id()</span><br><span class="line">    order |= (next_cur_ms() &lt;&lt; <span class="number">48</span>)</span><br><span class="line">    order |= (next_worker_id() &lt;&lt; <span class="number">56</span>)</span><br><span class="line">    <span class="keyword">return</span> order</span><br></pre></td></tr></table></figure></div>
+<p>以上生成唯一id数字形式，以供前端使用，使用下面函数生成<code>数字字母掺杂字符串</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_itos</span><span class="params">(i: int)</span> -&gt; str:</span></span><br><span class="line">    <span class="string">"""将整型ID转换成以数字字母表示的字符串"""</span></span><br><span class="line">    <span class="comment"># 26+26+10 =62</span></span><br><span class="line">    chs = []</span><br><span class="line">    ord_a = ord(<span class="string">"a"</span>)</span><br><span class="line">    ord_A = ord(<span class="string">"A"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(r: int)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> r &lt; <span class="number">10</span>:</span><br><span class="line">            ch = str(r)</span><br><span class="line">        <span class="keyword">elif</span> r &lt; <span class="number">36</span>:</span><br><span class="line">            ch = chr(ord_a + r - <span class="number">10</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ch = chr(ord_A + r - <span class="number">36</span>)</span><br><span class="line">        chs.append(ch)</span><br><span class="line">    <span class="keyword">while</span> i &gt; <span class="number">62</span>:</span><br><span class="line">        r = i % <span class="number">62</span></span><br><span class="line">        append(r)</span><br><span class="line">        i = i // <span class="number">62</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(chs)</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<blockquote>
+<p>大佬解析：<code>https://www.bilibili.com/video/BV1TJ411D7Cw/</code></p>
+</blockquote>
+</blockquote>
 ]]></content>
       <tags>
         <tag>python</tag>
@@ -242,6 +274,31 @@
 ]]></content>
       <tags>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>布隆过滤器</title>
+    <url>/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
+<p>   <strong>特点:</strong></p>
+<ol>
+<li>不存在的一定不存在，存在的不一定存在。</li>
+<li>添加元素简单，删除很难很难。</li>
+<li>省空间，提升效率。</li>
+</ol>
+<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
+<p>   原先去重调度器和去重队列</p>
+   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
+<pre><code># Ensure use this Scheduler
+   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
+# Ensure all spiders share same duplicates filter through redis
+   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
+]]></content>
+      <tags>
+        <tag>python</tag>
+        <tag>bloomfilter</tag>
       </tags>
   </entry>
   <entry>
@@ -283,55 +340,6 @@
 ]]></content>
       <tags>
         <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>雪花算法</title>
-    <url>/2020/04/22/snowflake/</url>
-    <content><![CDATA[<blockquote>
-<p><code>7uQJnf1B3NnRjV</code> 像这种掺杂数字字母的字符串就是雪花算法生成的。根据设计复杂度，可保证高效性，唯一性。</p>
-</blockquote>
-<blockquote>
-<p><code>48671012016476608855539715</code> 前端可能见到这种形式。</p>
-</blockquote>
-<p>根据业务场景分配位数和意义,比如这里:</p>
-<p><code>[worker_id 8位]</code> <code>[_cur_ms 42位 存储好几十年]</code> <code>[_seq_id 6位 63/ms]</code></p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">seq_id_lock = threading.RLock()</span><br><span class="line">seq_id = <span class="number">1</span></span><br><span class="line">base_time_ms = <span class="number">1414713600000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_seq_id</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> seq_id</span><br><span class="line">    <span class="keyword">with</span> seq_id_lock:</span><br><span class="line">        seq_id = seq_id + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> seq_id &gt; <span class="number">63</span>:</span><br><span class="line">            seq_id = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> seq_id</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_cur_ms</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> int(time.time() * <span class="number">1000</span>) - base_time_ms</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_worker_id</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> os.getpid() &amp; <span class="number">0xFF</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_order</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    位运算 三部分组合起来</span></span><br><span class="line"><span class="string">    :return: 48671012016476608855539715</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    order = next_seq_id()</span><br><span class="line">    order |= (next_cur_ms() &lt;&lt; <span class="number">48</span>)</span><br><span class="line">    order |= (next_worker_id() &lt;&lt; <span class="number">56</span>)</span><br><span class="line">    <span class="keyword">return</span> order</span><br></pre></td></tr></table></figure></div>
-<p>以上生成唯一id数字形式，以供前端使用，使用下面函数生成<code>数字字母掺杂字符串</code></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_itos</span><span class="params">(i: int)</span> -&gt; str:</span></span><br><span class="line">    <span class="string">"""将整型ID转换成以数字字母表示的字符串"""</span></span><br><span class="line">    <span class="comment"># 26+26+10 =62</span></span><br><span class="line">    chs = []</span><br><span class="line">    ord_a = ord(<span class="string">"a"</span>)</span><br><span class="line">    ord_A = ord(<span class="string">"A"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(r: int)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> r &lt; <span class="number">10</span>:</span><br><span class="line">            ch = str(r)</span><br><span class="line">        <span class="keyword">elif</span> r &lt; <span class="number">36</span>:</span><br><span class="line">            ch = chr(ord_a + r - <span class="number">10</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ch = chr(ord_A + r - <span class="number">36</span>)</span><br><span class="line">        chs.append(ch)</span><br><span class="line">    <span class="keyword">while</span> i &gt; <span class="number">62</span>:</span><br><span class="line">        r = i % <span class="number">62</span></span><br><span class="line">        append(r)</span><br><span class="line">        i = i // <span class="number">62</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(chs)</span><br></pre></td></tr></table></figure></div>
-<blockquote>
-<blockquote>
-<p>大佬解析：<code>https://www.bilibili.com/video/BV1TJ411D7Cw/</code></p>
-</blockquote>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>布隆过滤器</title>
-    <url>/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
-<p>   <strong>特点:</strong></p>
-<ol>
-<li>不存在的一定不存在，存在的不一定存在。</li>
-<li>添加元素简单，删除很难很难。</li>
-<li>省空间，提升效率。</li>
-</ol>
-<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
-<p>   原先去重调度器和去重队列</p>
-   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
-
-<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
-<pre><code># Ensure use this Scheduler
-   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
-# Ensure all spiders share same duplicates filter through redis
-   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
-]]></content>
-      <tags>
-        <tag>python</tag>
-        <tag>bloomfilter</tag>
       </tags>
   </entry>
   <entry>
