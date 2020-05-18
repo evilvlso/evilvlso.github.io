@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon-32.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="工作示意图如下：emmm。。丑 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消费者生产者模式请求Google学术">
+<meta property="og:url" content="http://yoursite.com/2020/05/18/pc/index.html">
+<meta property="og:site_name" content="Tango">
+<meta property="og:description" content="工作示意图如下：emmm。。丑 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/05/18/qGjnJFP9pu8KQoM.png">
+<meta property="article:published_time" content="2020-05-18T06:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-18T10:36:52.426Z">
+<meta property="article:author" content="JustTango">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/18/qGjnJFP9pu8KQoM.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/18/pc/"/>
+
+
+
+
+
+  <title>消费者生产者模式请求Google学术 | Tango</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tango</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人生就该大闹一场,悄然离去!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/18/pc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">消费者生产者模式请求Google学术</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-18T14:00:00+08:00">
+                2020-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/18/pc/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/05/18/pc/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>工作示意图如下：<br><img src="https://i.loli.net/2020/05/18/qGjnJFP9pu8KQoM.png" alt="工作示意图"><br>emmm。。丑</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> redis</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> retrying</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">from</span> openpyxl.workbook <span class="keyword">import</span> Workbook</span><br><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> urljoin</span><br><span class="line"><span class="keyword">from</span> scrapy.selector <span class="keyword">import</span> Selector</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, as_completed</span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue,Empty</span><br><span class="line"></span><br><span class="line">r = redis.Redis(<span class="string">"127.0.0.1"</span>, db=<span class="number">0</span>)</span><br><span class="line">q = Queue(maxsize=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">proxies = &#123;</span><br><span class="line">    <span class="string">"http"</span>: <span class="string">"http://127.0.0.1:1087"</span>,</span><br><span class="line">    <span class="string">"https"</span>: <span class="string">"http://127.0.0.1:1087"</span></span><br><span class="line">&#125;</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'authority'</span>: <span class="string">'scholar.google.com'</span>,</span><br><span class="line">    <span class="string">'cache-control'</span>: <span class="string">'no-cache'</span>,</span><br><span class="line">    <span class="string">'upgrade-insecure-requests'</span>: <span class="string">'1'</span>,</span><br><span class="line">    <span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'</span>,</span><br><span class="line">    <span class="string">'accept'</span>: <span class="string">'image/webp,image/apng,image/*,*/*;q=0.8'</span>,</span><br><span class="line">    <span class="string">'x-client-data'</span>: <span class="string">'CJS2yQEIo7bJAQjBtskBCKmdygEI0K/KAQi8sMoBCO21ygEIjrrKAQjmxsoB'</span>,</span><br><span class="line">    <span class="string">'sec-fetch-site'</span>: <span class="string">'same-origin'</span>,</span><br><span class="line">    <span class="string">'sec-fetch-mode'</span>: <span class="string">'no-cors'</span>,</span><br><span class="line">    <span class="string">'sec-fetch-user'</span>: <span class="string">'?1'</span>,</span><br><span class="line">    <span class="string">'sec-fetch-dest'</span>: <span class="string">'empty'</span>,</span><br><span class="line">    <span class="string">'referer'</span>: <span class="string">'https://scholar.google.com/scholar?start=20&amp;hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=9023096709689140743&amp;scipsc='</span>,</span><br><span class="line">    <span class="string">'accept-language'</span>: <span class="string">'zh-CN,zh;q=0.9'</span>,</span><br><span class="line">    <span class="string">'Referer'</span>: <span class="string">'https://scholar.google.com/scholar?start=20&amp;hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=9023096709689140743&amp;scipsc='</span>,</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'</span>,</span><br><span class="line">    <span class="string">'pragma'</span>: <span class="string">'no-cache'</span>,</span><br><span class="line">    <span class="string">'cookie'</span>: r.get(<span class="string">"cookies"</span>).decode(<span class="string">"ASCII"</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">try_if_ssl_error</span><span class="params">(exception)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(exception, (</span><br><span class="line">            requests.exceptions.SSLError, requests.exceptions.ProxyError, requests.exceptions.ReadTimeout,</span><br><span class="line">            requests.exceptions.ConnectionError)):</span><br><span class="line">        print(<span class="string">f"代理可能失效 <span class="subst">&#123;exception&#125;</span>"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    print(<span class="string">f"意料之外错误 <span class="subst">&#123;exception&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">try_if_robot</span><span class="params">(result)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">"you're not a robot"</span> <span class="keyword">in</span> result.text <span class="keyword">or</span> <span class="string">"人机身份验证"</span> <span class="keyword">in</span> result.text:</span><br><span class="line">        print(<span class="string">"出现 Robot 检测"</span>)</span><br><span class="line">        headers[<span class="string">"cookie"</span>] = r.get(<span class="string">"cookies"</span>).decode(<span class="string">"ASCII"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">"detected unusual traffic"</span> <span class="keyword">in</span> result.text <span class="keyword">or</span> <span class="string">"异常流量"</span> <span class="keyword">in</span> result.text:</span><br><span class="line">        print(<span class="string">"出现 流量 检测"</span>)</span><br><span class="line">        headers[<span class="string">"cookie"</span>] = r.get(<span class="string">"cookies"</span>).decode(<span class="string">"ASCII"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">"sending automated queries"</span> <span class="keyword">in</span> result.text:</span><br><span class="line">        headers[<span class="string">"cookie"</span>] = r.get(<span class="string">"cookies"</span>).decode(<span class="string">"ASCII"</span>)</span><br><span class="line">        print(<span class="string">" your computer or network may be sending automated queries"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">"/recaptcha/api.js"</span> <span class="keyword">in</span> result.text:</span><br><span class="line">        headers[<span class="string">"cookie"</span>] = r.get(<span class="string">"cookies"</span>).decode(<span class="string">"ASCII"</span>)</span><br><span class="line">        print(<span class="string">"出现 验证码 检测 "</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@retrying.retry(stop_max_attempt_number=500, retry_on_result=try_if_robot, retry_on_exception=try_if_ssl_error,</span></span><br><span class="line">                wait_fixed=<span class="number">10000</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(**kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    :param kwargs:  start cites</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    url = kwargs.get(<span class="string">"url"</span>)</span><br><span class="line">    response = requests.get(url, headers=headers, proxies=proxies, timeout=<span class="number">7</span>)</span><br><span class="line">    <span class="keyword">return</span> response</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Proceser</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        filename = kwargs.get(<span class="string">"filename"</span>)</span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">"r"</span>) <span class="keyword">as</span> f:</span><br><span class="line">            self.data = f.readlines()</span><br><span class="line">        self.t = ThreadPoolExecutor(max_workers=<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_proc</span><span class="params">(self, kw)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        :param kw:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        kw = <span class="string">'+'</span>.join(kw.split(<span class="string">" "</span>))</span><br><span class="line">        url = <span class="string">f"/scholar?q=<span class="subst">&#123;kw&#125;</span>"</span></span><br><span class="line">        base_url = <span class="string">"https://scholar.google.com/scholar"</span></span><br><span class="line">        url = urljoin(base_url, url)</span><br><span class="line">        url = url.replace(<span class="string">"zh-CN"</span>, <span class="string">"en"</span>)</span><br><span class="line">        res = fetch(url=url)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">"res"</span>: res, <span class="string">"kw"</span>: kw&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(self, result)</span>:</span></span><br><span class="line">        result = result.result()</span><br><span class="line">        res = result.get(<span class="string">"res"</span>)</span><br><span class="line">        kw = result.get(<span class="string">"kw"</span>)</span><br><span class="line">        seed_infos = self.extract(res, seed=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">for</span> seed_info <span class="keyword">in</span> seed_infos:</span><br><span class="line">            seed_cites = seed_info.get(<span class="string">"cites"</span>, <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                seed_cites = int(seed_cites)</span><br><span class="line">            <span class="keyword">except</span> ValueError <span class="keyword">as</span> e:</span><br><span class="line">                print(<span class="string">f"Cites ERROR:<span class="subst">&#123;res.url&#125;</span>"</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> start <span class="keyword">in</span> range(<span class="number">0</span>, seed_cites, <span class="number">20</span>):</span><br><span class="line">                    cite_url = <span class="string">"https://scholar.google.com"</span>+seed_info[<span class="string">"cites_url"</span>] + <span class="string">f"&amp;num=20&amp;start=<span class="subst">&#123;start&#125;</span>"</span></span><br><span class="line">                    q.put(&#123;</span><br><span class="line">                        <span class="string">"kw"</span>: kw,</span><br><span class="line">                        <span class="string">"seed_title"</span>: seed_info[<span class="string">"title"</span>],</span><br><span class="line">                        <span class="string">"seed_cites"</span>: seed_info[<span class="string">"cites"</span>],</span><br><span class="line">                        <span class="string">"cite_url"</span>: cite_url,</span><br><span class="line">                    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        tasks = [self.t.submit(self._proc, kw) <span class="keyword">for</span> kw <span class="keyword">in</span> self.data]</span><br><span class="line">        <span class="keyword">for</span> task <span class="keyword">in</span> as_completed(tasks):</span><br><span class="line">            self.callback(task)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extract</span><span class="params">(response, seed=False)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_proc_cites</span><span class="params">(cites)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">''</span>.join(re.findall(<span class="string">r'(\d&#123;0,5&#125;)'</span>, cites))</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_proc_info</span><span class="params">(info)</span>:</span></span><br><span class="line">            publish = <span class="string">''</span>.join(re.findall(<span class="string">r'-(.*?)-'</span>, info)).replace(<span class="string">"…"</span>, <span class="string">""</span>).replace(<span class="string">"\xa0"</span>, <span class="string">""</span>)</span><br><span class="line">            author = <span class="string">''</span>.join(re.findall(<span class="string">r'(.*?)-'</span>, info)).replace(<span class="string">"…"</span>, <span class="string">""</span>).replace(<span class="string">"\xa0"</span>, <span class="string">""</span>)</span><br><span class="line">            <span class="keyword">return</span> publish, author</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="string">"did not match any articles"</span> <span class="keyword">in</span> response.text:</span><br><span class="line">            html = Selector(response)</span><br><span class="line">            <span class="keyword">if</span> seed:</span><br><span class="line">                documents = [html.xpath(<span class="string">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="number">0</span>]]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                documents = html.xpath(<span class="string">"//div[@id='gs_res_ccl_mid']/div"</span>)</span><br><span class="line">            infos = []</span><br><span class="line">            <span class="keyword">for</span> document <span class="keyword">in</span> documents:</span><br><span class="line">                title = document.xpath(</span><br><span class="line">                    <span class="string">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).extract_first(</span><br><span class="line">                    default=<span class="string">""</span>)</span><br><span class="line">                url = document.xpath(<span class="string">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).extract_first(default=<span class="string">""</span>)</span><br><span class="line">                info = document.xpath(<span class="string">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).extract_first(</span><br><span class="line">                    default=<span class="string">""</span>)</span><br><span class="line">                cites_url = document.xpath(<span class="string">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).extract_first(default=<span class="string">""</span>)</span><br><span class="line">                cites = document.xpath(<span class="string">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).extract_first(default=<span class="string">""</span>)</span><br><span class="line">                cites = _proc_cites(cites)</span><br><span class="line">                publish, author = _proc_info(info)</span><br><span class="line">                infos.append(</span><br><span class="line">                    &#123;<span class="string">"title"</span>: title, <span class="string">"publish"</span>: publish, <span class="string">"author"</span>: author, <span class="string">"cites_url"</span>: cites_url, <span class="string">"cites"</span>: cites,</span><br><span class="line">                     <span class="string">"url"</span>: url&#125;)</span><br><span class="line">            <span class="keyword">return</span> infos</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Customer</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,savefilename)</span>:</span></span><br><span class="line">        self.savefilename=savefilename</span><br><span class="line">        self.t = ThreadPoolExecutor(max_workers=<span class="number">100</span>)</span><br><span class="line">        self.workbook = Workbook()</span><br><span class="line">        self.sheet = self.workbook[<span class="string">"Sheet"</span>]</span><br><span class="line">        self.sheet.append((<span class="string">"关键词文件名"</span>, <span class="string">"第一匹配结果文献"</span>, <span class="string">"本文被引用数"</span>, <span class="string">"引用此文文献名"</span>, <span class="string">"引用此文作者"</span>, <span class="string">"引用此文期刊名"</span>, <span class="string">"引用此文文献引用数"</span>, <span class="string">"url"</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extract</span><span class="params">(response, seed=False)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_proc_cites</span><span class="params">(cites)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">''</span>.join(re.findall(<span class="string">r'(\d&#123;0,5&#125;)'</span>, cites))</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_proc_info</span><span class="params">(info)</span>:</span></span><br><span class="line">            publish = <span class="string">''</span>.join(re.findall(<span class="string">r'-(.*?)-'</span>, info)).replace(<span class="string">"…"</span>, <span class="string">""</span>).replace(<span class="string">"\xa0"</span>, <span class="string">""</span>)</span><br><span class="line">            author = <span class="string">''</span>.join(re.findall(<span class="string">r'(.*?)-'</span>, info)).replace(<span class="string">"…"</span>, <span class="string">""</span>).replace(<span class="string">"\xa0"</span>, <span class="string">""</span>)</span><br><span class="line">            <span class="keyword">return</span> publish, author</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="string">"did not match any articles"</span> <span class="keyword">in</span> response.text:</span><br><span class="line">            html = Selector(response)</span><br><span class="line">            <span class="keyword">if</span> seed:</span><br><span class="line">                documents = [html.xpath(<span class="string">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="number">0</span>]]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                documents = html.xpath(<span class="string">"//div[@id='gs_res_ccl_mid']/div"</span>)</span><br><span class="line">            infos = []</span><br><span class="line">            <span class="keyword">for</span> document <span class="keyword">in</span> documents:</span><br><span class="line">                title = document.xpath(</span><br><span class="line">                    <span class="string">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).extract_first(</span><br><span class="line">                    default=<span class="string">""</span>)</span><br><span class="line">                url = document.xpath(<span class="string">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).extract_first(default=<span class="string">""</span>)</span><br><span class="line">                info = document.xpath(<span class="string">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).extract_first(</span><br><span class="line">                    default=<span class="string">""</span>)</span><br><span class="line">                cites_url = document.xpath(<span class="string">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).extract_first(default=<span class="string">""</span>)</span><br><span class="line">                cites = document.xpath(<span class="string">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).extract_first(default=<span class="string">""</span>)</span><br><span class="line">                cites = _proc_cites(cites)</span><br><span class="line">                publish, author = _proc_info(info)</span><br><span class="line">                infos.append(</span><br><span class="line">                    &#123;<span class="string">"title"</span>: title, <span class="string">"publish"</span>: publish, <span class="string">"author"</span>: author, <span class="string">"cites_url"</span>: cites_url, <span class="string">"cites"</span>: cites,</span><br><span class="line">                     <span class="string">"url"</span>: url&#125;)</span><br><span class="line">            <span class="keyword">return</span> infos</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_infos</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">f"Queue size is <span class="subst">&#123;q.qsize()&#125;</span>"</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            infos = q.get(block=<span class="literal">True</span>,timeout=<span class="number">180</span>)</span><br><span class="line">            <span class="keyword">return</span> infos</span><br><span class="line">        <span class="keyword">except</span> Empty:</span><br><span class="line">            print(<span class="string">f"Queue size is <span class="subst">&#123;q.qsize()&#125;</span>"</span>)</span><br><span class="line">            print(<span class="string">"队列0000000结束了！"</span>)</span><br><span class="line">            self.workbook.save(self.savefilename)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        infos = self.get_infos()</span><br><span class="line">        <span class="keyword">while</span> infos:</span><br><span class="line">            self.t.submit(self._fe, infos=infos).add_done_callback(self.callback)</span><br><span class="line">            infos = self.get_infos()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_fe</span><span class="params">(self, infos)</span>:</span></span><br><span class="line">        url = infos.get(<span class="string">"cite_url"</span>)</span><br><span class="line">        res = fetch(url=url)</span><br><span class="line">        cite_infos = self.extract(res)</span><br><span class="line">        <span class="keyword">for</span> cite_info <span class="keyword">in</span> cite_infos:</span><br><span class="line">            cite_info.update(infos)</span><br><span class="line">        <span class="keyword">return</span> cite_infos</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(self, result)</span>:</span></span><br><span class="line">        cite_infos = result.result()</span><br><span class="line">        print(<span class="string">f"添加文献<span class="subst">&#123;len(cite_infos)&#125;</span>"</span>)</span><br><span class="line">        <span class="keyword">for</span> infos <span class="keyword">in</span> cite_infos:</span><br><span class="line">            self.sheet.append((</span><br><span class="line">                infos.get(<span class="string">"kw"</span>), infos.get(<span class="string">"seed_title"</span>), infos.get(<span class="string">"seed_cites"</span>), infos.get(<span class="string">"title"</span>), infos.get(<span class="string">"author"</span>), infos.get(<span class="string">"publish"</span>), infos.get(<span class="string">"cites"</span>),infos.get(<span class="string">"url"</span>)</span><br><span class="line">            ))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    pr=Proceser(filename=<span class="string">"again.txt"</span>)</span><br><span class="line">    cu=Customer(savefilename=<span class="string">"test.xlsx"</span>)</span><br><span class="line">    t1=Thread(target=pr.run)</span><br><span class="line">    t2=Thread(target=cu.run)</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br><span class="line">    t1.join()</span><br><span class="line">    t2.join()</span><br></pre></td></tr></table></figure></div>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/12/sort/" rel="next" title="选择排序,插入排序,冒泡排序C实现">
+                <i class="fa fa-chevron-left"></i> 选择排序,插入排序,冒泡排序C实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">JustTango</p>
+              <p class="site-description motion-element" itemprop="description">抬望眼....</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://google.com/" title="Google" target="_blank">Google</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.nows.fun" title="毒鸡汤" target="_blank">毒鸡汤</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-[object Object]"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JustTango</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'evilvlso',
+            repo: 'blogcomm',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'b7e694658ba07a8f3b70e25cba191e4bf2e8b6d6',
+            
+                client_id: 'Iv1.8b99830efcac6179'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QGxq6QbTJ95IzGgeeXlc5gM7-gzGzoHsz',
+        appKey: 'CLcPsS7OADikuhRPdfvX7Juz',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
