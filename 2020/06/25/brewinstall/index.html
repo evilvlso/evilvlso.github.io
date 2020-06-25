@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python,Centos,Linux," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,19 +79,16 @@
 
 
 
-<meta name="description" content="第一种方法通过 IUS 软件源安装123456sudo yum install -y https:&#x2F;&#x2F;centos7.iuscommunity.org&#x2F;ius-release.rpmsudo  yum makecachesudo yum install -y python36usudo ln -s &#x2F;bin&#x2F;python3.6 &#x2F;bin&#x2F;python3sudo yum install -y pyt">
+<meta name="description" content="Brew安装安装brew时候，某些地区因ip限制无法执行官方脚本报错如下： curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused 那么可以下载这个文件(已经替换BREW_REPO)，然后执行 bash brew_install.sh Brew 更换国内镜像(中科大)1234cd &quot;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Centos Install Python Methods">
-<meta property="og:url" content="http://yoursite.com/2020/04/13/Centos-Install-Python-Methods/index.html">
+<meta property="og:title" content="brewinstall">
+<meta property="og:url" content="http://yoursite.com/2020/06/25/brewinstall/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="第一种方法通过 IUS 软件源安装123456sudo yum install -y https:&#x2F;&#x2F;centos7.iuscommunity.org&#x2F;ius-release.rpmsudo  yum makecachesudo yum install -y python36usudo ln -s &#x2F;bin&#x2F;python3.6 &#x2F;bin&#x2F;python3sudo yum install -y pyt">
+<meta property="og:description" content="Brew安装安装brew时候，某些地区因ip限制无法执行官方脚本报错如下： curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused 那么可以下载这个文件(已经替换BREW_REPO)，然后执行 bash brew_install.sh Brew 更换国内镜像(中科大)1234cd &quot;">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-13T12:20:02.000Z">
-<meta property="article:modified_time" content="2020-04-17T13:56:40.317Z">
+<meta property="article:published_time" content="2020-06-25T05:55:28.000Z">
+<meta property="article:modified_time" content="2020-06-25T06:05:36.528Z">
 <meta property="article:author" content="JustTango">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content="Centos">
-<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
 
@@ -122,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/04/13/Centos-Install-Python-Methods/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/06/25/brewinstall/"/>
 
 
 
 
 
-  <title>Centos Install Python Methods | Tango</title>
+  <title>brewinstall | Tango</title>
   
 
 
@@ -279,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/13/Centos-Install-Python-Methods/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/25/brewinstall/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JustTango">
@@ -296,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Centos Install Python Methods</h1>
+          <h1 class="post-title" itemprop="name headline">brewinstall</h1>
         
 
         <div class="post-meta">
@@ -308,8 +305,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-13T20:20:02+08:00">
-                2020-04-13
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-25T13:55:28+08:00">
+                2020-06-25
               </time>
             
 
@@ -327,8 +324,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/04/13/Centos-Install-Python-Methods/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/04/13/Centos-Install-Python-Methods/" itemprop="commentsCount"></span>
+                <a href="/2020/06/25/brewinstall/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/06/25/brewinstall/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -356,12 +353,13 @@
       
 
       
-        <h2 id="第一种方法通过-IUS-软件源安装"><a href="#第一种方法通过-IUS-软件源安装" class="headerlink" title="第一种方法通过 IUS 软件源安装"></a>第一种方法通过 IUS 软件源安装</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm</span><br><span class="line">sudo  yum makecache</span><br><span class="line">sudo yum install -y python36u</span><br><span class="line">sudo ln -s /bin/python3.6 /bin/python3</span><br><span class="line">sudo yum install -y python36u-pip</span><br><span class="line">sudo ln -s /bin/pip3.6 /bin/pip3</span><br></pre></td></tr></table></figure></div>
-
-<a id="more"></a>
-<h2 id="第二种方法通过源码包安装-py3-7"><a href="#第二种方法通过源码包安装-py3-7" class="headerlink" title="第二种方法通过源码包安装 py3.7"></a>第二种方法通过源码包安装 py3.7</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">yum -y groupinstall "Development tools"</span><br><span class="line">yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br><span class="line">yum install libffi-devel -y</span><br><span class="line">wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tar.xz</span><br><span class="line">tar -xvJf  Python-3.7.7.tar.xz</span><br><span class="line">cd Python-3.7.7</span><br><span class="line">./configure --prefix=/usr/local/python37  --with-ssl</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">ln -s /usr/local/python37/bin/python3 /usr/local/bin/python3</span><br><span class="line">ln -s /usr/local/python37/bin/pip3 /usr/local/bin/pip3</span><br></pre></td></tr></table></figure></div>
-
-<p>均可用作制作docker</p>
+        <h3 id="Brew安装"><a href="#Brew安装" class="headerlink" title="Brew安装"></a>Brew安装</h3><p>安装brew时候，某些地区因ip限制无法执行官方脚本报错如下：</p>
+<p><code>curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused</code></p>
+<p>那么可以下载<a href="https://github.com/evilvlso/Utils/blob/master/LinuxScript/brew_install.sh" target="_blank" rel="noopener">这个文件</a>(已经替换BREW_REPO)，然后执行 <code>bash brew_install.sh</code></p>
+<h3 id="Brew-更换国内镜像-中科大"><a href="#Brew-更换国内镜像-中科大" class="headerlink" title="Brew 更换国内镜像(中科大)"></a>Brew 更换国内镜像(中科大)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd "$(brew --repo)"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/brew.git</span><br><span class="line">cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git</span><br></pre></td></tr></table></figure></div>
+<h3 id="Brew-禁止update"><a href="#Brew-禁止update" class="headerlink" title="Brew 禁止update"></a>Brew 禁止update</h3><p>每次安装包搜索包都要update，这个过程又很慢所以 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export HOMEBREW_NO_AUTO_UPDATE=true</span><br></pre></td></tr></table></figure></div>
+<p>这样就不自动更新了</p>
 
       
     </div>
@@ -386,16 +384,6 @@
 </div>
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Python/" rel="tag"># Python</a>
-          
-            <a href="/tags/Centos/" rel="tag"># Centos</a>
-          
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-        </div>
-      
 
       
       
@@ -405,15 +393,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2020/06/25/pycharm2019/" rel="next" title="pycharm2019">
+                <i class="fa fa-chevron-left"></i> pycharm2019
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/14/iterm2+expect%E7%99%BB%E5%BD%95%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="iterm2+expect登录服务器">
-                iterm2+expect登录服务器 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -572,7 +560,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一种方法通过-IUS-软件源安装"><span class="nav-number">1.</span> <span class="nav-text">第一种方法通过 IUS 软件源安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二种方法通过源码包安装-py3-7"><span class="nav-number">2.</span> <span class="nav-text">第二种方法通过源码包安装 py3.7</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Brew安装"><span class="nav-number">1.</span> <span class="nav-text">Brew安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Brew-更换国内镜像-中科大"><span class="nav-number">2.</span> <span class="nav-text">Brew 更换国内镜像(中科大)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Brew-禁止update"><span class="nav-number">3.</span> <span class="nav-text">Brew 禁止update</span></a></li></ol></div>
             
 
           </div>
