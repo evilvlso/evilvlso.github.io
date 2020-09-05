@@ -275,6 +275,145 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/" itemprop="url">标准化 vs 归一化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-01T00:00:00+08:00">
+                2020-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>特征缩放来将全部的数值统一到 0-1</p>
+<h3 id="标准化-（Standardization）：中心标准化"><a href="#标准化-（Standardization）：中心标准化" class="headerlink" title="标准化 （Standardization）：中心标准化"></a>标准化 （Standardization）：中心标准化</h3><p><img src="https://i.loli.net/2020/09/03/61RQ7DWjZoSpNGs.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2020/09/03/qn7Cl8NcspVxjST.png" alt="image.png"></p>
+<h3 id="归一化：离差标准化-Max-Min-Normalization"><a href="#归一化：离差标准化-Max-Min-Normalization" class="headerlink" title="归一化：离差标准化 (Max-Min Normalization)"></a>归一化：离差标准化 (Max-Min Normalization)</h3><p><img src="https://i.loli.net/2020/09/03/opNrbRPuMjDUAnq.png" alt="image.png"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line">scaler = MinMaxScaler()</span><br><span class="line">scaler.fit(df)</span><br><span class="line">scaled_features = scaler.transform(df)</span><br><span class="line"><span class="comment">#Convert to table format - MinMaxScaler</span></span><br><span class="line">df_MinMax = pd.DataFrame(data=scaled_features, columns=[<span class="string">"Age"</span>, <span class="string">"Salary"</span>,<span class="string">"Purchased"</span>,<span class="string">"Country_France"</span>,<span class="string">"Country_Germany"</span>, <span class="string">"Country_spain"</span>])</span><br></pre></td></tr></table></figure></div>
+
+<p>一些基于距离矩阵的机器学习模型，被称为“距离分类器”，比如K近邻算法（KNN）,支持向量机（SVM）,神经网络（Neural Network）。特征缩放对于这些模型非常重要，特别是在特征的值域非常不同时。特征缩放减少了大值域变量对计算距离的影响。</p>
+<p>如果算法不是基于距离计算，特征缩放则不重要，比如朴素贝叶斯和线性判别分析，以及树模型（梯度提升、随机森林等）。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/ML%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1510,140 +1649,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/26/linkreverse/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/26/linkreverse/" itemprop="url">原地逆序单链表</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-26T16:40:00+08:00">
-                2020-04-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/26/linkreverse/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/26/linkreverse/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="C语言实现单链表原地逆序"><a href="#C语言实现单链表原地逆序" class="headerlink" title="C语言实现单链表原地逆序"></a>C语言实现单链表原地逆序</h3><blockquote>
-<p>算法思想：遍历单链表的同时采用头插法将遍历的每个节点插至head节点后</p>
-</blockquote>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> elemtype int</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">	elemtype data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;Node</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Reverse</span><span class="params">(Node L)</span></span>&#123;</span><br><span class="line"> # L为带head节点的单链表</span><br><span class="line">Node *p=L-&gt;next，*r;</span><br><span class="line">L.next=Null;</span><br><span class="line"><span class="keyword">while</span>(p)&#123;</span><br><span class="line">	r=p-&gt;next;</span><br><span class="line">	p-&gt;next=L.next;</span><br><span class="line">	L.next=p;</span><br><span class="line">	p=r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1716,7 +1721,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
