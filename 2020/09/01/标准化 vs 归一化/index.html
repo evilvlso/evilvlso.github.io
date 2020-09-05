@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="特征缩放来将全部的数值统一到 0-1 标准化 （Standardization）：中心标准化  归一化：离差标准化 (Max-Min Normalization) 123456from sklearn.preprocessing import MinMaxScalerscaler &#x3D; MinMaxScaler()scaler.fit(df)scaled_features &#x3D; scaler.tran">
+<meta name="description" content="标准化 （Standardization）：中心标准化  归一化：离差标准化 (Max-Min Normalization) 123456from sklearn.preprocessing import MinMaxScalerscaler &#x3D; MinMaxScaler()scaler.fit(df)scaled_features &#x3D; scaler.transform(df)#Convert t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="标准化 vs 归一化">
 <meta property="og:url" content="http://yoursite.com/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="特征缩放来将全部的数值统一到 0-1 标准化 （Standardization）：中心标准化  归一化：离差标准化 (Max-Min Normalization) 123456from sklearn.preprocessing import MinMaxScalerscaler &#x3D; MinMaxScaler()scaler.fit(df)scaled_features &#x3D; scaler.tran">
+<meta property="og:description" content="标准化 （Standardization）：中心标准化  归一化：离差标准化 (Max-Min Normalization) 123456from sklearn.preprocessing import MinMaxScalerscaler &#x3D; MinMaxScaler()scaler.fit(df)scaled_features &#x3D; scaler.transform(df)#Convert t">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2020/09/03/61RQ7DWjZoSpNGs.png">
 <meta property="og:image" content="https://i.loli.net/2020/09/03/qn7Cl8NcspVxjST.png">
 <meta property="og:image" content="https://i.loli.net/2020/09/03/opNrbRPuMjDUAnq.png">
 <meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-09-05T03:07:11.800Z">
+<meta property="article:modified_time" content="2020-09-05T04:13:52.345Z">
 <meta property="article:author" content="JustTango">
 <meta property="article:tag" content="algorithms">
 <meta name="twitter:card" content="summary">
@@ -358,8 +358,7 @@
       
 
       
-        <p>特征缩放来将全部的数值统一到 0-1</p>
-<h3 id="标准化-（Standardization）：中心标准化"><a href="#标准化-（Standardization）：中心标准化" class="headerlink" title="标准化 （Standardization）：中心标准化"></a>标准化 （Standardization）：中心标准化</h3><p><img src="https://i.loli.net/2020/09/03/61RQ7DWjZoSpNGs.png" alt="image.png"></p>
+        <h3 id="标准化-（Standardization）：中心标准化"><a href="#标准化-（Standardization）：中心标准化" class="headerlink" title="标准化 （Standardization）：中心标准化"></a>标准化 （Standardization）：中心标准化</h3><p><img src="https://i.loli.net/2020/09/03/61RQ7DWjZoSpNGs.png" alt="image.png"></p>
 <p><img src="https://i.loli.net/2020/09/03/qn7Cl8NcspVxjST.png" alt="image.png"></p>
 <h3 id="归一化：离差标准化-Max-Min-Normalization"><a href="#归一化：离差标准化-Max-Min-Normalization" class="headerlink" title="归一化：离差标准化 (Max-Min Normalization)"></a>归一化：离差标准化 (Max-Min Normalization)</h3><p><img src="https://i.loli.net/2020/09/03/opNrbRPuMjDUAnq.png" alt="image.png"></p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line">scaler = MinMaxScaler()</span><br><span class="line">scaler.fit(df)</span><br><span class="line">scaled_features = scaler.transform(df)</span><br><span class="line"><span class="comment">#Convert to table format - MinMaxScaler</span></span><br><span class="line">df_MinMax = pd.DataFrame(data=scaled_features, columns=[<span class="string">"Age"</span>, <span class="string">"Salary"</span>,<span class="string">"Purchased"</span>,<span class="string">"Country_France"</span>,<span class="string">"Country_Germany"</span>, <span class="string">"Country_spain"</span>])</span><br></pre></td></tr></table></figure></div>
