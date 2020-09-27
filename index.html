@@ -275,6 +275,159 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/25/tfsavemodel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/25/tfsavemodel/" itemprop="url">tensorflow2.0 模型保存方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-25T13:38:41+08:00">
+                2020-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/25/tfsavemodel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/25/tfsavemodel/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Sequence和Model模型的保存"><a href="#Sequence和Model模型的保存" class="headerlink" title="Sequence和Model模型的保存"></a>Sequence和Model模型的保存</h2><ul>
+<li><p>保存整个模型为 h5 文件，内容包括    </p>
+<blockquote>
+<p>模型的结构<br>模型的权值<br>模型的配置，即我们通过compile编译模型的一些信息，如优化器，损失函数等<br>优化器的状态信息，我们可以接着之前的训练继续训练  </p>
+</blockquote>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 保存模型</span></span><br><span class="line">model.save(<span class="string">'path_to_my_model.h5'</span>)</span><br><span class="line"><span class="comment"># 加载模型</span></span><br><span class="line">new_model = keras.models.load_model(<span class="string">'path_to_my_model.h5'</span>)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>将模型保存为 <em>SavedModel</em> 格式  </p>
+<blockquote>
+<p>这是对tensorflow对象标准的序列化格式,他不是将模型保存为一个单独的文件，而是有几个文件组成。<br>这种方式依然会保存模型的所有信息，即“网络结构、权重、配置、优化器状态”四个信息</p>
+</blockquote>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型保存，注意：仅仅是多了一个save_format的参数而已</span></span><br><span class="line"><span class="comment"># 注意：这里的'path_to_saved_model'不再是模型名称，仅仅是一个文件夹，模型会保存在这个文件夹之下</span></span><br><span class="line">model.save(<span class="string">'path_to_saved_model'</span>, save_format=<span class="string">'tf'</span>)</span><br><span class="line"><span class="comment"># 加载模型，通过指定存放模型的文件夹来加载</span></span><br><span class="line">new_model = keras.models.load_model(<span class="string">'path_to_saved_model'</span>)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>保存模型权重的两种方，取决于参数是  “文件名称”  还是  “文件夹”   </p>
+</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">model.save_weights(<span class="string">'path_to_my_weights.h5'</span>)      <span class="comment"># 文件名称   </span></span><br><span class="line"></span><br><span class="line">model.save_weights(<span class="string">'path_to_my_tf_checkpoint'</span>)  <span class="comment"># 文件夹，保存checkpoint权重</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载</span></span><br><span class="line">new_model.load_weights(<span class="string">'path_to_my_weights.h5'</span>)        <span class="comment"># 文件名称</span></span><br><span class="line"></span><br><span class="line">new_model.load_weights(<span class="string">'path_to_my_tf_checkpoint'</span>)<span class="comment">#文件夹名称</span></span><br></pre></td></tr></table></figure></div>
+
+<p>大佬</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/qq_27825451/article/details/105505033" target="_blank" rel="noopener">https://blog.csdn.net/qq_27825451/article/details/105505033</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1516,138 +1669,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/12/sort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/12/sort/" itemprop="url">选择排序,插入排序,冒泡排序C实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-12T00:00:00+08:00">
-                2020-05-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/05/12/sort/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/05/12/sort/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//插入排序: 每次将待排序列记录插入到前面已经排好的子序列中</span></span><br><span class="line"><span class="comment">//稳定算法 时间复杂度O(n2)</span></span><br><span class="line"><span class="comment">//最好比较n-1  最坏比较（n+2）(n-1)/2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_insert</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,k,j;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">	k=x[i];</span><br><span class="line">	<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span>&amp;&amp;x[j]&gt;k;j--)</span><br><span class="line">		&#123;</span><br><span class="line">			x[j+<span class="number">1</span>] = x[j];</span><br><span class="line">		&#125;</span><br><span class="line">	x[j+<span class="number">1</span>] = k;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//选择排序:在n-i+1个待排序列中选取最小元素作为前面有序序列的第i个元素</span></span><br><span class="line"><span class="comment">//不稳定</span></span><br><span class="line"><span class="comment">//时间复杂度 O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_select</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,<span class="built_in">min</span>,j,tmp;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">min</span>=i;</span><br><span class="line">		<span class="keyword">for</span>(j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">			&#123;</span><br><span class="line">			<span class="keyword">if</span>(x[j]&lt;x[i])</span><br><span class="line">				<span class="built_in">min</span>=j;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">min</span>!=i)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">		tmp=x[i];</span><br><span class="line">		x[i]=x[<span class="built_in">min</span>];</span><br><span class="line">		x[<span class="built_in">min</span>]=tmp;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序:从后往前或从前往后俩俩比较相邻元素的值，若为逆序交换他们直到序列比较完，成为一趟冒泡。下一趟前面确定的元素不参与比较。 最多n-1躺比较完毕</span></span><br><span class="line"><span class="comment">//稳定</span></span><br><span class="line"><span class="comment">//时间复杂度：O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sort_bubble</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> flag,i,j;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			flag=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(j=length<span class="number">-1</span>;j&gt;=i+<span class="number">1</span>;j--)</span><br><span class="line">				&#123;</span><br><span class="line">				<span class="keyword">if</span>(x[j]&lt;x[j<span class="number">-1</span>])</span><br><span class="line">					&#123;flag=<span class="number">1</span>;</span><br><span class="line">					swap(x,j);&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			<span class="keyword">if</span>(flag==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> x[],<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> tmp;</span><br><span class="line">tmp=x[j];</span><br><span class="line">x[j]=x[j<span class="number">-1</span>];</span><br><span class="line">x[j<span class="number">-1</span>]=tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">" %d"</span>,x[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[]=&#123;<span class="number">3</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">62</span>,<span class="number">35</span>,<span class="number">2</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> length;</span><br><span class="line">length=<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(a[<span class="number">0</span>]);</span><br><span class="line"><span class="comment">//sort_select(length,a);</span></span><br><span class="line"><span class="comment">//sort_insert(length,a);</span></span><br><span class="line"><span class="comment">//sort_bubble(length,a);</span></span><br><span class="line">show(length,a);</span><br><span class="line">getchar();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1720,7 +1741,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
