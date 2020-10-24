@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="algorithm," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,17 +79,16 @@
 
 
 
-<meta name="description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495#include&lt;stdio.h">
+<meta name="description" content="批量合并转换的一个脚本">
 <meta property="og:type" content="article">
-<meta property="og:title" content="选择排序,插入排序,冒泡排序C实现">
-<meta property="og:url" content="http://yoursite.com/2020/05/12/sort/index.html">
+<meta property="og:title" content="Merge PDF &#x2F; PDF to Word">
+<meta property="og:url" content="http://yoursite.com/2020/10/20/mergepdf/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495#include&lt;stdio.h">
+<meta property="og:description" content="批量合并转换的一个脚本">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-14T02:59:32.895Z">
+<meta property="article:published_time" content="2020-10-20T07:30:00.000Z">
+<meta property="article:modified_time" content="2020-10-24T08:59:29.108Z">
 <meta property="article:author" content="JustTango">
-<meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/05/12/sort/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/10/20/mergepdf/"/>
 
 
 
 
 
-  <title>选择排序,插入排序,冒泡排序C实现 | Tango</title>
+  <title>Merge PDF / PDF to Word | Tango</title>
   
 
 
@@ -277,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/12/sort/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/20/mergepdf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JustTango">
@@ -294,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">选择排序,插入排序,冒泡排序C实现</h1>
+          <h1 class="post-title" itemprop="name headline">Merge PDF / PDF to Word</h1>
         
 
         <div class="post-meta">
@@ -306,8 +305,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-12T00:00:00+08:00">
-                2020-05-12
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-20T15:30:00+08:00">
+                2020-10-20
               </time>
             
 
@@ -325,8 +324,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/05/12/sort/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/05/12/sort/" itemprop="commentsCount"></span>
+                <a href="/2020/10/20/mergepdf/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/10/20/mergepdf/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -354,7 +353,77 @@
       
 
       
-        <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//插入排序: 每次将待排序列记录插入到前面已经排好的子序列中</span></span><br><span class="line"><span class="comment">//稳定算法 时间复杂度O(n2)</span></span><br><span class="line"><span class="comment">//最好比较n-1  最坏比较（n+2）(n-1)/2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_insert</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,k,j;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">	k=x[i];</span><br><span class="line">	<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span>&amp;&amp;x[j]&gt;k;j--)</span><br><span class="line">		&#123;</span><br><span class="line">			x[j+<span class="number">1</span>] = x[j];</span><br><span class="line">		&#125;</span><br><span class="line">	x[j+<span class="number">1</span>] = k;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//选择排序:在n-i+1个待排序列中选取最小元素作为前面有序序列的第i个元素</span></span><br><span class="line"><span class="comment">//不稳定</span></span><br><span class="line"><span class="comment">//时间复杂度 O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_select</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,<span class="built_in">min</span>,j,tmp;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">min</span>=i;</span><br><span class="line">		<span class="keyword">for</span>(j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">			&#123;</span><br><span class="line">			<span class="keyword">if</span>(x[j]&lt;x[i])</span><br><span class="line">				<span class="built_in">min</span>=j;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">min</span>!=i)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">		tmp=x[i];</span><br><span class="line">		x[i]=x[<span class="built_in">min</span>];</span><br><span class="line">		x[<span class="built_in">min</span>]=tmp;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序:从后往前或从前往后俩俩比较相邻元素的值，若为逆序交换他们直到序列比较完，成为一趟冒泡。下一趟前面确定的元素不参与比较。 最多n-1躺比较完毕</span></span><br><span class="line"><span class="comment">//稳定</span></span><br><span class="line"><span class="comment">//时间复杂度：O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sort_bubble</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> flag,i,j;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			flag=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(j=length<span class="number">-1</span>;j&gt;=i+<span class="number">1</span>;j--)</span><br><span class="line">				&#123;</span><br><span class="line">				<span class="keyword">if</span>(x[j]&lt;x[j<span class="number">-1</span>])</span><br><span class="line">					&#123;flag=<span class="number">1</span>;</span><br><span class="line">					swap(x,j);&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			<span class="keyword">if</span>(flag==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> x[],<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> tmp;</span><br><span class="line">tmp=x[j];</span><br><span class="line">x[j]=x[j<span class="number">-1</span>];</span><br><span class="line">x[j<span class="number">-1</span>]=tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">" %d"</span>,x[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[]=&#123;<span class="number">3</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">62</span>,<span class="number">35</span>,<span class="number">2</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> length;</span><br><span class="line">length=<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(a[<span class="number">0</span>]);</span><br><span class="line"><span class="comment">//sort_select(length,a);</span></span><br><span class="line"><span class="comment">//sort_insert(length,a);</span></span><br><span class="line"><span class="comment">//sort_bubble(length,a);</span></span><br><span class="line">show(length,a);</span><br><span class="line">getchar();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+        <p>批量合并转换的一个脚本</p>
+<a id="more"></a>
+<pre><code class="Python"><span class="keyword">import</span> os
+<span class="keyword">import</span> sys
+<span class="keyword">from</span> PyPDF2 <span class="keyword">import</span> PdfFileWriter,PdfFileReader
+<span class="keyword">import</span> time
+<span class="keyword">import</span> docx
+time1 = time.time()
+
+<span class="function"><span class="keyword">def</span> <span class="title">getFileName</span><span class="params">(filePath, filetype)</span>:</span>
+    file_list = []
+    <span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(filePath):
+        <span class="keyword">for</span> filePath <span class="keyword">in</span> files:
+            <span class="keyword">if</span> filePath.endswith(filetype):
+                <span class="comment">#print(filePath)</span>
+                file_list.append(os.path.join(root, filePath))
+    file_list.sort()
+    <span class="keyword">return</span> file_list
+
+<span class="function"><span class="keyword">def</span> <span class="title">PdfToWord</span><span class="params">(filepath)</span>:</span>
+    <span class="string">"""</span>
+<span class="string">    将文件夹里面的pdf文件转换成word 文件</span>
+<span class="string">    :param filepath: 文件夹名称</span>
+<span class="string">    :return:</span>
+<span class="string">    """</span>
+    pdf_list_names = getFileName(filepath,<span class="string">'.pdf'</span>)
+    <span class="keyword">for</span> pdf_name <span class="keyword">in</span> pdf_list_names:
+        pdfFileobj = open(pdf_name, <span class="string">'rb'</span>)
+        out_file = pdf_name.replace(<span class="string">".pdf"</span>, <span class="string">".docx"</span>)
+        pdfReader = PdfFileReader(pdfFileobj)
+        pageObj = pdfReader.getPage(<span class="number">0</span>)
+        doc = docx.Document()
+        doc.add_paragraph(pageObj.extractText())
+        doc.save(out_file)
+        pdfFileobj.close()
+
+<span class="function"><span class="keyword">def</span> <span class="title">MergePDF</span><span class="params">(filepath ,outfile)</span>:</span>
+    <span class="string">"""</span>
+<span class="string">    将文件夹里面的pdf文件合并成一个文件</span>
+<span class="string">    :param filepath:</span>
+<span class="string">    :param outfile:</span>
+<span class="string">    :return:</span>
+<span class="string">    """</span>
+    output = PdfFileWriter()
+    outputPages = <span class="number">0</span>
+    pdf_fileName = getFileName(filepath, <span class="string">'.pdf'</span>)
+    <span class="keyword">for</span> each <span class="keyword">in</span> pdf_fileName:
+        input = PdfFileReader(open(each, <span class="string">'rb'</span>))
+
+        <span class="keyword">if</span> input.isEncrypted == <span class="literal">True</span>:
+            input.decrypt(<span class="string">'map'</span>)
+
+        pageCount = input.getNumPages()
+        outputPages += pageCount
+        print(<span class="string">f"<span class="subst">{each}</span> 有 <span class="subst">{pageCount}</span> 页--总的<span class="subst">{outputPage}</span>页"</span>)
+        <span class="keyword">for</span> iPage <span class="keyword">in</span> range(<span class="number">0</span>, pageCount):
+            output.addPage(input.getPage(iPage))
+
+    outputStream = open(outfile, <span class="string">'wb'</span>)
+    output.write(outputStream)
+    outputStream.close()
+    print(<span class="string">'save:'</span>+outfile +<span class="string">' finished!'</span>)
+
+<span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
+    MergePDF(file_dir, out)
+    <span class="comment">#PdfToWord(file_dir)</span>
+    time2 = time.time()
+    print(<span class="string">'耗时：'</span> + str(time2 - time1)+<span class="string">'s'</span>)</code></pre>
+<blockquote>
+<p>引用<br><a href="https://github.com/zhenzhenyicheng/pdf_merge/" target="_blank" rel="noopener">这位的。</a></p>
+</blockquote>
 
       
     </div>
@@ -379,12 +448,6 @@
 </div>
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
-          
-        </div>
-      
 
       
       
@@ -394,8 +457,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/05/12/vscode%E9%85%8D%E7%BD%AE/" rel="next" title="vscode 配置文件">
-                <i class="fa fa-chevron-left"></i> vscode 配置文件
+              <a href="/2020/10/12/vgg16/" rel="next" title="keras创建VGG16模型">
+                <i class="fa fa-chevron-left"></i> keras创建VGG16模型
               </a>
             
           </div>
@@ -403,10 +466,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/05/18/pc/" rel="prev" title="消费者生产者模式请求Google学术">
-                消费者生产者模式请求Google学术 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
