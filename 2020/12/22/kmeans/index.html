@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="python," />
+  <meta name="keywords" content="algorithm," />
 
 
 
@@ -79,18 +79,23 @@
 
 
 
-<meta name="description" content="方法一(scrapy适用)12345678from scrapy.http.cookies import CookieJarcookie_jar &#x3D; CookieJar()cookie_jar.extract_cookies(response, response.request)for i in self.cookie_jar:    p &#x3D; re.compile(r&#39;&lt;Cookie (.">
+<meta name="description" content="基于Kmeans思路用python简单实现该算法。&lt;–!more–&gt; 基于Kmeans思路用python简单实现该算法。&lt;–!more–&gt;思路：    在样本中随机选取K个样本点作为初始质点   计算所有样本和K个质心的距离   将每个样本归类为距离K个质心聚力最短的那一类   根据这个公式从新计算新的质心(簇的均值向量)   重复2，直到新的质心和之前的相同为止代码：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="提取cookies方法总结">
-<meta property="og:url" content="http://yoursite.com/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:title" content="Kmeans聚类算法思路实现">
+<meta property="og:url" content="http://yoursite.com/2020/12/22/kmeans/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="方法一(scrapy适用)12345678from scrapy.http.cookies import CookieJarcookie_jar &#x3D; CookieJar()cookie_jar.extract_cookies(response, response.request)for i in self.cookie_jar:    p &#x3D; re.compile(r&#39;&lt;Cookie (.">
+<meta property="og:description" content="基于Kmeans思路用python简单实现该算法。&lt;–!more–&gt; 基于Kmeans思路用python简单实现该算法。&lt;–!more–&gt;思路：    在样本中随机选取K个样本点作为初始质点   计算所有样本和K个质心的距离   将每个样本归类为距离K个质心聚力最短的那一类   根据这个公式从新计算新的质心(簇的均值向量)   重复2，直到新的质心和之前的相同为止代码：">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-16T04:45:00.000Z">
-<meta property="article:modified_time" content="2020-04-17T13:58:45.891Z">
+<meta property="og:image" content="https://i.loli.net/2020/12/22/8yJNrK3oVFXkTW7.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/22/XYkbeGc1oOTlZzn.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/22/wYWeKVRkj3nF1bL.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/22/X8vUw7pPBEb6SJD.png">
+<meta property="article:published_time" content="2020-12-22T04:30:00.000Z">
+<meta property="article:modified_time" content="2020-12-22T05:55:11.952Z">
 <meta property="article:author" content="JustTango">
-<meta property="article:tag" content="python">
+<meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/12/22/8yJNrK3oVFXkTW7.png">
 
 
 
@@ -120,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/04/16/提取cookies方法总结/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/12/22/kmeans/"/>
 
 
 
 
 
-  <title>提取cookies方法总结 | Tango</title>
+  <title>Kmeans聚类算法思路实现 | Tango</title>
   
 
 
@@ -290,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/kmeans/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JustTango">
@@ -307,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">提取cookies方法总结</h1>
+          <h1 class="post-title" itemprop="name headline">Kmeans聚类算法思路实现</h1>
         
 
         <div class="post-meta">
@@ -319,8 +324,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:45:00+08:00">
-                2020-04-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-22T12:30:00+08:00">
+                2020-12-22
               </time>
             
 
@@ -338,8 +343,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/04/16/%E6%8F%90%E5%8F%96cookies%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/" itemprop="commentsCount"></span>
+                <a href="/2020/12/22/kmeans/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/12/22/kmeans/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -367,17 +372,16 @@
       
 
       
-        <ul>
-<li><h3 id="方法一-scrapy适用"><a href="#方法一-scrapy适用" class="headerlink" title="方法一(scrapy适用)"></a>方法一(scrapy适用)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.http.cookies <span class="keyword">import</span> CookieJar</span><br><span class="line">cookie_jar = CookieJar()</span><br><span class="line">cookie_jar.extract_cookies(response, response.request)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> self.cookie_jar:</span><br><span class="line">    p = re.compile(<span class="string">r'&lt;Cookie (.*?) for .*?&gt;'</span>)            </span><br><span class="line">    cookies = re.findall(p, str(i))            </span><br><span class="line">    cookies = (cookie.split(<span class="string">'='</span>, <span class="number">1</span>) <span class="keyword">for</span> cookie <span class="keyword">in</span> cookies)</span><br><span class="line">    cookies = dict(cookies)</span><br></pre></td></tr></table></figure></div>
-
-</li>
-</ul>
-<a id="more"></a>
-
-<ul>
-<li><h3 id="方法二（普适用）"><a href="#方法二（普适用）" class="headerlink" title="方法二（普适用）"></a>方法二（普适用）</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cookies</span><span class="params">(response)</span>:</span></span><br><span class="line">    my_cookies = dict()</span><br><span class="line">    <span class="comment"># 请求包里带的Cookie</span></span><br><span class="line">    <span class="keyword">for</span> cookie <span class="keyword">in</span> response.request.headers.getlist(<span class="string">'Cookie'</span>):</span><br><span class="line">        <span class="keyword">for</span> ck <span class="keyword">in</span> cookie.decode(<span class="string">'utf8'</span>).split(<span class="string">';'</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = ck.split(<span class="string">'='</span>)[<span class="number">1</span>].strip()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = <span class="string">''</span></span><br><span class="line">    <span class="comment"># 响应包里给的Set-Cookie</span></span><br><span class="line">    <span class="keyword">for</span> cookie <span class="keyword">in</span> response.headers.getlist(<span class="string">'Set-Cookie'</span>):</span><br><span class="line">        <span class="keyword">for</span> ck <span class="keyword">in</span> cookie.decode(<span class="string">'utf8'</span>).split(<span class="string">';'</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = ck.split(<span class="string">'='</span>)[<span class="number">1</span>].strip()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                my_cookies[ck.split(<span class="string">'='</span>)[<span class="number">0</span>].strip()] = <span class="string">''</span></span><br><span class="line">    <span class="keyword">return</span> my_cookies</span><br></pre></td></tr></table></figure></div>
-</li>
-</ul>
+        <p>基于Kmeans思路用python简单实现该算法。<br>&lt;–!more–&gt;</p>
+<p>基于Kmeans思路用python简单实现该算法。<br>&lt;–!more–&gt;<br>思路：  </p>
+<ol>
+<li>在样本中随机选取K个样本点作为初始质点  </li>
+<li>计算所有样本和K个质心的距离  </li>
+<li>将每个样本归类为距离K个质心聚力最短的那一类  </li>
+<li>根据这个公式从新计算新的质心(簇的均值向量)<br><img src="https://i.loli.net/2020/12/22/8yJNrK3oVFXkTW7.png" alt="image.png">  </li>
+<li>重复2，直到新的质心和之前的相同为止<br><em>代码</em>：  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">   <span class="keyword">from</span> sklearn.metrics.pairwise <span class="keyword">import</span> euclidean_distances</span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">cal_distance</span><span class="params">(data,center)</span>:</span></span><br><span class="line">   <span class="string">"""</span></span><br><span class="line"><span class="string">   计算样本和质心距离</span></span><br><span class="line"><span class="string">   """</span></span><br><span class="line">       <span class="keyword">return</span> euclidean_distances(data,center)</span><br><span class="line">   </span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">draw_pic</span><span class="params">(nddata,labels,centers)</span>:</span></span><br><span class="line">   <span class="string">"画图"</span></span><br><span class="line">       plt.scatter(nddata[:, <span class="number">0</span>], nddata[:, <span class="number">1</span>], c=labels, marker=<span class="string">'o'</span>)</span><br><span class="line">       plt.scatter([i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> centers],[i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> centers] ,c=<span class="string">"red"</span>, marker=<span class="string">'o'</span>)</span><br><span class="line">       plt.show()</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">update_centers</span><span class="params">(nddata,k,labels)</span>:</span></span><br><span class="line">   	<span class="string">"更新质心位置"</span></span><br><span class="line">       centers=[]</span><br><span class="line">       <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">           tmp_data=nddata[labels==i]</span><br><span class="line">           center = np.mean(tmp_data,axis=<span class="number">0</span>)</span><br><span class="line">           centers.append(center)</span><br><span class="line">       <span class="keyword">return</span> centers</span><br><span class="line">   </span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">compare</span><span class="params">(new,old,k)</span>:</span></span><br><span class="line">       flag=<span class="number">0</span></span><br><span class="line">       <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">           <span class="keyword">if</span> new[i][<span class="number">0</span>] == old[i][<span class="number">0</span>] <span class="keyword">and</span> new[i][<span class="number">1</span>] == old[i][<span class="number">1</span>]:</span><br><span class="line">               flag+=<span class="number">1</span></span><br><span class="line">       <span class="keyword">return</span> <span class="literal">True</span> <span class="keyword">if</span> flag&gt;=k <span class="keyword">else</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">with</span> open(<span class="string">"/your/data/path"</span>) <span class="keyword">as</span> f:</span><br><span class="line">       data = f.readlines()</span><br><span class="line">       data = [i.split() <span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">   k=<span class="number">4.</span> <span class="comment">#簇</span></span><br><span class="line">   nddata=np.array(data)</span><br><span class="line">   nddata = nddata.astype(np.float32)</span><br><span class="line">   iter =<span class="number">1</span></span><br><span class="line">   centers = random.choices(nddata,k=k)</span><br><span class="line">   <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">       distance = cal_distance(nddata,centers)</span><br><span class="line">       labels = np.argmin(distance,axis=<span class="number">1</span>)</span><br><span class="line">       <span class="keyword">if</span> iter %<span class="number">5</span> == <span class="number">0</span>:</span><br><span class="line">           draw_pic(nddata,labels,centers)</span><br><span class="line">       new_centers = update_centers(nddata,k,labels)</span><br><span class="line">       iter+=<span class="number">1</span></span><br><span class="line">       print(<span class="string">f"迭代第<span class="subst">&#123;iter&#125;</span>次"</span>)</span><br><span class="line">       <span class="keyword">if</span> compare(new_centers,centers,k) <span class="keyword">or</span> iter&gt;<span class="number">50</span>:</span><br><span class="line">           print(<span class="string">f"两次迭代质点相同\n<span class="subst">&#123;new_centers&#125;</span>\n<span class="subst">&#123;centers&#125;</span>"</span>)</span><br><span class="line">           draw_pic(nddata,labels,new_centers)</span><br><span class="line">           <span class="keyword">break</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           centers = new_centers</span><br></pre></td></tr></table></figure></div>
+效果:<br><img src="https://i.loli.net/2020/12/22/XYkbeGc1oOTlZzn.png" alt="image.png"><br><img src="https://i.loli.net/2020/12/22/wYWeKVRkj3nF1bL.png" alt="image.png"><br><img src="https://i.loli.net/2020/12/22/X8vUw7pPBEb6SJD.png" alt="image.png">  </li>
+</ol>
 
       
     </div>
@@ -404,7 +408,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"># python</a>
+            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
           
         </div>
       
@@ -417,8 +421,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/04/16/vimrc%E5%A4%87%E4%BB%BD/" rel="next" title="vimrc备份">
-                <i class="fa fa-chevron-left"></i> vimrc备份
+              <a href="/2020/10/20/mergepdf/" rel="next" title="Merge PDF/PDF to Word">
+                <i class="fa fa-chevron-left"></i> Merge PDF/PDF to Word
               </a>
             
           </div>
@@ -426,10 +430,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/16/uwsgi%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/" rel="prev" title="uwsgi配置使用">
-                uwsgi配置使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -499,17 +499,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -578,22 +569,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一-scrapy适用"><span class="nav-number">1.</span> <span class="nav-text">方法一(scrapy适用)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二（普适用）"><span class="nav-number">2.</span> <span class="nav-text">方法二（普适用）</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

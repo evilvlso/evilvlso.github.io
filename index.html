@@ -288,6 +288,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/kmeans/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/22/kmeans/" itemprop="url">Kmeans聚类算法思路实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-22T12:30:00+08:00">
+                2020-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/12/22/kmeans/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/12/22/kmeans/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>基于Kmeans思路用python简单实现该算法。<br>&lt;–!more–&gt;</p>
+<p>基于Kmeans思路用python简单实现该算法。<br>&lt;–!more–&gt;<br>思路：  </p>
+<ol>
+<li>在样本中随机选取K个样本点作为初始质点  </li>
+<li>计算所有样本和K个质心的距离  </li>
+<li>将每个样本归类为距离K个质心聚力最短的那一类  </li>
+<li>根据这个公式从新计算新的质心(簇的均值向量)<br><img src="https://i.loli.net/2020/12/22/8yJNrK3oVFXkTW7.png" alt="image.png">  </li>
+<li>重复2，直到新的质心和之前的相同为止<br><em>代码</em>：  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">   <span class="keyword">from</span> sklearn.metrics.pairwise <span class="keyword">import</span> euclidean_distances</span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">cal_distance</span><span class="params">(data,center)</span>:</span></span><br><span class="line">   <span class="string">"""</span></span><br><span class="line"><span class="string">   计算样本和质心距离</span></span><br><span class="line"><span class="string">   """</span></span><br><span class="line">       <span class="keyword">return</span> euclidean_distances(data,center)</span><br><span class="line">   </span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">draw_pic</span><span class="params">(nddata,labels,centers)</span>:</span></span><br><span class="line">   <span class="string">"画图"</span></span><br><span class="line">       plt.scatter(nddata[:, <span class="number">0</span>], nddata[:, <span class="number">1</span>], c=labels, marker=<span class="string">'o'</span>)</span><br><span class="line">       plt.scatter([i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> centers],[i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> centers] ,c=<span class="string">"red"</span>, marker=<span class="string">'o'</span>)</span><br><span class="line">       plt.show()</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">update_centers</span><span class="params">(nddata,k,labels)</span>:</span></span><br><span class="line">   	<span class="string">"更新质心位置"</span></span><br><span class="line">       centers=[]</span><br><span class="line">       <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">           tmp_data=nddata[labels==i]</span><br><span class="line">           center = np.mean(tmp_data,axis=<span class="number">0</span>)</span><br><span class="line">           centers.append(center)</span><br><span class="line">       <span class="keyword">return</span> centers</span><br><span class="line">   </span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">compare</span><span class="params">(new,old,k)</span>:</span></span><br><span class="line">       flag=<span class="number">0</span></span><br><span class="line">       <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">           <span class="keyword">if</span> new[i][<span class="number">0</span>] == old[i][<span class="number">0</span>] <span class="keyword">and</span> new[i][<span class="number">1</span>] == old[i][<span class="number">1</span>]:</span><br><span class="line">               flag+=<span class="number">1</span></span><br><span class="line">       <span class="keyword">return</span> <span class="literal">True</span> <span class="keyword">if</span> flag&gt;=k <span class="keyword">else</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">with</span> open(<span class="string">"/your/data/path"</span>) <span class="keyword">as</span> f:</span><br><span class="line">       data = f.readlines()</span><br><span class="line">       data = [i.split() <span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">   k=<span class="number">4.</span> <span class="comment">#簇</span></span><br><span class="line">   nddata=np.array(data)</span><br><span class="line">   nddata = nddata.astype(np.float32)</span><br><span class="line">   iter =<span class="number">1</span></span><br><span class="line">   centers = random.choices(nddata,k=k)</span><br><span class="line">   <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">       distance = cal_distance(nddata,centers)</span><br><span class="line">       labels = np.argmin(distance,axis=<span class="number">1</span>)</span><br><span class="line">       <span class="keyword">if</span> iter %<span class="number">5</span> == <span class="number">0</span>:</span><br><span class="line">           draw_pic(nddata,labels,centers)</span><br><span class="line">       new_centers = update_centers(nddata,k,labels)</span><br><span class="line">       iter+=<span class="number">1</span></span><br><span class="line">       print(<span class="string">f"迭代第<span class="subst">&#123;iter&#125;</span>次"</span>)</span><br><span class="line">       <span class="keyword">if</span> compare(new_centers,centers,k) <span class="keyword">or</span> iter&gt;<span class="number">50</span>:</span><br><span class="line">           print(<span class="string">f"两次迭代质点相同\n<span class="subst">&#123;new_centers&#125;</span>\n<span class="subst">&#123;centers&#125;</span>"</span>)</span><br><span class="line">           draw_pic(nddata,labels,new_centers)</span><br><span class="line">           <span class="keyword">break</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           centers = new_centers</span><br></pre></td></tr></table></figure></div>
+效果:<br><img src="https://i.loli.net/2020/12/22/XYkbeGc1oOTlZzn.png" alt="image.png"><br><img src="https://i.loli.net/2020/12/22/wYWeKVRkj3nF1bL.png" alt="image.png"><br><img src="https://i.loli.net/2020/12/22/X8vUw7pPBEb6SJD.png" alt="image.png">  </li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/20/mergepdf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1531,145 +1672,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/" itemprop="url">flask_restful使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-13T14:58:50+08:00">
-                2020-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="flask-restful"><a href="#flask-restful" class="headerlink" title="flask_restful"></a>flask_restful</h2><ul>
-<li>字段验证</li>
-<li>格式化返回</li>
-</ul>
-<p>模版：</p>
-<p><code>from flask_restful import Api,reqparse,Resource,inputs</code><br><code>from flask_cors import *</code></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">app=Flask(__name)</span><br><span class="line"><span class="comment"># 需要定一个api</span></span><br><span class="line">api=Api(app)</span><br><span class="line"><span class="comment"># 解决一些跨域问题</span></span><br><span class="line">CORS(app,resource=&#123;<span class="string">r"/*"</span>&#125;)</span><br><span class="line"><span class="comment"># CORS(app, resources=&#123;r"/test": &#123;"origins": "*"&#125;&#125;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一定继承自 Resource</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestView</span><span class="params">(Resource)</span></span></span><br><span class="line"><span class="class">	<span class="title">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="comment"># 字段验证</span></span><br><span class="line">		parser = reqparse.RequestParser()</span><br><span class="line">		parser.add_argument(<span class="string">"phone"</span>,required=<span class="literal">True</span>,type=inputs.regex(<span class="string">r'\d&#123;11&#125;'</span>),help=<span class="string">"输入正确手机号"</span>，trim=<span class="literal">True</span>)</span><br><span class="line">		parser.add_argument(<span class="string">"username"</span>,required=<span class="literal">True</span>,type=str,help=<span class="string">"输入姓名"</span>)</span><br><span class="line">		args=parser.parse_args(). //参数解析完成，直接get即可获取</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"ok"</span></span><br><span class="line">		<span class="keyword">pass</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"ok"</span></span><br><span class="line">		<span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">api.add_resource(TestView,<span class="string">"/test"</span>,endpoint=<span class="string">"test"</span>)</span><br></pre></td></tr></table></figure></div>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1742,7 +1744,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
