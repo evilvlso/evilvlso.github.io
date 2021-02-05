@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="Sequence和Model模型的保存 保存整个模型为 h5 文件，内容包括      模型的结构模型的权值模型的配置，即我们通过compile编译模型的一些信息，如优化器，损失函数等优化器的状态信息，我们可以接着之前的训练继续训练    1234 # 保存模型model.save(&#39;path_to_my_model.h5&#39;)# 加载模型new_model &#x3D; keras.models.load_">
+<meta name="description" content="Keras模型 保存整个模型为 h5 文件，内容包括     模型的结构模型的权值模型的配置，即我们通过compile编译模型的一些信息，如优化器，损失函数等优化器的状态信息，我们可以接着之前的训练继续训练      保存整个模型model.save(&#39;path_to_my_model.h5&#39;)keras.models.load_model(&#39;path_to_my_mode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tensorflow2.0 模型保存方法">
-<meta property="og:url" content="http://yoursite.com/2020/09/25/tfsavemodel/index.html">
+<meta property="og:title" content="keras pytorch 模型保存记载方法">
+<meta property="og:url" content="http://yoursite.com/2020/09/25/keras%20pytorch%20model%20save/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="Sequence和Model模型的保存 保存整个模型为 h5 文件，内容包括      模型的结构模型的权值模型的配置，即我们通过compile编译模型的一些信息，如优化器，损失函数等优化器的状态信息，我们可以接着之前的训练继续训练    1234 # 保存模型model.save(&#39;path_to_my_model.h5&#39;)# 加载模型new_model &#x3D; keras.models.load_">
+<meta property="og:description" content="Keras模型 保存整个模型为 h5 文件，内容包括     模型的结构模型的权值模型的配置，即我们通过compile编译模型的一些信息，如优化器，损失函数等优化器的状态信息，我们可以接着之前的训练继续训练      保存整个模型model.save(&#39;path_to_my_model.h5&#39;)keras.models.load_model(&#39;path_to_my_mode">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-09-25T05:38:41.000Z">
-<meta property="article:modified_time" content="2020-09-27T12:13:11.312Z">
+<meta property="article:modified_time" content="2021-02-05T07:19:37.891Z">
 <meta property="article:author" content="JustTango">
 <meta name="twitter:card" content="summary">
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/09/25/tfsavemodel/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/09/25/keras pytorch model save/"/>
 
 
 
 
 
-  <title>tensorflow2.0 模型保存方法 | Tango</title>
+  <title>keras pytorch 模型保存记载方法 | Tango</title>
   
 
 
@@ -289,7 +289,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/25/tfsavemodel/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/25/keras%20pytorch%20model%20save/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JustTango">
@@ -306,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">tensorflow2.0 模型保存方法</h1>
+          <h1 class="post-title" itemprop="name headline">keras pytorch 模型保存记载方法</h1>
         
 
         <div class="post-meta">
@@ -337,8 +337,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/09/25/tfsavemodel/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/09/25/tfsavemodel/" itemprop="commentsCount"></span>
+                <a href="/2020/09/25/keras%20pytorch%20model%20save/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/09/25/keras%20pytorch%20model%20save/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -366,28 +366,18 @@
       
 
       
-        <h2 id="Sequence和Model模型的保存"><a href="#Sequence和Model模型的保存" class="headerlink" title="Sequence和Model模型的保存"></a>Sequence和Model模型的保存</h2><ul>
-<li><p>保存整个模型为 h5 文件，内容包括    </p>
-<blockquote>
+        <h2 id="Keras模型"><a href="#Keras模型" class="headerlink" title="Keras模型"></a>Keras模型</h2><ul>
+<li>保存整个模型为 h5 文件，内容包括    <blockquote>
 <p>模型的结构<br>模型的权值<br>模型的配置，即我们通过compile编译模型的一些信息，如优化器，损失函数等<br>优化器的状态信息，我们可以接着之前的训练继续训练  </p>
 </blockquote>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># 保存模型</span></span><br><span class="line">model.save(<span class="string">'path_to_my_model.h5'</span>)</span><br><span class="line"><span class="comment"># 加载模型</span></span><br><span class="line">new_model = keras.models.load_model(<span class="string">'path_to_my_model.h5'</span>)</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>将模型保存为 <em>SavedModel</em> 格式  </p>
-<blockquote>
-<p>这是对tensorflow对象标准的序列化格式,他不是将模型保存为一个单独的文件，而是有几个文件组成。<br>这种方式依然会保存模型的所有信息，即“网络结构、权重、配置、优化器状态”四个信息</p>
-</blockquote>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型保存，注意：仅仅是多了一个save_format的参数而已</span></span><br><span class="line"><span class="comment"># 注意：这里的'path_to_saved_model'不再是模型名称，仅仅是一个文件夹，模型会保存在这个文件夹之下</span></span><br><span class="line">model.save(<span class="string">'path_to_saved_model'</span>, save_format=<span class="string">'tf'</span>)</span><br><span class="line"><span class="comment"># 加载模型，通过指定存放模型的文件夹来加载</span></span><br><span class="line">new_model = keras.models.load_model(<span class="string">'path_to_saved_model'</span>)</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>保存模型权重的两种方，取决于参数是  “文件名称”  还是  “文件夹”   </p>
 </li>
 </ul>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">model.save_weights(<span class="string">'path_to_my_weights.h5'</span>)      <span class="comment"># 文件名称   </span></span><br><span class="line"></span><br><span class="line">model.save_weights(<span class="string">'path_to_my_tf_checkpoint'</span>)  <span class="comment"># 文件夹，保存checkpoint权重</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载</span></span><br><span class="line">new_model.load_weights(<span class="string">'path_to_my_weights.h5'</span>)        <span class="comment"># 文件名称</span></span><br><span class="line"></span><br><span class="line">new_model.load_weights(<span class="string">'path_to_my_tf_checkpoint'</span>)<span class="comment">#文件夹名称</span></span><br></pre></td></tr></table></figure></div>
+<p>保存整个模型<br><code>model.save(&#39;path_to_my_model.h5&#39;)</code><br><code>keras.models.load_model(&#39;path_to_my_model.h5&#39;)</code> 加载整个模型<br>保存权重<br><code>model.save_weights(&#39;path_to_my_weights.h5&#39;)</code><br><code>new_model.load_weights(&#39;path_to_my_weights.h5&#39;)</code></p>
+<h2 id="Pytorch"><a href="#Pytorch" class="headerlink" title="Pytorch"></a>Pytorch</h2><p>保存的文件格式为pkl pth等，其实就是把权重优化器等信息序列化了。<br>保存权重<br><code>torch.save(model.state_dict(), PATH)</code>  OR</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">torch.save(&#123;</span><br><span class="line">            <span class="string">'epoch'</span>: epoch,</span><br><span class="line">            <span class="string">'model_state_dict'</span>: model.state_dict(),</span><br><span class="line">            <span class="string">'optimizer_state_dict'</span>: optimizer.state_dict(),</span><br><span class="line">            <span class="string">'loss'</span>: loss,</span><br><span class="line">            ...</span><br><span class="line">            &#125;,path)</span><br></pre></td></tr></table></figure></div>
 
-<p>大佬</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/qq_27825451/article/details/105505033" target="_blank" rel="noopener">https://blog.csdn.net/qq_27825451/article/details/105505033</a></p>
-</blockquote>
+<p>加载模型</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model = Model(*args, **kwargs)</span><br><span class="line">model.load_state_dict(torch.load(PATH))</span><br><span class="line">model.eval()</span><br></pre></td></tr></table></figure></div>
 
       
     </div>
@@ -592,7 +582,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sequence和Model模型的保存"><span class="nav-number">1.</span> <span class="nav-text">Sequence和Model模型的保存</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Keras模型"><span class="nav-number">1.</span> <span class="nav-text">Keras模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pytorch"><span class="nav-number">2.</span> <span class="nav-text">Pytorch</span></a></li></ol></div>
             
 
           </div>
@@ -612,7 +602,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-[object Object]"></i>
   </span>
