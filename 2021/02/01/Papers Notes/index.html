@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon-32.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="papers," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Papers Notes[TOC] DeepLab V2 -2017Atrous convolution Atrous convolution allows us to explicitly control the resolution at which feature responses are computed within Deep Convolutional Neural Networks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Papers Notes">
+<meta property="og:url" content="http://yoursite.com/2021/02/01/Papers%20Notes/index.html">
+<meta property="og:site_name" content="Tango">
+<meta property="og:description" content="Papers Notes[TOC] DeepLab V2 -2017Atrous convolution Atrous convolution allows us to explicitly control the resolution at which feature responses are computed within Deep Convolutional Neural Networks">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/jmACDg6fWwvVhX4.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/k1grqhbKzRT6NL7.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/VJElKmRoDs137IY.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/oxWYSdXuIqLcipM.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/mc3ZBkpgyKJVR9b.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/8KQkaw4xV3giCqr.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/pZnYigULJt5xyoH.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/ofw9YviIdXyPgGV.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/NWSY9v7z3dqUFsO.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/IMybSGitFCVnXP8.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/Qz5uTrLXRPMGwZI.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/7p4lbBAJXiqWrIP.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/6l8IMUqsSOjAW3n.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/6IbkA57NeWzs4tT.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/2U7sQAi1k3teyNF.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/qNdPBopE5R6g2tr.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/mPK1uFfT4IOXi9C.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/OWnZPseqdS1bI9u.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/YgLqh9jSIXPMdFc.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/QqsMfgYJO2pKbzl.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/z4JtgeZ6awmp1cv.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/q5k1p2JmjZrPgDw.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/05/kBXT8U3hlqD9irQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/06/YZFlVkbiWz1DRGH.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/07/5pz18PifkgAIa4h.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/07/qs8T6JmRgLiplUy.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/06/B4yixPR2USK51XL.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/06/JjZIhgRdbq1FTkN.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/07/hzH87C1rS5NZkGT.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/06/pb6ik9dtvrWXSMB.png">
+<meta property="article:published_time" content="2021-02-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-19T02:38:59.568Z">
+<meta property="article:author" content="JustTango">
+<meta property="article:tag" content="papers">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/05/jmACDg6fWwvVhX4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/02/01/Papers Notes/"/>
+
+
+
+
+
+  <title>Papers Notes | Tango</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tango</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人生就该大闹一场,悄然离去!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+<!-- 音乐播放器 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<meting-js
+        id="329641066"
+        lrc-type="1"
+        server="netease"
+        order="random"
+        type="playlist"
+        fixed="true"
+        list-olded="true">
+</meting-js>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/01/Papers%20Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Papers Notes</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-02-01T12:00:00+08:00">
+                2021-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/02/01/Papers%20Notes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2021/02/01/Papers%20Notes/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Papers-Notes"><a href="#Papers-Notes" class="headerlink" title="Papers Notes"></a>Papers Notes</h1><p>[TOC]</p>
+<h1 id="DeepLab-V2-2017"><a href="#DeepLab-V2-2017" class="headerlink" title="DeepLab V2 -2017"></a>DeepLab V2 -2017</h1><h2 id="Atrous-convolution"><a href="#Atrous-convolution" class="headerlink" title="Atrous convolution"></a>Atrous convolution</h2><ul>
+<li><p>Atrous convolution allows us to explicitly control the resolution at which feature responses are computed within Deep Convolutional Neural Networks （控制分辨率）</p>
+</li>
+<li><p>It also allows us to effectively enlarge the field of view of filters to incorporate larger context without increasing the number of parameters or the amount of computation。（扩大感受野）</p>
+<p><img src="https://i.loli.net/2021/02/05/jmACDg6fWwvVhX4.png" alt="image-20210205174224596" style="zoom:50%;" /><img src="https://i.loli.net/2021/02/05/k1grqhbKzRT6NL7.png" alt="image-20210205174252033" style="zoom: 33%;" /></p>
+</li>
+</ul>
+<h2 id="ASPP-atrous-spatial-pyramid-pooling"><a href="#ASPP-atrous-spatial-pyramid-pooling" class="headerlink" title="ASPP : atrous spatial pyramid pooling"></a>ASPP : atrous spatial pyramid pooling</h2><ul>
+<li><p>we propose atrous spatial pyramid pooling (ASPP) to robustly segment objects at multiple scales.ASPP probes an incoming convolutional feature layer with filters at multiple sampling rates and effective fields-of-views, thus capturing objects as well as image context at multiple scales（解决大小尺度问题）</p>
+<img src="https://i.loli.net/2021/02/05/VJElKmRoDs137IY.png" alt="image-20210205174027744" style="zoom:67%;" />
+
+</li>
+</ul>
+<h2 id="CRF-Conditional-Random-Field"><a href="#CRF-Conditional-Random-Field" class="headerlink" title="CRF : Conditional Random Field"></a>CRF : Conditional Random Field</h2><ul>
+<li><p>条件随机场</p>
+</li>
+<li><p>we improve the localization of object boundaries by combining methods from DCNNs and probabilistic graphical models. The commonly deployed combination of max-pooling and downsampling in DCNNs achieves invariance but has a toll on localization accuracy. （解决物体边缘问题，后面废弃了）</p>
+</li>
+</ul>
+<hr>
+<h1 id="DeepLab-V3-2017"><a href="#DeepLab-V3-2017" class="headerlink" title="DeepLab V3 - 2017"></a>DeepLab V3 - 2017</h1><ul>
+<li>空洞卷积 NB 几个论文依据</li>
+<li>相关工作介绍 four types of FCNs 相关论文和成果，<strong>值得借鉴</strong>（image pyramid , Encoder-decoder,Context module,Spatial pyramid pooling  ）</li>
+<li>网络结构有两个 串联结构和并联结构( Multi-grid )</li>
+</ul>
+<img src="https://i.loli.net/2021/02/05/oxWYSdXuIqLcipM.png" style="zoom: 33%;" />
+
+<img src="https://i.loli.net/2021/02/05/mc3ZBkpgyKJVR9b.png" alt="并联结构" style="zoom: 40%;" />
+
+<p><strong>在 Multi-grid 中加入 Image Pooling原因:</strong></p>
+<blockquote>
+<p>隨著空洞卷積的膨脹率（rate/dilation）增大，卷積核有效參數越來越少。是的，這個很容易理解，3×3、rate=1即標準卷積，只有在feature map最外面一圈會有卷積核參數超出邊界而無效，當rate變大，越來越多外圈的位置是有卷積核參數失效的，用極限思想思考一下，如果rate=size(feature map)，那麼每次卷積都是卷核中心對應的feature map像素點被計算了，卷積核參數也只有中心那個點沒有失效，退化成了1×1卷積核.作者正式為了解決這一問題，才在並聯結構中加入image-level feature。做法是對輸入的feature map全局平均池化（global average pooling），256通道的1×1卷積層，BN層，最後用戶雙線性插值的方法上取樣到目標大小，即與ASSP輸出的feature map尺寸相同。</p>
+</blockquote>
+<hr>
+<h1 id="DeepLab-V3-2018"><a href="#DeepLab-V3-2018" class="headerlink" title="DeepLab V3+ - 2018"></a>DeepLab V3+ - 2018</h1><p>论文中采用了depthwise separable convolution 代替标准卷积层，并且使用的还是Atrous Conv，提出完整的语义分割网络。有mobilenet 的影子？</p>
+<img src="https://i.loli.net/2021/02/05/8KQkaw4xV3giCqr.png" alt="image-20210205224106310" style="zoom:50%;" />
+
+<ul>
+<li>SSP + Encoder-decoder</li>
+<li>depthwise separable convolution<img src="https://i.loli.net/2021/02/05/pZnYigULJt5xyoH.png" alt="image-20210205185344693" style="zoom:50%;" />
+
+</li>
+</ul>
+<hr>
+<h1 id="Attenttion-U-net-2018"><a href="#Attenttion-U-net-2018" class="headerlink" title="Attenttion U-net - 2018"></a>Attenttion U-net - 2018</h1><h2 id="attention-gate-AG"><a href="#attention-gate-AG" class="headerlink" title="attention gate (AG)"></a>attention gate (AG)</h2><ul>
+<li><p>在 U-net skip connection 上加入了注意力机制</p>
+</li>
+<li><p>We propose a novel attention gate (AG) model for medical imaging that automat- ically learns to focus on target structures of varying shapes and sizes. Models trained with AGs implicitly learn to suppress irrelevant regions in an input image while highlighting salient features useful for a specific task.. (<strong>关注不同形状和大小的目标结构。抑制输入图像中不相关的区域，同时突出显示对特定任务有用的显著特征</strong>。)</p>
+<img src="https://i.loli.net/2021/02/05/ofw9YviIdXyPgGV.png" alt="image-20210205190419359" style="zoom: 50%;" />
+
+</li>
+</ul>
+<img src="https://i.loli.net/2021/02/05/NWSY9v7z3dqUFsO.png" alt="注意力机制合并" style="zoom:50%;" />
+
+<ul>
+<li>x 表示前馈网络的某一层，g 表示upsampling的一层</li>
+</ul>
+<hr>
+<h1 id="R2U-Net-Recurrent-Residual-U-net-2018"><a href="#R2U-Net-Recurrent-Residual-U-net-2018" class="headerlink" title="R2U-Net : Recurrent Residual U-net - 2018"></a>R2U-Net : Recurrent Residual U-net - 2018</h1><h2 id="Recurrent-Residual"><a href="#Recurrent-Residual" class="headerlink" title="Recurrent Residual"></a>Recurrent Residual</h2><ul>
+<li><p>残差示意图 觉得叫 dense 更合适（<strong>残差帮助训练深层网络</strong>）</p>
+<p><img src="https://i.loli.net/2021/02/05/IMybSGitFCVnXP8.png" alt="image-20210205213815829" style="zoom: 33%;" /><img src="https://i.loli.net/2021/02/05/Qz5uTrLXRPMGwZI.png" alt="image-20210205214100543" style="zoom: 50%;" /></p>
+</li>
+<li><p>循环的含义，循环里面带着残差 。</p>
+</li>
+<li><p><strong>feature accumulation with recurrent residual convolutional layers ensures better feature representation for segmentation tasks.</strong>  （<strong>循环残差结构可使的特征更好的表达</strong>）</p>
+</li>
+</ul>
+<img src="https://i.loli.net/2021/02/05/7p4lbBAJXiqWrIP.png" alt="image-20210205214834419" style="zoom: 50%;" />
+
+<ul>
+<li>数据集： <strong>blood vessel segmentation in retina images, skin cancer segmentation, and lung lesion segmentation.</strong></li>
+</ul>
+<img src="https://i.loli.net/2021/02/05/6l8IMUqsSOjAW3n.png" alt="net overview" style="zoom:50%;" />
+
+<hr>
+<h1 id="CE-Net-Context-Encoder-Network-for-2D-Medical-Image-Segmentation-2019"><a href="#CE-Net-Context-Encoder-Network-for-2D-Medical-Image-Segmentation-2019" class="headerlink" title="CE-Net : Context Encoder Network for 2D Medical Image Segmentation - 2019"></a>CE-Net : Context Encoder Network for 2D Medical Image Segmentation - 2019</h1><p>网络采用Encoder-Decoder模式，encoder采用Resnet,然后接一个自创的 <strong>Context Extractor Module</strong> 包括 DAC 和 RMP ，再接decoder，decoder采用 1*1 + 3*3,2(transposed) +1*1 卷积层替代Unsampling。涉及到前面层往后传的就可以叫残差了？</p>
+<ul>
+<li><p>Context Extractor Module capture more high-level information and preserve spatial information for 2D medical image segmentation. </p>
+<p>（<strong>设计捕捉更高级语义信息</strong>模块）</p>
+</li>
+</ul>
+<h2 id="DAC-Dense-Atrous-Convolution-module"><a href="#DAC-Dense-Atrous-Convolution-module" class="headerlink" title="DAC : Dense Atrous Convolution module"></a>DAC : Dense Atrous Convolution module</h2><ul>
+<li>采用 4个 Atrous Convolution cascade branches，类似 deeplabv3 的ASPP。</li>
+<li>DAC block is able to extract features for objects with various sizes. （<strong>提取多尺度特征</strong>）</li>
+</ul>
+<img src="https://i.loli.net/2021/02/05/6IbkA57NeWzs4tT.png" alt="image-20210205220449410" style="zoom:50%;" />
+
+<h2 id="RMP-Residual-Multi-kernel-pooling"><a href="#RMP-Residual-Multi-kernel-pooling" class="headerlink" title="RMP : Residual Multi-kernel pooling"></a>RMP : Residual Multi-kernel pooling</h2><ul>
+<li>有点 PSPnet 的影子</li>
+<li>A challenge in segmentation is the large variation of object size in medical image （解决尺度变化问题）</li>
+</ul>
+<img src="https://i.loli.net/2021/02/05/2U7sQAi1k3teyNF.png" alt="image-20210205221446312" style="zoom:50%;" />
+
+<h2 id="Skip-Connection-and-Transposed"><a href="#Skip-Connection-and-Transposed" class="headerlink" title="Skip Connection and Transposed"></a>Skip Connection and Transposed</h2><img src="https://i.loli.net/2021/02/05/qNdPBopE5R6g2tr.png" alt="image-20210205222842602" style="zoom:30%;" />
+
+<hr>
+<h1 id="PSPNet-Pyramid-Scene-Parsing-Network"><a href="#PSPNet-Pyramid-Scene-Parsing-Network" class="headerlink" title="PSPNet : Pyramid Scene Parsing Network"></a>PSPNet : Pyramid Scene Parsing Network</h1><h2 id="Pyramid-Pooling-Module"><a href="#Pyramid-Pooling-Module" class="headerlink" title="Pyramid Pooling Module"></a>Pyramid Pooling Module</h2><img src="https://i.loli.net/2021/02/05/mPK1uFfT4IOXi9C.png" alt="image-20210205224415898" style="zoom:40%;" />
+
+<h2 id="Deep-Supervision-for-ResNet-Based-FCN"><a href="#Deep-Supervision-for-ResNet-Based-FCN" class="headerlink" title="Deep Supervision for ResNet-Based FCN"></a>Deep Supervision for ResNet-Based FCN</h2><p>Deep Supervision 专门有论文，unet++里面也用到了这个，这篇中是这么说的： （<strong>解决深度网络的优化问题</strong>）</p>
+<blockquote>
+<p>However, increasing depth of the network may introduce additional optimization difficulty as shown in [32, 19] for image classification.ResNet solves this problem with skip connection in each block. Latter layers of deep ResNet mainly learn residues based on previous ones.We contrarily propose generating initial results by supervision with an additional loss, and learning the residue afterwards with the finalloss. Thus, optimization of the deep network is decomposed into two, each is simpler to solve.</p>
+</blockquote>
+<img src="https://i.loli.net/2021/02/05/OWnZPseqdS1bI9u.png" alt="image-20210205224910631" style="zoom: 50%;" />
+
+<hr>
+<h1 id="FPN"><a href="#FPN" class="headerlink" title="FPN"></a>FPN</h1><img src="https://i.loli.net/2021/02/05/YgLqh9jSIXPMdFc.png" alt="image-20210205223038776" style="zoom: 33%;" />
+
+<img src="https://i.loli.net/2021/02/05/QqsMfgYJO2pKbzl.png" alt="image-20210205223333726" style="zoom: 33%;" />
+
+<hr>
+<h1 id="MobileNetv2"><a href="#MobileNetv2" class="headerlink" title="MobileNetv2"></a>MobileNetv2</h1><h2 id="Depthwise-Separable-Convolutions"><a href="#Depthwise-Separable-Convolutions" class="headerlink" title="Depthwise Separable Convolutions"></a>Depthwise Separable Convolutions</h2><p><strong>减少大量训练参数</strong>，精度只是略低</p>
+<img src="https://i.loli.net/2021/02/05/z4JtgeZ6awmp1cv.png" alt="image-20210205233431823" style="zoom:30%;" />
+
+<h2 id="Inverted-Residuals"><a href="#Inverted-Residuals" class="headerlink" title="Inverted Residuals"></a>Inverted Residuals</h2><p>和Resnet的残差模块正好相反，Resnet 残差模块:降维-&gt;卷积-&gt;升维，这个是 升维-&gt;Depthwise Separable Convolutions-&gt;降维</p>
+<img src="https://i.loli.net/2021/02/05/q5k1p2JmjZrPgDw.png" alt="image-20210205232614244" style="zoom:50%;" />
+
+<h2 id="Linear-Bottlenecks"><a href="#Linear-Bottlenecks" class="headerlink" title="Linear Bottlenecks"></a>Linear Bottlenecks</h2><p>说Relu函数处理高维图像之后再恢复回来信息丢失少，但是对于<strong>低维丢失信息很多</strong>，对 inverted Residual 最后一层采用线性处理(y=x)</p>
+<img src="https://i.loli.net/2021/02/05/kBXT8U3hlqD9irQ.png" alt="image-20210205232147770" style="zoom:50%;" />
+
+<hr>
+<h1 id="SKnet-Selective-Kernel-Networks-2019"><a href="#SKnet-Selective-Kernel-Networks-2019" class="headerlink" title="SKnet : Selective Kernel Networks. -2019"></a>SKnet : Selective Kernel Networks. -2019</h1><h2 id="Selective-Kernel-Convolution"><a href="#Selective-Kernel-Convolution" class="headerlink" title="Selective Kernel Convolution"></a>Selective Kernel Convolution</h2><ul>
+<li>可嵌入其他CNN中，相关工作有介绍注意力机制论文。。有senet的影子</li>
+<li><img src="https://i.loli.net/2021/02/06/YZFlVkbiWz1DRGH.png" alt="image-20210206120416045" style="zoom:50%;" />
+
+</li>
+</ul>
+<hr>
+<h1 id="RAUNet-Residual-Attention-U-Net-for-Semantic-Segmentation-of-Cataract-Surgical-Instruments-2019"><a href="#RAUNet-Residual-Attention-U-Net-for-Semantic-Segmentation-of-Cataract-Surgical-Instruments-2019" class="headerlink" title="RAUNet : Residual Attention U-Net for Semantic Segmentation of Cataract Surgical Instruments - 2019"></a>RAUNet : Residual Attention U-Net for Semantic Segmentation of Cataract Surgical Instruments - 2019</h1><h2 id="attention-module"><a href="#attention-module" class="headerlink" title="attention module"></a>attention module</h2><img src="https://i.loli.net/2021/02/07/5pz18PifkgAIa4h.png" alt="arch overview" style="zoom:50%;" />
+
+<img src="https://i.loli.net/2021/02/07/qs8T6JmRgLiplUy.png" alt="AAM" style="zoom:50%;" />
+
+<h2 id="hybrid-loss"><a href="#hybrid-loss" class="headerlink" title="hybrid loss"></a>hybrid loss</h2><p>CE+Dice</p>
+<hr>
+<h1 id="SENet-Squeeze-and-Excitation-Networks-2019"><a href="#SENet-Squeeze-and-Excitation-Networks-2019" class="headerlink" title="SENet : Squeeze-and-Excitation Networks -2019"></a>SENet : Squeeze-and-Excitation Networks -2019</h1><h2 id="SE-Block"><a href="#SE-Block" class="headerlink" title="SE Block"></a>SE Block</h2><ul>
+<li>we focus instead on the channel relationship (<strong>在通道上施加注意力机制</strong>)</li>
+<li>可嵌入其他CNN中</li>
+</ul>
+<img src="https://i.loli.net/2021/02/06/B4yixPR2USK51XL.png" alt="image-20210206121149806" style="zoom:50%;" />
+
+<hr>
+<h1 id="Unet-2018"><a href="#Unet-2018" class="headerlink" title="Unet ++ -2018"></a>Unet ++ -2018</h1><ul>
+<li><p>从” u-net 应该在第几层开始upsampling” 问题思考</p>
+</li>
+<li><p>采用了 deep supervision</p>
+</li>
+<li><p>Zhou zong wei 知乎上有贴</p>
+<img src="https://i.loli.net/2021/02/06/JjZIhgRdbq1FTkN.png" alt="image-20210206121706383" style="zoom:50%;" />
+
+</li>
+</ul>
+<hr>
+<h1 id="nnu-net-2019"><a href="#nnu-net-2019" class="headerlink" title="nnu-net - 2019"></a>nnu-net - 2019</h1><ul>
+<li>全自动调节参数</li>
+<li>为3D分割设计，也可以2D分割</li>
+</ul>
+<hr>
+<h1 id="CoordConv-solution-2018"><a href="#CoordConv-solution-2018" class="headerlink" title="CoordConv solution - 2018"></a>CoordConv solution - 2018</h1><p>被吐槽了。。</p>
+<p>添加位置信息的卷积</p>
+<hr>
+<h1 id="Pyramid-Attention-Network-for-Semantic-Segmentation-2018"><a href="#Pyramid-Attention-Network-for-Semantic-Segmentation-2018" class="headerlink" title="Pyramid Attention Network for Semantic Segmentation - 2018"></a>Pyramid Attention Network for Semantic Segmentation - 2018</h1><h2 id="GAU-Global-Attention-Upsample"><a href="#GAU-Global-Attention-Upsample" class="headerlink" title="GAU : Global Attention Upsample"></a>GAU : Global Attention Upsample</h2><ul>
+<li>Global Attention Upsample module on each decoder layer to provide global context as a guidance of low-level features to select cat- egory localization details （<strong>提供全局上下文作为底层功能的指导，以选择局部细节</strong>）</li>
+</ul>
+<img src="https://i.loli.net/2021/02/07/hzH87C1rS5NZkGT.png" alt="image-20210206154700377" style="zoom:50%;" />
+
+<h2 id="FPA-Feature-Pyramid-Attention"><a href="#FPA-Feature-Pyramid-Attention" class="headerlink" title="FPA : Feature Pyramid Attention"></a>FPA : Feature Pyramid Attention</h2><ul>
+<li><p>Feature Pyramid Attention module to per- form spatial pyramid attention structure on high-level output and combine global pooling to learn a better feature representation （<strong>更好的特征表达</strong>）</p>
+</li>
+<li><p>the pyramid structure can extract different scale of feature information and increase receptive field effectively in pixel-level, while this kind of structure lacks global context prior attention to select the features channel-wise as in SENet[10] and EncNet[33]. On the other hand, using channel-wise attention vector is not enough to extract multi-scale features effectively and lack pixel-wise information. <strong>通道注意力不足够提取多尺度特征信息</strong></p>
+</li>
+</ul>
+<img src="https://i.loli.net/2021/02/06/pb6ik9dtvrWXSMB.png" alt="image-20210206153329644.png" style="zoom:50%;" />
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/papers/" rel="tag"># papers</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/22/kmeans/" rel="next" title="Kmeans聚类算法思路实现">
+                <i class="fa fa-chevron-left"></i> Kmeans聚类算法思路实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">JustTango</p>
+              <p class="site-description motion-element" itemprop="description">抬望眼....</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://google.com/" title="Google" target="_blank">Google</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.nows.fun" title="毒鸡汤" target="_blank">毒鸡汤</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Papers-Notes"><span class="nav-number">1.</span> <span class="nav-text">Papers Notes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DeepLab-V2-2017"><span class="nav-number">2.</span> <span class="nav-text">DeepLab V2 -2017</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Atrous-convolution"><span class="nav-number">2.1.</span> <span class="nav-text">Atrous convolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASPP-atrous-spatial-pyramid-pooling"><span class="nav-number">2.2.</span> <span class="nav-text">ASPP : atrous spatial pyramid pooling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRF-Conditional-Random-Field"><span class="nav-number">2.3.</span> <span class="nav-text">CRF : Conditional Random Field</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DeepLab-V3-2017"><span class="nav-number">3.</span> <span class="nav-text">DeepLab V3 - 2017</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DeepLab-V3-2018"><span class="nav-number">4.</span> <span class="nav-text">DeepLab V3+ - 2018</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Attenttion-U-net-2018"><span class="nav-number">5.</span> <span class="nav-text">Attenttion U-net - 2018</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-gate-AG"><span class="nav-number">5.1.</span> <span class="nav-text">attention gate (AG)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#R2U-Net-Recurrent-Residual-U-net-2018"><span class="nav-number">6.</span> <span class="nav-text">R2U-Net : Recurrent Residual U-net - 2018</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Recurrent-Residual"><span class="nav-number">6.1.</span> <span class="nav-text">Recurrent Residual</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CE-Net-Context-Encoder-Network-for-2D-Medical-Image-Segmentation-2019"><span class="nav-number">7.</span> <span class="nav-text">CE-Net : Context Encoder Network for 2D Medical Image Segmentation - 2019</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DAC-Dense-Atrous-Convolution-module"><span class="nav-number">7.1.</span> <span class="nav-text">DAC : Dense Atrous Convolution module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMP-Residual-Multi-kernel-pooling"><span class="nav-number">7.2.</span> <span class="nav-text">RMP : Residual Multi-kernel pooling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skip-Connection-and-Transposed"><span class="nav-number">7.3.</span> <span class="nav-text">Skip Connection and Transposed</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PSPNet-Pyramid-Scene-Parsing-Network"><span class="nav-number">8.</span> <span class="nav-text">PSPNet : Pyramid Scene Parsing Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pyramid-Pooling-Module"><span class="nav-number">8.1.</span> <span class="nav-text">Pyramid Pooling Module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-Supervision-for-ResNet-Based-FCN"><span class="nav-number">8.2.</span> <span class="nav-text">Deep Supervision for ResNet-Based FCN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FPN"><span class="nav-number">9.</span> <span class="nav-text">FPN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MobileNetv2"><span class="nav-number">10.</span> <span class="nav-text">MobileNetv2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Depthwise-Separable-Convolutions"><span class="nav-number">10.1.</span> <span class="nav-text">Depthwise Separable Convolutions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inverted-Residuals"><span class="nav-number">10.2.</span> <span class="nav-text">Inverted Residuals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear-Bottlenecks"><span class="nav-number">10.3.</span> <span class="nav-text">Linear Bottlenecks</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SKnet-Selective-Kernel-Networks-2019"><span class="nav-number">11.</span> <span class="nav-text">SKnet : Selective Kernel Networks. -2019</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Selective-Kernel-Convolution"><span class="nav-number">11.1.</span> <span class="nav-text">Selective Kernel Convolution</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RAUNet-Residual-Attention-U-Net-for-Semantic-Segmentation-of-Cataract-Surgical-Instruments-2019"><span class="nav-number">12.</span> <span class="nav-text">RAUNet : Residual Attention U-Net for Semantic Segmentation of Cataract Surgical Instruments - 2019</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-module"><span class="nav-number">12.1.</span> <span class="nav-text">attention module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hybrid-loss"><span class="nav-number">12.2.</span> <span class="nav-text">hybrid loss</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SENet-Squeeze-and-Excitation-Networks-2019"><span class="nav-number">13.</span> <span class="nav-text">SENet : Squeeze-and-Excitation Networks -2019</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SE-Block"><span class="nav-number">13.1.</span> <span class="nav-text">SE Block</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unet-2018"><span class="nav-number">14.</span> <span class="nav-text">Unet ++ -2018</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nnu-net-2019"><span class="nav-number">15.</span> <span class="nav-text">nnu-net - 2019</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CoordConv-solution-2018"><span class="nav-number">16.</span> <span class="nav-text">CoordConv solution - 2018</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pyramid-Attention-Network-for-Semantic-Segmentation-2018"><span class="nav-number">17.</span> <span class="nav-text">Pyramid Attention Network for Semantic Segmentation - 2018</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GAU-Global-Attention-Upsample"><span class="nav-number">17.1.</span> <span class="nav-text">GAU : Global Attention Upsample</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FPA-Feature-Pyramid-Attention"><span class="nav-number">17.2.</span> <span class="nav-text">FPA : Feature Pyramid Attention</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-[object Object]"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JustTango</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'evilvlso',
+            repo: 'blogcomm',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'b7e694658ba07a8f3b70e25cba191e4bf2e8b6d6',
+            
+                client_id: 'Iv1.8b99830efcac6179'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QGxq6QbTJ95IzGgeeXlc5gM7-gzGzoHsz',
+        appKey: 'CLcPsS7OADikuhRPdfvX7Juz',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
