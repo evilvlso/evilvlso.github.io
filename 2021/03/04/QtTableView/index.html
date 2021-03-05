@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="nas,docker," />
+  <meta name="keywords" content="QT," />
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="划水期间发现有趣的bt，如果能扔一个地方自动下载。 回到家中拉上窗帘，备好吃的喝的，打开投影仪，哇爽啊！ docker是个好东西啊。 遂有了 transmission + jellyfin 下载和播放，jellyfin还支持投屏。 当然大佬们还有很多家庭影院服务的组合。">
+<meta name="description" content="Tableview初始化插入一条数据  TableView 初始化  12345678910111213141516171819202122void myc::setTableHead()&amp;#123;    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&amp;#123;      QStandardItemModel *  theModel &amp;#">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nas中的docker">
-<meta property="og:url" content="http://yoursite.com/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/index.html">
+<meta property="og:title" content="QT-TableView">
+<meta property="og:url" content="http://yoursite.com/2021/03/04/QtTableView/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="划水期间发现有趣的bt，如果能扔一个地方自动下载。 回到家中拉上窗帘，备好吃的喝的，打开投影仪，哇爽啊！ docker是个好东西啊。 遂有了 transmission + jellyfin 下载和播放，jellyfin还支持投屏。 当然大佬们还有很多家庭影院服务的组合。">
+<meta property="og:description" content="Tableview初始化插入一条数据  TableView 初始化  12345678910111213141516171819202122void myc::setTableHead()&amp;#123;    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&amp;#123;      QStandardItemModel *  theModel &amp;#">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-16T04:36:00.000Z">
-<meta property="article:modified_time" content="2020-04-17T07:06:40.763Z">
+<meta property="article:published_time" content="2021-03-04T04:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-05T07:39:24.902Z">
 <meta property="article:author" content="JustTango">
-<meta property="article:tag" content="nas">
-<meta property="article:tag" content="docker">
+<meta property="article:tag" content="QT">
 <meta name="twitter:card" content="summary">
 
 
@@ -121,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/04/16/nas中的docker/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/03/04/QtTableView/"/>
 
 
 
 
 
-  <title>nas中的docker | Tango</title>
+  <title>QT-TableView | Tango</title>
   
 
 
@@ -291,7 +290,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/04/QtTableView/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JustTango">
@@ -308,7 +307,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">nas中的docker</h1>
+          <h1 class="post-title" itemprop="name headline">QT-TableView</h1>
         
 
         <div class="post-meta">
@@ -320,8 +319,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:36:00+08:00">
-                2020-04-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-04T12:00:00+08:00">
+                2021-03-04
               </time>
             
 
@@ -339,8 +338,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/04/16/nas%E4%B8%AD%E7%9A%84docker/" itemprop="commentsCount"></span>
+                <a href="/2021/03/04/QtTableView/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2021/03/04/QtTableView/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -368,15 +367,19 @@
       
 
       
-        <blockquote>
-<p>划水期间发现有趣的bt，如果能扔一个地方自动下载。</p>
-<p>回到家中拉上窗帘，备好吃的喝的，打开投影仪，哇爽啊！</p>
-<p>docker是个好东西啊。</p>
-<p>遂有了 <strong>transmission + jellyfin</strong> 下载和播放，jellyfin还支持投屏。</p>
-<p>当然大佬们还有很多家庭影院服务的组合。</p>
-</blockquote>
-<a id="more"></a>
-<h3 id="docker-compose-yaml"><a href="#docker-compose-yaml" class="headerlink" title="docker-compose.yaml"></a>docker-compose.yaml</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"2"</span></span><br><span class="line">services:</span><br><span class="line">  transmission:</span><br><span class="line">  <span class="comment"># docker run -d   --name=transmission   -e PUID=1000   -e PGID=1000   -e TZ=Europe/London   -e USER=root    -e PASS=weidong    -p 9091:9091    -v /transmission/config:/config   -v /jellyfin/movies/complete:/downloads   --restart unless-stopped   linuxserver/transmission</span></span><br><span class="line"></span><br><span class="line">    image: linuxserver/transmission</span><br><span class="line">    container_name: transmission</span><br><span class="line">    environment:</span><br><span class="line">      - PUID=<span class="number">1000</span></span><br><span class="line">      - PGID=<span class="number">1000</span></span><br><span class="line">      - TZ=Europe/London</span><br><span class="line">      - USER=root <span class="comment">#optional</span></span><br><span class="line">      - PASS=wei <span class="comment">#optional</span></span><br><span class="line">    volumes:</span><br><span class="line">      - /transmission/config:/config</span><br><span class="line">      - /jellyfin/movies:/downloads</span><br><span class="line">      - /transmission/config:/watch</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="number">9091</span>:<span class="number">9091</span></span><br><span class="line">      - <span class="number">51413</span>:<span class="number">51413</span></span><br><span class="line">      - <span class="number">51413</span>:<span class="number">51413</span>/udp</span><br><span class="line">    restart: unless-stopped</span><br><span class="line">    </span><br><span class="line"> jellyfin:</span><br><span class="line"> <span class="comment"># docker run -d  --name=jellyfin   -e PUID=1000   -e PGID=1000   -e TZ=Asia/Shanghai   -p 8096:8096   -v /jellyfin/library:/config   -v /jellyfin/movies:/data/movies   --restart unless-stopped   linuxserver/jellyfin</span></span><br><span class="line"> </span><br><span class="line">    image: jellyfin/jellyfin</span><br><span class="line">    container_name: jellyfin</span><br><span class="line">    volumes:</span><br><span class="line">      - /jellyfin/config:/config</span><br><span class="line">      - /jellyfin/cache:/cache</span><br><span class="line">      - /jellyfin/movies/complete:/media</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="number">8096</span>:<span class="number">8096</span></span><br><span class="line">    restart: unless-stopped</span><br><span class="line">    </span><br><span class="line">  <span class="comment"># nextcloud</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># vlmcsd</span></span><br><span class="line">  vlmcsd:</span><br><span class="line">    image: mogeko/vlmcsd</span><br><span class="line">    container_name: vlmcsd</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="number">1688</span>:<span class="number">1688</span></span><br><span class="line">    restart: always</span><br><span class="line">    </span><br><span class="line">  <span class="comment"># baidupcs 废了</span></span><br><span class="line">  panbaidu:</span><br><span class="line">    image: auska/docker-baidupcs   <span class="comment"># https://github.com/liuzhuoling2011/baidupcs-web  https://github.com/iikira/BaiduPCS-Go</span></span><br><span class="line">    container_name: panbaidu</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="number">1999</span>:<span class="number">1999</span></span><br><span class="line">    environment:</span><br><span class="line">      - PUID=<span class="number">1000</span></span><br><span class="line">      - PGID=<span class="number">1000</span></span><br><span class="line">      - TZ=Asia/Shanghai</span><br><span class="line">      - PORT=<span class="number">1999</span></span><br><span class="line">    volumes:</span><br><span class="line">      - /jellyfin/movies/complete:/root/Downloads</span><br></pre></td></tr></table></figure></div>
+        <h2 id="Tableview初始化"><a href="#Tableview初始化" class="headerlink" title="Tableview初始化"></a>Tableview初始化</h2><h2 id="插入一条数据"><a href="#插入一条数据" class="headerlink" title="插入一条数据"></a>插入一条数据</h2><hr>
+<ul>
+<li>TableView 初始化</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void myc::setTableHead()</span><br><span class="line">&#123;</span><br><span class="line">    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&#123;</span><br><span class="line">      QStandardItemModel *  theModel &#x3D; new QStandardItemModel(ui-&gt;tableView);</span><br><span class="line">      ui-&gt;tableView-&gt;setModel(theModel);</span><br><span class="line">   		 &#125;</span><br><span class="line">    QStandardItemModel * theModel &#x3D; (QStandardItemModel*) ui-&gt;tableView-&gt;model();</span><br><span class="line">	 theSelection &#x3D; new QItemSelectionModel(theModel);&#x2F;&#x2F;选中模型类 从ui中获取 而不是设置类成员</span><br><span class="line">	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);</span><br><span class="line">    QStringList headerList;</span><br><span class="line">    headerList&lt;&lt;&quot;序号&quot;&lt;&lt;&quot;报告编号&quot;&lt;&lt;&quot;姓名&quot;&lt;&lt;&quot;性别&quot;&lt;&lt;&quot;创建时间&quot;;</span><br><span class="line">    theModel-&gt;setHorizontalHeaderLabels(headerList);</span><br><span class="line">    theModel-&gt;setRowCount(5);  &#x2F;&#x2F;设置表格行数 </span><br><span class="line">    ui-&gt;tableView-&gt;setGridStyle(Qt::SolidLine);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(true);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(QHeaderView::ResizeToContents);</span><br><span class="line">    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(true);   &#x2F;&#x2F; 是否隐藏列表头</span><br><span class="line">    ui-&gt;tableView-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers); &#x2F;&#x2F;是否可编辑 cell</span><br><span class="line">    ui-&gt;tableView-&gt;setContextMenuPolicy(Qt::CustomContextMenu);    &#x2F;&#x2F;弹出右键菜单策略</span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionBehavior(QAbstractItemView::SelectRows); &#x2F;&#x2F;一选就选择整行</span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionMode(QAbstractItemView::SingleSelection); &#x2F;&#x2F;只选择一行&#x2F;多行</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><p>添加一行数据</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">void myc::querybtn_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    QStandardItemModel * theModel &#x3D; (QStandardItemModel*)ui-&gt;tableView-&gt;model();</span><br><span class="line">    int start&#x3D; theModel-&gt;rowCount();  &#x2F;&#x2F; 有start也就是从表格现有的行数下一个开始</span><br><span class="line">    QString sql &#x3D;  QString(&quot;select * from patients&quot;);</span><br><span class="line">    QList&lt;QList&lt;QVariant&gt;&gt; query_list &#x3D; con-&gt;dbquery(sql);</span><br><span class="line">    for(int i&#x3D;0;i&lt;query_list.length();i++)&#123;</span><br><span class="line">        QList&lt;QStandardItem*&gt; ItemList;</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][0].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][1].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][2].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][3].toString()&#x3D;&#x3D;&quot;0&quot;?&quot;女&quot;:&quot;男&quot;));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][4].toString()));</span><br><span class="line">        theModel-&gt;insertRow(i+start,ItemList);  &#x2F;&#x2F; 插入</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ul>
+
       
     </div>
     
@@ -402,9 +405,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/nas/" rel="tag"># nas</a>
-          
-            <a href="/tags/docker/" rel="tag"># docker</a>
+            <a href="/tags/QT/" rel="tag"># QT</a>
           
         </div>
       
@@ -417,8 +418,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/04/16/Mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%8F%AF%E8%83%BD%E9%97%AE%E9%A2%98/" rel="next" title="Mysql主从配置及可能问题">
-                <i class="fa fa-chevron-left"></i> Mysql主从配置及可能问题
+              <a href="/2021/02/24/cpp_vscode_setting/" rel="next" title="cpp_vscode_setting">
+                <i class="fa fa-chevron-left"></i> cpp_vscode_setting
               </a>
             
           </div>
@@ -426,10 +427,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/16/inotify+rsync%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC/" rel="prev" title="inotify+rsync同步脚本">
-                inotify+rsync同步脚本 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -588,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-compose-yaml"><span class="nav-number">1.</span> <span class="nav-text">docker-compose.yaml</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tableview初始化"><span class="nav-number">1.</span> <span class="nav-text">Tableview初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入一条数据"><span class="nav-number">2.</span> <span class="nav-text">插入一条数据</span></a></li></ol></div>
             
 
           </div>

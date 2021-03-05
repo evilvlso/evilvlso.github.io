@@ -288,6 +288,149 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/04/QtTableView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/03/04/QtTableView/" itemprop="url">QT-TableView</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-04T12:00:00+08:00">
+                2021-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/03/04/QtTableView/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/03/04/QtTableView/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Tableview初始化"><a href="#Tableview初始化" class="headerlink" title="Tableview初始化"></a>Tableview初始化</h2><h2 id="插入一条数据"><a href="#插入一条数据" class="headerlink" title="插入一条数据"></a>插入一条数据</h2><hr>
+<ul>
+<li>TableView 初始化</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void myc::setTableHead()</span><br><span class="line">&#123;</span><br><span class="line">    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&#123;</span><br><span class="line">      QStandardItemModel *  theModel &#x3D; new QStandardItemModel(ui-&gt;tableView);</span><br><span class="line">      ui-&gt;tableView-&gt;setModel(theModel);</span><br><span class="line">   		 &#125;</span><br><span class="line">    QStandardItemModel * theModel &#x3D; (QStandardItemModel*) ui-&gt;tableView-&gt;model();</span><br><span class="line">	 theSelection &#x3D; new QItemSelectionModel(theModel);&#x2F;&#x2F;选中模型类 从ui中获取 而不是设置类成员</span><br><span class="line">	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);</span><br><span class="line">    QStringList headerList;</span><br><span class="line">    headerList&lt;&lt;&quot;序号&quot;&lt;&lt;&quot;报告编号&quot;&lt;&lt;&quot;姓名&quot;&lt;&lt;&quot;性别&quot;&lt;&lt;&quot;创建时间&quot;;</span><br><span class="line">    theModel-&gt;setHorizontalHeaderLabels(headerList);</span><br><span class="line">    theModel-&gt;setRowCount(5);  &#x2F;&#x2F;设置表格行数 </span><br><span class="line">    ui-&gt;tableView-&gt;setGridStyle(Qt::SolidLine);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(true);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(QHeaderView::ResizeToContents);</span><br><span class="line">    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(true);   &#x2F;&#x2F; 是否隐藏列表头</span><br><span class="line">    ui-&gt;tableView-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers); &#x2F;&#x2F;是否可编辑 cell</span><br><span class="line">    ui-&gt;tableView-&gt;setContextMenuPolicy(Qt::CustomContextMenu);    &#x2F;&#x2F;弹出右键菜单策略</span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionBehavior(QAbstractItemView::SelectRows); &#x2F;&#x2F;一选就选择整行</span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionMode(QAbstractItemView::SingleSelection); &#x2F;&#x2F;只选择一行&#x2F;多行</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><p>添加一行数据</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">void myc::querybtn_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    QStandardItemModel * theModel &#x3D; (QStandardItemModel*)ui-&gt;tableView-&gt;model();</span><br><span class="line">    int start&#x3D; theModel-&gt;rowCount();  &#x2F;&#x2F; 有start也就是从表格现有的行数下一个开始</span><br><span class="line">    QString sql &#x3D;  QString(&quot;select * from patients&quot;);</span><br><span class="line">    QList&lt;QList&lt;QVariant&gt;&gt; query_list &#x3D; con-&gt;dbquery(sql);</span><br><span class="line">    for(int i&#x3D;0;i&lt;query_list.length();i++)&#123;</span><br><span class="line">        QList&lt;QStandardItem*&gt; ItemList;</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][0].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][1].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][2].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][3].toString()&#x3D;&#x3D;&quot;0&quot;?&quot;女&quot;:&quot;男&quot;));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][4].toString()));</span><br><span class="line">        theModel-&gt;insertRow(i+start,ItemList);  &#x2F;&#x2F; 插入</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/24/cpp_vscode_setting/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1515,144 +1658,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/25/brewinstall/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/25/brewinstall/" itemprop="url">brew安装,换源,禁更</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-25T13:55:28+08:00">
-                2020-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/06/25/brewinstall/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/25/brewinstall/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Brew安装"><a href="#Brew安装" class="headerlink" title="Brew安装"></a>Brew安装</h3><p>安装brew时候，某些地区因ip限制无法执行官方脚本报错如下：</p>
-<p><code>curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused</code></p>
-<p>那么可以下载<a href="https://github.com/evilvlso/Utils/blob/master/LinuxScript/brew_install.sh" target="_blank" rel="noopener">这个文件</a>(已经替换BREW_REPO)，然后执行 <code>bash brew_install.sh</code></p>
-<h3 id="Brew-更换国内镜像-中科大"><a href="#Brew-更换国内镜像-中科大" class="headerlink" title="Brew 更换国内镜像(中科大)"></a>Brew 更换国内镜像(中科大)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd "$(brew --repo)"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/brew.git</span><br><span class="line">cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git</span><br></pre></td></tr></table></figure></div>
-<h3 id="Brew-禁止update"><a href="#Brew-禁止update" class="headerlink" title="Brew 禁止update"></a>Brew 禁止update</h3><p>每次安装包搜索包都要update，这个过程又很慢所以 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export HOMEBREW_NO_AUTO_UPDATE=true</span><br></pre></td></tr></table></figure></div>
-<p>这样就不自动更新了</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1725,7 +1730,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1738,7 +1743,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
