@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="Tableview初始化插入一条数据  TableView 初始化  12345678910111213141516171819202122void myc::setTableHead()&amp;#123;    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&amp;#123;      QStandardItemModel *  theModel &amp;#">
+<meta name="description" content="TableView 初始化  12345678910111213141516171819202122void myc::setTableHead()&amp;#123;    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&amp;#123;      QStandardItemModel *  theModel &#x3D; new QStandardItemModel(ui-&amp;g">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QT-TableView">
 <meta property="og:url" content="http://yoursite.com/2021/03/04/QtTableView/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="Tableview初始化插入一条数据  TableView 初始化  12345678910111213141516171819202122void myc::setTableHead()&amp;#123;    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&amp;#123;      QStandardItemModel *  theModel &amp;#">
+<meta property="og:description" content="TableView 初始化  12345678910111213141516171819202122void myc::setTableHead()&amp;#123;    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&amp;#123;      QStandardItemModel *  theModel &#x3D; new QStandardItemModel(ui-&amp;g">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-04T04:00:00.000Z">
-<meta property="article:modified_time" content="2021-03-08T12:14:41.616Z">
+<meta property="article:modified_time" content="2021-08-17T06:56:04.765Z">
 <meta property="article:author" content="JustTango">
 <meta property="article:tag" content="QT">
 <meta name="twitter:card" content="summary">
@@ -367,15 +367,15 @@
       
 
       
-        <h2 id="Tableview初始化"><a href="#Tableview初始化" class="headerlink" title="Tableview初始化"></a>Tableview初始化</h2><h2 id="插入一条数据"><a href="#插入一条数据" class="headerlink" title="插入一条数据"></a>插入一条数据</h2><hr>
+        <hr>
 <ul>
 <li>TableView 初始化</li>
 </ul>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void myc::setTableHead()</span><br><span class="line">&#123;</span><br><span class="line">    if(ui-&gt;tableView-&gt;model()&#x3D;&#x3D;nullptr)&#123;</span><br><span class="line">      QStandardItemModel *  theModel &#x3D; new QStandardItemModel(ui-&gt;tableView);</span><br><span class="line">      ui-&gt;tableView-&gt;setModel(theModel);</span><br><span class="line">   		 &#125;</span><br><span class="line">    QStandardItemModel * theModel &#x3D; (QStandardItemModel*) ui-&gt;tableView-&gt;model();</span><br><span class="line">	 theSelection &#x3D; new QItemSelectionModel(theModel);&#x2F;&#x2F;选中模型类 从ui中获取 而不是设置类成员</span><br><span class="line">	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);</span><br><span class="line">    QStringList headerList;</span><br><span class="line">    headerList&lt;&lt;&quot;序号&quot;&lt;&lt;&quot;报告编号&quot;&lt;&lt;&quot;姓名&quot;&lt;&lt;&quot;性别&quot;&lt;&lt;&quot;创建时间&quot;;</span><br><span class="line">    theModel-&gt;setHorizontalHeaderLabels(headerList);</span><br><span class="line">    theModel-&gt;setRowCount(5);  &#x2F;&#x2F;设置表格行数 </span><br><span class="line">    ui-&gt;tableView-&gt;setGridStyle(Qt::SolidLine);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(true);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(QHeaderView::ResizeToContents);</span><br><span class="line">    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(true);   &#x2F;&#x2F; 是否隐藏列表头</span><br><span class="line">    ui-&gt;tableView-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers); &#x2F;&#x2F;是否可编辑 cell</span><br><span class="line">    ui-&gt;tableView-&gt;setContextMenuPolicy(Qt::CustomContextMenu);    &#x2F;&#x2F;弹出右键菜单策略</span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionBehavior(QAbstractItemView::SelectRows); &#x2F;&#x2F;一选就选择整行</span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionMode(QAbstractItemView::SingleSelection); &#x2F;&#x2F;只选择一行&#x2F;多行</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::setTableHead</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(ui-&gt;tableView-&gt;model()==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">      QStandardItemModel *  theModel = <span class="keyword">new</span> QStandardItemModel(ui-&gt;tableView);</span><br><span class="line">      ui-&gt;tableView-&gt;setModel(theModel);</span><br><span class="line">   		 &#125;</span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*) ui-&gt;tableView-&gt;model();</span><br><span class="line">	 theSelection = <span class="keyword">new</span> QItemSelectionModel(theModel);<span class="comment">//选中模型类 从ui中获取 而不是设置类成员</span></span><br><span class="line">	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);</span><br><span class="line">    QStringList headerList;</span><br><span class="line">    headerList&lt;&lt;<span class="string">"序号"</span>&lt;&lt;<span class="string">"报告编号"</span>&lt;&lt;<span class="string">"姓名"</span>&lt;&lt;<span class="string">"性别"</span>&lt;&lt;<span class="string">"创建时间"</span>;</span><br><span class="line">    theModel-&gt;setHorizontalHeaderLabels(headerList);</span><br><span class="line">    theModel-&gt;setRowCount(<span class="number">5</span>);  <span class="comment">//设置表格行数 </span></span><br><span class="line">    ui-&gt;tableView-&gt;setGridStyle(Qt::SolidLine);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(<span class="literal">true</span>);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(QHeaderView::ResizeToContents);</span><br><span class="line">    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(<span class="literal">true</span>);   <span class="comment">// 是否隐藏列表头</span></span><br><span class="line">    ui-&gt;tableView-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers); <span class="comment">//是否可编辑 cell</span></span><br><span class="line">    ui-&gt;tableView-&gt;setContextMenuPolicy(Qt::CustomContextMenu);    <span class="comment">//弹出右键菜单策略</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionBehavior(QAbstractItemView::SelectRows); <span class="comment">//一选就选择整行</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionMode(QAbstractItemView::SingleSelection); <span class="comment">//只选择一行/多行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>添加一行数据</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">void myc::querybtn_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    QStandardItemModel * theModel &#x3D; (QStandardItemModel*)ui-&gt;tableView-&gt;model();</span><br><span class="line">    int start&#x3D; theModel-&gt;rowCount();  &#x2F;&#x2F; 有start也就是从表格现有的行数下一个开始</span><br><span class="line">    QString sql &#x3D;  QString(&quot;select * from patients&quot;);</span><br><span class="line">    QList&lt;QList&lt;QVariant&gt;&gt; query_list &#x3D; con-&gt;dbquery(sql);</span><br><span class="line">    for(int i&#x3D;0;i&lt;query_list.length();i++)&#123;</span><br><span class="line">        QList&lt;QStandardItem*&gt; ItemList;</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][0].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][1].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][2].toString()));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][3].toString()&#x3D;&#x3D;&quot;0&quot;?&quot;女&quot;:&quot;男&quot;));</span><br><span class="line">        ItemList&lt;&lt;(new QStandardItem(query_list[i][4].toString()));</span><br><span class="line">        theModel-&gt;insertRow(i+start,ItemList);  &#x2F;&#x2F; 插入</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::querybtn_clicked</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*)ui-&gt;tableView-&gt;model();</span><br><span class="line">    <span class="keyword">int</span> start= theModel-&gt;rowCount();  <span class="comment">// 有start也就是从表格现有的行数下一个开始</span></span><br><span class="line">    QString sql =  QString(<span class="string">"select * from patients"</span>);</span><br><span class="line">    QList&lt;QList&lt;QVariant&gt;&gt; query_list = con-&gt;dbquery(sql);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;query_list.length();i++)&#123;</span><br><span class="line">        QList&lt;QStandardItem*&gt; ItemList;</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">0</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">1</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">2</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">3</span>].toString()==<span class="string">"0"</span>?<span class="string">"女"</span>:<span class="string">"男"</span>));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">4</span>].toString()));</span><br><span class="line">        theModel-&gt;insertRow(i+start,ItemList);  <span class="comment">// 插入</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -502,17 +502,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -527,7 +518,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -540,7 +531,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -581,22 +572,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tableview初始化"><span class="nav-number">1.</span> <span class="nav-text">Tableview初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入一条数据"><span class="nav-number">2.</span> <span class="nav-text">插入一条数据</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
