@@ -844,6 +844,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/Transformer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/08/15/Transformer/" itemprop="url">Transformer相关知识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-15T15:30:00+08:00">
+                2020-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/08/15/Transformer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/15/Transformer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Transformer和non-local的关系"><a href="#Transformer和non-local的关系" class="headerlink" title="Transformer和non-local的关系"></a><a href="https://www.zhihu.com/question/427061585" target="_blank" rel="noopener">Transformer和non-local的关系</a></h1><h1 id="Transformer的前世今生"><a href="#Transformer的前世今生" class="headerlink" title="Transformer的前世今生"></a><a href="https://zhuanlan.zhihu.com/p/360932588" target="_blank" rel="noopener">Transformer的前世今生</a></h1><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer:"></a>Transformer:</h2><p><strong>诸如vit之类的Transformer的视觉应用又是另外一种情况：一帮人认为Transformer在序列处理上表现这么好，不如把图像也先处理成序列（“一张图顶16个词”），带进Transformer里试试。自注意力机制的引入是为了捕捉输入序列各项之间的依赖关系，尤其是捕捉那些在序列模型很容易被丢失掉的长范围依赖关系。</strong></p>
+<ul>
+<li>long range带来的全局特性。CNN的conv算子一个问题就是感受野比较局限，为了扩大网络的关注区域，需要卷积-池化-堆叠多层这种结构，带来的问题其实是“有效/真实”感受野是以某个中心为原点向外高斯衰减的，因此CNN通常的有效attention就是图中的某一两个比较重要的parts。为了解决这个问题，CNN可以设计attention module来得到更大更均衡的attention map，很多工作也证明了attention module的有效性。而Transformer天然自带的long range特性使得从浅层到深层，都比较能利用全局的有效信息，并且multi-head机制保证了网络可以关注到多个discriminative parts，其实每一个head都是一个独立的attention，这是Transformer与CNN不同的地方之一。</li>
+<li>更好的多模态融合能力。<strong style="color:red">CNN擅长的是解构图像的信息，卷积核就是以前传统数字图像处理中的滤波操作，当然这使得CNN不擅长融合其他模态的信息，例如文字、标签、语音、时间等等各种信息。</strong>通常需要用CNN提取图像特征，再用其他模型对其他模型信息进行embedding后再网络的末端将多模态的embedding进行融合。而Transformer可以在网络的输入端对模态进行融合，因为它的思想是把图像通过conv或者直接对像素进行操作得到初始的embedding放入的Transformer中，不需要保持H<em>W</em>C的feature map结构。就类似position embedding，只要你能编码的信息，都可以非常轻松地利用进来。</li>
+</ul>
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802163946973.png" alt="image-20210802163946973" style="zoom:50%;" />
+
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802170202710.png" alt="image-20210802170202710" style="zoom:50%;" />
+
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802171036543.png" alt="image-20210802171036543" style="zoom:50%;" />
+
+<p>==注意力的计算分为三个步骤：==</p>
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802173839986.png" alt="image-20210802173839986" style="zoom:50%;" />
+
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802173913995.png" alt="image-20210802173913995" style="zoom:50%;" />
+
+<p>在上述注意力机制的描述中涉及了三个集合：查询集合 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 、键集合 <img src="https://www.zhihu.com/equation?tex=K" alt="[公式]"> 和值集合 <img src="https://www.zhihu.com/equation?tex=V" alt="[公式]"> 。但是，这些集合并非一定要各不相同，常见情况分为三种：</p>
+<ul>
+<li><strong>（A）</strong>如果 <img src="https://www.zhihu.com/equation?tex=Q%5Cne+K+%5Cne+V" alt="[公式]">，即三个集合完全不同（如上面对 SDPA 和 MHA 的示例就是这种情况），我们简称其为 <img src="https://www.zhihu.com/equation?tex=QKV" alt="[公式]"> 模式；</li>
+<li><strong>（B）</strong>如果 <img src="https://www.zhihu.com/equation?tex=Q+%5Cne+K%3DV" alt="[公式]"> ，即键和值集合是同一个集合，我们简称这种模式为 <img src="https://www.zhihu.com/equation?tex=QVV" alt="[公式]"> 模式；</li>
+<li><strong>（C）</strong>如果 <img src="https://www.zhihu.com/equation?tex=Q%3DK%3DV" alt="[公式]"> ，即查询、键和值三个集合实际是“一回事儿”，我们将这种模式简称为 <img src="https://www.zhihu.com/equation?tex=VVV" alt="[公式]"> 模式。</li>
+</ul>
+<p>上述三种注意力模式中， <img src="https://www.zhihu.com/equation?tex=QVV" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=VVV" alt="[公式]"> 两种模式应用最为广泛，因为二者蕴含了特征表示中的两个非常重要的问题： <img src="https://www.zhihu.com/equation?tex=QVV" alt="[公式]"> 模式代表着==<strong>如何用一个特征集合表示另一个集合</strong>==，而 <img src="https://www.zhihu.com/equation?tex=VVV" alt="[公式]"> 模式代表了<strong>==如何用一个特征集合表示自己==</strong>。</p>
+<hr>
+<p>![image-20210803182503472](/Users/dongzai/Library/Application Support/typora-user-images/image-20210803182503472.png)</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffn_1 &#x3D; nn.Linear(hidden_size, activation&#x3D;&#39;relu&#39;)</span><br><span class="line">ffn_2 &#x3D; nn.Linear(units, activation&#x3D;&#39;identity&#39;)(ffn_1(X))</span><br></pre></td></tr></table></figure></div>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1524,146 +1682,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/vim%E4%BD%9C%E4%B8%BAIDE%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/13/vim%E4%BD%9C%E4%B8%BAIDE%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/" itemprop="url">vim作为IDE的快捷键</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-13T10:57:40+08:00">
-                2020-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/06/13/vim%E4%BD%9C%E4%B8%BAIDE%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/13/vim%E4%BD%9C%E4%B8%BAIDE%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>老是忘记，不定期更新。。</p>
-</blockquote>
-<p>注释代码: <code>gcc</code></p>
-<p>“<leader>“是自定义的: <code>let mapleader=&quot;,&quot;</code></p>
-<p>运行代码: <code>&lt;leader&gt;r</code> (自定义)</p>
-<p>代码补全: <code>&lt;Ctrl+x&gt;o</code> (不同插件快捷键不同)</p>
-<p>删除一个单词: <code>daw</code></p>
-<p>删除至双引号字符为止: <code>dat&quot;</code> </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1736,7 +1754,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1749,7 +1767,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
