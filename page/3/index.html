@@ -288,6 +288,292 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/25/condachanrepo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/25/condachanrepo/" itemprop="url">anaconda更换repo</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-25T13:16:34+08:00">
+                2020-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/25/condachanrepo/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/25/condachanrepo/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>anaconda在某些地区速度很慢，下面介绍添加国内清华源和中科大源的方法：</p>
+<ul>
+<li>添加清华源</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> pytorch</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置搜索时显示通道地址</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --<span class="built_in">set</span> show_channel_urls yes</span></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>添加中科大源</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">$</span><span class="bash"> conda config --<span class="built_in">set</span> show_channel_urls yes</span></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>Linux下</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.condarc</span><br><span class="line">channels:</span><br><span class="line">  - defaults</span><br><span class="line">show_channel_urls: true</span><br><span class="line">default_channels:</span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main</span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free</span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r</span><br><span class="line">custom_channels:</span><br><span class="line">  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br></pre></td></tr></table></figure></div>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/" itemprop="url">flask_restful使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-13T14:58:50+08:00">
+                2020-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/13/flask-restful%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="flask-restful"><a href="#flask-restful" class="headerlink" title="flask_restful"></a>flask_restful</h2><ul>
+<li>字段验证</li>
+<li>格式化返回</li>
+</ul>
+<p>模版：</p>
+<p><code>from flask_restful import Api,reqparse,Resource,inputs</code><br><code>from flask_cors import *</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">app=Flask(__name)</span><br><span class="line"><span class="comment"># 需要定一个api</span></span><br><span class="line">api=Api(app)</span><br><span class="line"><span class="comment"># 解决一些跨域问题</span></span><br><span class="line">CORS(app,resource=&#123;<span class="string">r"/*"</span>&#125;)</span><br><span class="line"><span class="comment"># CORS(app, resources=&#123;r"/test": &#123;"origins": "*"&#125;&#125;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一定继承自 Resource</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestView</span><span class="params">(Resource)</span></span></span><br><span class="line"><span class="class">	<span class="title">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="comment"># 字段验证</span></span><br><span class="line">		parser = reqparse.RequestParser()</span><br><span class="line">		parser.add_argument(<span class="string">"phone"</span>,required=<span class="literal">True</span>,type=inputs.regex(<span class="string">r'\d&#123;11&#125;'</span>),help=<span class="string">"输入正确手机号"</span>，trim=<span class="literal">True</span>)</span><br><span class="line">		parser.add_argument(<span class="string">"username"</span>,required=<span class="literal">True</span>,type=str,help=<span class="string">"输入姓名"</span>)</span><br><span class="line">		args=parser.parse_args(). //参数解析完成，直接get即可获取</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"ok"</span></span><br><span class="line">		<span class="keyword">pass</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"ok"</span></span><br><span class="line">		<span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">api.add_resource(TestView,<span class="string">"/test"</span>,endpoint=<span class="string">"test"</span>)</span><br></pre></td></tr></table></figure></div>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/13/vim%E4%BD%9C%E4%B8%BAIDE%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1396,271 +1682,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/" itemprop="url">logging添加Handler</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:45:00+08:00">
-                2020-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">logger = logging.getLogger(<span class="string">'what'</span>)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">formater=logging.Formatter(fmt=<span class="string">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,datefmt=<span class="string">'%Y/%m/%d %H:%M'</span>)</span><br><span class="line"><span class="comment">#文件Handler</span></span><br><span class="line">fh=logging.FileHandler(<span class="string">'test.log'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line"><span class="comment">#自定义Handler</span></span><br><span class="line">th=CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#终端Handler</span></span><br><span class="line">ch = logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line"><span class="comment">#添加Handler</span></span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
-<h3 id="自定义Hander"><a href="#自定义Hander" class="headerlink" title="自定义Hander"></a>自定义Hander</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CHandler</span><span class="params">(logging.Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        logging.Handler.__init__(self)</span><br><span class="line">        self.client=pymysql.Connection(host=<span class="string">'127.0.0.1'</span>,user=<span class="string">'root'</span>,passwd=<span class="string">'qweqwe'</span>,db=<span class="string">'sharesnews'</span>,charset=<span class="string">'utf8mb4'</span>,autocommit=<span class="literal">True</span>)</span><br><span class="line">        self.cursor=self.client.cursor()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            sql=<span class="string">'insert into exceptions (exception,add_time) VALUES (%s,%s)'</span></span><br><span class="line">            msg = sql.format(record)</span><br><span class="line">            self.cursor.execute(sql,(msg,datetime.now()))</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.handleError(record)</span><br><span class="line">            self.client.rollback()</span><br></pre></td></tr></table></figure></div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/" itemprop="url">scrapy启动多spider</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:45:00+08:00">
-                2020-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.crawler <span class="keyword">import</span> CrawlerProcess</span><br><span class="line"><span class="keyword">from</span> scrapy.utils.project <span class="keyword">import</span> get_project_settings</span><br><span class="line">process = CrawlerProcess(get_project_settings())</span><br><span class="line"><span class="comment"># 指定多个spider</span></span><br><span class="line">process.crawl(<span class="string">"fen"</span>)</span><br><span class="line">process.crawl(<span class="string">"fuck"</span>)</span><br><span class="line"><span class="comment"># 执行所有 spider</span></span><br><span class="line"><span class="comment"># for spider_name in process.spider_loader.list():</span></span><br><span class="line"><span class="comment">#     print(spider_name)</span></span><br><span class="line">    <span class="comment"># process.crawl(spider_name)</span></span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1733,7 +1754,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1801,7 +1822,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-[object Object]"></i>
   </span>
