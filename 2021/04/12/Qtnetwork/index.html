@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="cnn," />
+  <meta name="keywords" content="Qt," />
 
 
 
@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="模型结构 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152_________________________________________________________________Layer (type)                 Output">
+<meta name="description" content="Qt Network 同步请求数据 12345678910111213141516171819202122232425QNetworkAccessManager *mgr &#x3D; new QNetworkAccessManager(this);const QUrl url(QStringLiteral(&quot;http:&#x2F;&#x2F;myserver.com&#x2F;api&quot;));QNetworkRequest reques">
 <meta property="og:type" content="article">
-<meta property="og:title" content="keras创建VGG16模型">
-<meta property="og:url" content="http://yoursite.com/2020/10/12/vgg16/index.html">
+<meta property="og:title" content="Qt Network使用">
+<meta property="og:url" content="http://yoursite.com/2021/04/12/Qtnetwork/index.html">
 <meta property="og:site_name" content="Tango">
-<meta property="og:description" content="模型结构 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152_________________________________________________________________Layer (type)                 Output">
+<meta property="og:description" content="Qt Network 同步请求数据 12345678910111213141516171819202122232425QNetworkAccessManager *mgr &#x3D; new QNetworkAccessManager(this);const QUrl url(QStringLiteral(&quot;http:&#x2F;&#x2F;myserver.com&#x2F;api&quot;));QNetworkRequest reques">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-10-24T13:50:00.714Z">
+<meta property="article:published_time" content="2021-04-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-01-19T09:46:55.585Z">
 <meta property="article:author" content="JustTango">
-<meta property="article:tag" content="cnn">
+<meta property="article:tag" content="Qt">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/10/12/vgg16/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/04/12/Qtnetwork/"/>
 
 
 
 
 
-  <title>keras创建VGG16模型 | Tango</title>
+  <title>Qt Network使用 | Tango</title>
   
 
 
@@ -290,7 +290,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/12/vgg16/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/12/Qtnetwork/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JustTango">
@@ -307,7 +307,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">keras创建VGG16模型</h1>
+          <h1 class="post-title" itemprop="name headline">Qt Network使用</h1>
         
 
         <div class="post-meta">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-12T00:00:00+08:00">
-                2020-10-12
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-12T00:00:00+08:00">
+                2021-04-12
               </time>
             
 
@@ -338,8 +338,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/10/12/vgg16/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/10/12/vgg16/" itemprop="commentsCount"></span>
+                <a href="/2021/04/12/Qtnetwork/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2021/04/12/Qtnetwork/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -367,17 +367,14 @@
       
 
       
-        <p>模型结构</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">_________________________________________________________________</span><br><span class="line">Layer (type)                 Output Shape              Param #</span><br><span class="line">=================================================================</span><br><span class="line">input_1 (InputLayer)         (None, 224, 224, 3)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block1_conv1 (Conv2D)        (None, 224, 224, 64)      1792</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block1_conv2 (Conv2D)        (None, 224, 224, 64)      36928</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block1_pool (MaxPooling2D)   (None, 112, 112, 64)      0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block2_conv1 (Conv2D)        (None, 112, 112, 128)     73856</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block2_conv2 (Conv2D)        (None, 112, 112, 128)     147584</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block2_pool (MaxPooling2D)   (None, 56, 56, 128)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_conv1 (Conv2D)        (None, 56, 56, 256)       295168</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_conv2 (Conv2D)        (None, 56, 56, 256)       590080</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_conv3 (Conv2D)        (None, 56, 56, 256)       590080</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_pool (MaxPooling2D)   (None, 28, 28, 256)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_conv1 (Conv2D)        (None, 28, 28, 512)       1180160</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_conv2 (Conv2D)        (None, 28, 28, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_conv3 (Conv2D)        (None, 28, 28, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_pool (MaxPooling2D)   (None, 14, 14, 512)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_conv1 (Conv2D)        (None, 14, 14, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_conv2 (Conv2D)        (None, 14, 14, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_conv3 (Conv2D)        (None, 14, 14, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_pool (MaxPooling2D)   (None, 7, 7, 512)         0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">flatten (Flatten)            (None, 25088)             0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">fullc1 (Dense)               (None, 4096)              102764544</span><br><span class="line">_________________________________________________________________</span><br><span class="line">fullc2 (Dense)               (None, 4096)              16781312</span><br><span class="line">fullc3 (Dense)               (None, 20)                81940</span><br><span class="line">=================================================================</span><br><span class="line">Total params: 134,342,484</span><br><span class="line">Trainable params: 134,342,484</span><br><span class="line">Non-trainable params: 0</span><br><span class="line">_________________________________________________________________</span><br></pre></td></tr></table></figure></div>
-<a id="more"></a>
+        <h2 id="Qt-Network"><a href="#Qt-Network" class="headerlink" title="Qt Network"></a>Qt Network</h2><ol>
+<li><p>同步请求数据</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">QNetworkAccessManager *mgr = <span class="keyword">new</span> QNetworkAccessManager(<span class="keyword">this</span>);</span><br><span class="line"><span class="function"><span class="keyword">const</span> QUrl <span class="title">url</span><span class="params">(QStringLiteral(<span class="string">"http://myserver.com/api"</span>))</span></span>;</span><br><span class="line"><span class="function">QNetworkRequest <span class="title">request</span><span class="params">(url)</span></span>;</span><br><span class="line">request.setHeader(QNetworkRequest::ContentTypeHeader, <span class="string">"application/json"</span>);</span><br><span class="line"></span><br><span class="line">QJsonObject obj;</span><br><span class="line">obj[<span class="string">"key1"</span>] = <span class="string">"value1"</span>;</span><br><span class="line">obj[<span class="string">"key2"</span>] = <span class="string">"value2"</span>;</span><br><span class="line"><span class="function">QJsonDocument <span class="title">doc</span><span class="params">(obj)</span></span>;</span><br><span class="line">QByteArray data = doc.toJson();</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="comment">// QByteArray data("&#123;\"key1\":\"value1\",\"key2\":\"value2\"&#125;");</span></span><br><span class="line">QNetworkReply *reply = mgr-&gt;post(request, data);</span><br><span class="line"></span><br><span class="line">QObject::<span class="built_in">connect</span>(reply, &amp;QNetworkReply::finished, [=]()&#123;</span><br><span class="line">    <span class="keyword">if</span>(reply-&gt;error() == QNetworkReply::NoError)&#123;</span><br><span class="line">        QString contents = QString::fromUtf8(reply-&gt;readAll());</span><br><span class="line">        qDebug() &lt;&lt; contents;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        QString err = reply-&gt;errorString();</span><br><span class="line">        qDebug() &lt;&lt; err;</span><br><span class="line">    &#125;</span><br><span class="line">    reply-&gt;deleteLater();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>keras 创建VGG16 代码:</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> Model,Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Flatten, Dense, Conv2D, GlobalAveragePooling2D</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Input, MaxPooling2D, GlobalMaxPooling2D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">VGG16</span><span class="params">(num_classes)</span>:</span></span><br><span class="line"></span><br><span class="line">    image_input = Input(shape = (<span class="number">224</span>,<span class="number">224</span>,<span class="number">3</span>))</span><br><span class="line">    <span class="comment"># 第一个卷积部分</span></span><br><span class="line">    x = Conv2D(<span class="number">64</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>,name = <span class="string">'block1_conv1'</span>)(image_input)</span><br><span class="line">    x = Conv2D(<span class="number">64</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>, name = <span class="string">'block1_conv2'</span>)(x)</span><br><span class="line">    x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>), strides = (<span class="number">2</span>,<span class="number">2</span>), name = <span class="string">'block1_pool'</span>)(x)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第二个卷积部分</span></span><br><span class="line">    x = Conv2D(<span class="number">128</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>,name = <span class="string">'block2_conv1'</span>)(x)</span><br><span class="line">    x = Conv2D(<span class="number">128</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>,name = <span class="string">'block2_conv2'</span>)(x)</span><br><span class="line">    x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>),strides = (<span class="number">2</span>,<span class="number">2</span>),name = <span class="string">'block2_pool'</span>)(x)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第三个卷积部分</span></span><br><span class="line">    x = Conv2D(<span class="number">256</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>,name = <span class="string">'block3_conv1'</span>)(x)</span><br><span class="line">    x = Conv2D(<span class="number">256</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>,name = <span class="string">'block3_conv2'</span>)(x)</span><br><span class="line">    x = Conv2D(<span class="number">256</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>,name = <span class="string">'block3_conv3'</span>)(x)</span><br><span class="line">    x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>),strides = (<span class="number">2</span>,<span class="number">2</span>),name = <span class="string">'block3_pool'</span>)(x)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第四个卷积部分</span></span><br><span class="line">    x = Conv2D(<span class="number">512</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>, name = <span class="string">'block4_conv1'</span>)(x)</span><br><span class="line">    x = Conv2D(<span class="number">512</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>, name = <span class="string">'block4_conv2'</span>)(x)</span><br><span class="line">    x = Conv2D(<span class="number">512</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>, name = <span class="string">'block4_conv3'</span>)(x)</span><br><span class="line">    x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>),strides = (<span class="number">2</span>,<span class="number">2</span>),name = <span class="string">'block4_pool'</span>)(x)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第五个卷积部分</span></span><br><span class="line">    x = Conv2D(<span class="number">512</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>, name = <span class="string">'block5_conv1'</span>)(x)</span><br><span class="line">    x = Conv2D(<span class="number">512</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>, name = <span class="string">'block5_conv2'</span>)(x)</span><br><span class="line">    x = Conv2D(<span class="number">512</span>,(<span class="number">3</span>,<span class="number">3</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'same'</span>, name = <span class="string">'block5_conv3'</span>)(x)</span><br><span class="line">    x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>),strides = (<span class="number">2</span>,<span class="number">2</span>),name = <span class="string">'block5_pool'</span>)(x)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 分类部分 可以自行更改</span></span><br><span class="line">    x = Conv2D(<span class="number">256</span>,(<span class="number">7</span>,<span class="number">7</span>),activation = <span class="string">'relu'</span>,padding = <span class="string">'valid'</span>, name = <span class="string">'block6_conv4'</span>)(x)</span><br><span class="line">    x = Flatten(name = <span class="string">'flatten'</span>)(x)</span><br><span class="line">    x = Dense(<span class="number">256</span>,activation = <span class="string">'relu'</span>,name = <span class="string">'fullc1'</span>)(x)</span><br><span class="line">    x = Dense(<span class="number">256</span>,activation = <span class="string">'relu'</span>,name = <span class="string">'fullc2'</span>)(x)</span><br><span class="line">    x = Dense(num_classes,activation = <span class="string">'softmax'</span>,name = <span class="string">'fullc3'</span>)(x)</span><br><span class="line">    model = Model(image_input,x,name = <span class="string">'vgg16'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure></div>
-<p>加载权重以及设置训练层</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意要开启skip_mismatch和by_name</span></span><br><span class="line">model.load_weights(<span class="string">"vgg16_weights_tf_dim_ordering_tf_kernels.h5"</span>,by_name=<span class="literal">True</span>,skip_mismatch=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定训练层</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(model.layers)<span class="number">-5</span>):</span><br><span class="line">    model.layers[i].trainable = <span class="literal">False</span></span><br></pre></td></tr></table></figure></div>
 
-<p>或者直接导入模型:</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.applications <span class="keyword">import</span> VGG16</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Conv2D,Dense,Flatten,Dropout</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Model</span><br><span class="line"></span><br><span class="line">model =  VGG16(weights=<span class="string">"~/.keras/models/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5"</span>,</span><br><span class="line">include_top=<span class="literal">False</span>,</span><br><span class="line">input_shape=(<span class="number">178</span>,<span class="number">178</span>,<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">flat1=Flatten()(model.output)</span><br><span class="line">class1 = Dense(<span class="number">128</span>,activation=<span class="string">"relu"</span>)(flat1)</span><br><span class="line">drop = Dropout(<span class="number">0.3</span>)(class1)</span><br><span class="line">output = Dense(<span class="number">2</span>,activation=<span class="string">"softmax"</span>)(drop)</span><br><span class="line">model = Model(inputs=model.input,outputs=output)</span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> model.layers[:<span class="number">-4</span>]:</span><br><span class="line">    layer.trainable=<span class="literal">False</span></span><br><span class="line">model.compile(optimizer=<span class="string">"rmsprop"</span>,loss=<span class="string">"categorical_crossentropy"</span>,metrics=[<span class="string">"accuracy"</span>])</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ol>
 
       
     </div>
@@ -404,7 +401,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/cnn/" rel="tag"># cnn</a>
+            <a href="/tags/Qt/" rel="tag"># Qt</a>
           
         </div>
       
@@ -417,8 +414,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/09/25/keras%20pytorch%20model%20save/" rel="next" title="keras pytorch 模型保存记载方法">
-                <i class="fa fa-chevron-left"></i> keras pytorch 模型保存记载方法
+              <a href="/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/" rel="next" title="大数据工程师and算法工程师日常">
+                <i class="fa fa-chevron-left"></i> 大数据工程师and算法工程师日常
               </a>
             
           </div>
@@ -427,8 +424,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/10/20/mergepdf/" rel="prev" title="Merge PDF/PDF to Word">
-                Merge PDF/PDF to Word <i class="fa fa-chevron-right"></i>
+              <a href="/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/" rel="prev" title="Linux下打包QT程序">
+                Linux下打包QT程序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -499,8 +496,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -569,6 +575,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Qt-Network"><span class="nav-number">1.</span> <span class="nav-text">Qt Network</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

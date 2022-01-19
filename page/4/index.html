@@ -288,6 +288,150 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/" itemprop="url">Python操作excel-openpyxl</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:45:00+08:00">
+                2020-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>openpyxl是一个很好用的操作excel的库</p>
+<p>常用的操作：</p>
+<ul>
+<li>添加表头 <strong>add_sheet</strong></li>
+<li>添加数据(元组) <strong>add_data</strong></li>
+<li>设置表头格式(仅字体)  <strong>set_header_font</strong></li>
+<li>删除 <strong>sheet delete_sheet</strong></li>
+<li>保存excel <strong>save</strong></li>
+</ul>
+<p>还有很多友好的操作</p>
+</blockquote>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Xlsx</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.workbook = Workbook()</span><br><span class="line">        self.index=<span class="number">1</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_sheet</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.workbook.create_sheet(sheetname,self.index+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_data</span><span class="params">(self,data,sheet=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param sheet :sheet对象</span></span><br><span class="line"><span class="string">        :param data: data最好是一个元组</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(data,tuple):</span><br><span class="line">            sheet.append(data)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            sheet.append(tuple(data))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_header_font</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        格式化行头</span></span><br><span class="line"><span class="string">        :param sheetname:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        font = Font(<span class="string">u'宋体'</span>, size=<span class="number">13</span>, bold=<span class="literal">True</span>, color=<span class="string">'000000'</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> sheetname[<span class="string">"1"</span>]:</span><br><span class="line">            i.font = font</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_sheet</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        删除sheet</span></span><br><span class="line"><span class="string">        :param sheetname:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        self.workbook.remove(self.workbook[sheetname])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self,filename)</span>:</span></span><br><span class="line">        self.workbook.save(filename)</span><br></pre></td></tr></table></figure></div>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1508,143 +1652,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/" itemprop="url">k8s初始化镜像pull问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:32:00+08:00">
-                2020-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="因不明原因k8s初始化镜像无法pull-特记录pull脚本"><a href="#因不明原因k8s初始化镜像无法pull-特记录pull脚本" class="headerlink" title="因不明原因k8s初始化镜像无法pull,特记录pull脚本"></a>因不明原因k8s初始化镜像无法pull,特记录pull脚本</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download k8s 1.15.2 images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> get image-list by <span class="string">'kubeadm config images list --kubernetes-version=v1.15.2'</span></span></span><br><span class="line">images=(</span><br><span class="line">kube-apiserver:v1.18.1</span><br><span class="line">kube-controller-manager:v1.18.1</span><br><span class="line">kube-scheduler:v1.18.1</span><br><span class="line">kube-proxy:v1.18.1</span><br><span class="line">pause:3.2</span><br><span class="line">etcd:3.4.3-0</span><br><span class="line">coredns:1.6.7</span><br><span class="line">)</span><br><span class="line">```Shell</span><br><span class="line">&lt;!--more--&gt;</span><br></pre></td></tr></table></figure></div>
-<p>for imageName in ${images[@]};do<br>docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>    docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName k8s.gcr.io/$imageName<br>    docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>done</p>
-<pre><code>## OR 使用这个一句话搞定
-`kubeadm init --apiserver-advertise-address=192.168.1.224 **--image-repository registry.aliyuncs.com/google_containers** --kubernetes-version v1.15.0  --pod-network-cidr=10.244.0.0/16`
-
-**pod-network:10.244.0.0/16**是 **flannel** 插件所需要的。视情况而定
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1717,7 +1724,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1730,7 +1737,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
