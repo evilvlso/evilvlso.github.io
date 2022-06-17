@@ -288,6 +288,317 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/" itemprop="url">八股文</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-04-25T19:33:33+08:00">
+                2022-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="select-poll"><a href="#select-poll" class="headerlink" title="select/poll"></a>select/poll</h1><p>select 实现多路复用的方式是，将已连接的 Socket 都放到一个<strong>文件描述符集合</strong>，然后调用 select 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过<strong>遍历</strong>文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写， 接着再把整个文件描述符集合<strong>拷贝</strong>回用户态里，然后用户态还需要再通过<strong>遍历</strong>的方法找到可读或可写的 Socket，然后再对其处理。</p>
+<p>对于 select 这种方式，需要进行 <strong>2 次「遍历」文件描述符集合</strong>，一次是在内核态里，一个次是在用户态里 ，而且还会发生 <strong>2 次「拷贝」文件描述符集合</strong>，先从用户空间传入内核空间，由内核修改后，再传出到用户空间中。</p>
+<p>poll 不再用 BitsMap 来存储所关注的文件描述符，取而代之用动态数组，以链表形式来组织，突破了 select 的文件描述符个数限制，当然还会受到系统文件描述符限制。</p>
+<p>但是 poll 和 select 并没有太大的本质区别，<strong>都是使用「线性结构」存储进程关注的 Socket 集合，因此都需要遍历文件描述符集合来找到可读或可写的 Socket，时间复杂度为 O(n)，而且也需要在用户态与内核态之间拷贝文件描述符集合</strong>，这种方式随着并发数上来，性能的损耗会呈指数级增长。</p>
+<h1 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h1><p>epoll 通过两个方面，很好解决了 select/poll 的问题。</p>
+<p><em>第一点</em>，epoll 在内核里使用<strong>红黑树来跟踪进程所有待检测的文件描述字</strong>，把需要监控的 socket 通过 <code>epoll_ctl()</code> 函数加入内核中的红黑树里，红黑树是个高效的数据结构，增删查一般时间复杂度是 <code>O(logn)</code>，通过对这棵黑红树进行操作，这样就不需要像 select/poll 每次操作时都传入整个 socket 集合，只需要传入一个待检测的 socket，减少了内核和用户空间大量的数据拷贝和内存分配。</p>
+<p><em>第二点</em>， epoll 使用事件驱动的机制，内核里<strong>维护了一个链表来记录就绪事件</strong>，当某个 socket 有事件发生时，通过回调函数内核会将其加入到这个就绪事件列表中，当用户调用 <code>epoll_wait()</code> 函数时，只会返回有事件发生的文件描述符的个数，不需要像 select/poll 那样轮询扫描整个 socket 集合，大大提高了检测的效率。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/02/25/Golang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/02/25/Golang/" itemprop="url">Golang碎片化学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-02-25T14:00:00+08:00">
+                2022-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/02/25/Golang/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/02/25/Golang/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Golang碎片化学习笔记"><a href="#Golang碎片化学习笔记" class="headerlink" title="Golang碎片化学习笔记"></a>Golang碎片化学习笔记</h1><ul>
+<li><p><code>counter := map[int]int{}  和 counter := make(map[int]int)</code>是等价的，直接上去{}初始化更装</p>
+</li>
+<li><p>对slice，map进行for遍历，得到的值取决于用几个值接收</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i,k := <span class="keyword">range</span> slice  #i为索引  k为值</span><br><span class="line"><span class="keyword">for</span> i := <span class="keyword">range</span> slice # 则i仅为索引</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k,v := <span class="keyword">range</span> <span class="keyword">map</span>  # key value都能取到</span><br><span class="line"><span class="keyword">for</span> k := <span class="keyword">range</span> <span class="keyword">map</span> # 只有k</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p><code>make</code>创建的slice map 会初始化为该类型的零值，返回变量</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a:=<span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="number">2</span>)</span><br><span class="line">a[<span class="number">0</span>]  #<span class="number">0</span> </span><br><span class="line">a[<span class="number">1</span>]  # <span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p><code>container/list</code>这是一个双向链表，他的主要方法有：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">l:=list.New()</span><br><span class="line">l.Front()</span><br><span class="line">l.Back()</span><br><span class="line">l.PushBack(你的数据)</span><br><span class="line">l.PushFront(你的数据)</span><br><span class="line">l.Remove(e) #e一定是他的Element类型 比如 l.Front 而不是你的数据  e.Value才是你的数据</span><br><span class="line">l.MoveFront(e) #e是Element类型 将要移动的数据</span><br><span class="line">l.MoveBack(e)</span><br></pre></td></tr></table></figure></div>
+
+
+</li>
+</ul>
+<ul>
+<li><p>字符串遍历的结果是???</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GO"><figure class="iseeu highlight /go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="string">"asdasf"</span></span><br><span class="line"><span class="keyword">for</span> _, c := <span class="keyword">range</span> a &#123;</span><br><span class="line">  fmt.Println(c)</span><br><span class="line">&#125;</span><br><span class="line">#<span class="number">97</span></span><br><span class="line"><span class="number">115</span></span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">97</span></span><br><span class="line"><span class="number">115</span></span><br><span class="line"><span class="number">102</span></span><br><span class="line">a := <span class="string">"够神呐虐"</span></span><br><span class="line"><span class="keyword">for</span> _,i := <span class="keyword">range</span> a &#123;</span><br><span class="line">  fmt.Println(i)</span><br><span class="line">&#125;</span><br><span class="line">#</span><br><span class="line"><span class="number">22815</span></span><br><span class="line"><span class="number">31070</span></span><br><span class="line"><span class="number">21584</span></span><br><span class="line"><span class="number">34384</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>Slice取最后一个元素 索引不能是-1 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GO"><figure class="iseeu highlight /go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">fmt.Println(a[<span class="number">-1</span>])  # must be a non-negtive</span><br><span class="line">fmt.Println(a[<span class="built_in">len</span>(a)<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p><code>len()</code>获得的中文字符串长度不是你想的，获取的是字节长度</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a :&#x3D; &quot;够神呐虐&quot;</span><br><span class="line">fmt.Println(len(a)) # 12 fuck</span><br><span class="line">b :&#x3D; []rune(a)   # 4</span><br><span class="line">b :&#x3D; []byte(a)  # 4</span><br></pre></td></tr></table></figure></div>
+
+
+</li>
+</ul>
+<ul>
+<li><p><strong>Printf、Sprintf、Fprintf区别</strong></p>
+<h1 id=""><a href="#" class="headerlink" title=""></a><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220427171722010.png" alt="image-20220427171722010"></h1></li>
+<li><p>小写变量在<strong>本包内</strong>可以访问</p>
+</li>
+<li><p>字符串匹配</p>
+</li>
+<li><pre><code>pattern []string
+pattern[0]==&quot;a&quot;  ??
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 使用unicode筛选匹配中文</span><br></pre></td></tr></table></figure></div>
+# 匹配所有汉字
+print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
+<li></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/22/one_hot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1435,295 +1746,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/04/QtTableView/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/03/04/QtTableView/" itemprop="url">QT-TableView</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-04T12:00:00+08:00">
-                2021-03-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/03/04/QtTableView/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/03/04/QtTableView/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<ul>
-<li>TableView 初始化</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::setTableHead</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(ui-&gt;tableView-&gt;model()==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">      QStandardItemModel *  theModel = <span class="keyword">new</span> QStandardItemModel(ui-&gt;tableView);</span><br><span class="line">      ui-&gt;tableView-&gt;setModel(theModel);</span><br><span class="line">   		 &#125;</span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*) ui-&gt;tableView-&gt;model();</span><br><span class="line">	 theSelection = <span class="keyword">new</span> QItemSelectionModel(theModel);<span class="comment">//选中模型类 从ui中获取 而不是设置类成员</span></span><br><span class="line">	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);</span><br><span class="line">    QStringList headerList;</span><br><span class="line">    headerList&lt;&lt;<span class="string">"序号"</span>&lt;&lt;<span class="string">"报告编号"</span>&lt;&lt;<span class="string">"姓名"</span>&lt;&lt;<span class="string">"性别"</span>&lt;&lt;<span class="string">"创建时间"</span>;</span><br><span class="line">    theModel-&gt;setHorizontalHeaderLabels(headerList);</span><br><span class="line">    theModel-&gt;setRowCount(<span class="number">5</span>);  <span class="comment">//设置表格行数 </span></span><br><span class="line">    ui-&gt;tableView-&gt;setGridStyle(Qt::SolidLine);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(<span class="literal">true</span>);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(QHeaderView::ResizeToContents);</span><br><span class="line">    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(<span class="literal">true</span>);   <span class="comment">// 是否隐藏列表头</span></span><br><span class="line">    ui-&gt;tableView-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers); <span class="comment">//是否可编辑 cell</span></span><br><span class="line">    ui-&gt;tableView-&gt;setContextMenuPolicy(Qt::CustomContextMenu);    <span class="comment">//弹出右键菜单策略</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionBehavior(QAbstractItemView::SelectRows); <span class="comment">//一选就选择整行</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionMode(QAbstractItemView::SingleSelection); <span class="comment">//只选择一行/多行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>添加一行数据</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::querybtn_clicked</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*)ui-&gt;tableView-&gt;model();</span><br><span class="line">    <span class="keyword">int</span> start= theModel-&gt;rowCount();  <span class="comment">// 有start也就是从表格现有的行数下一个开始</span></span><br><span class="line">    QString sql =  QString(<span class="string">"select * from patients"</span>);</span><br><span class="line">    QList&lt;QList&lt;QVariant&gt;&gt; query_list = con-&gt;dbquery(sql);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;query_list.length();i++)&#123;</span><br><span class="line">        QList&lt;QStandardItem*&gt; ItemList;</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">0</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">1</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">2</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">3</span>].toString()==<span class="string">"0"</span>?<span class="string">"女"</span>:<span class="string">"男"</span>));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">4</span>].toString()));</span><br><span class="line">        theModel-&gt;insertRow(i+start,ItemList);  <span class="comment">// 插入</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/24/cpp_vscode_setting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/02/24/cpp_vscode_setting/" itemprop="url">cpp_vscode_setting</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-02-24T17:08:03+08:00">
-                2021-02-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/02/24/cpp_vscode_setting/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/02/24/cpp_vscode_setting/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <hr>
-<p>title: MACOS vscode 配置c++<br>date: 2021-02-25 14:00:00<br>tags : c++</p>
-<hr>
-<h2 id="安装的插件："><a href="#安装的插件：" class="headerlink" title="安装的插件："></a>安装的插件：</h2><ul>
-<li>C/C++</li>
-<li>C/C++ Clang Command Adapter</li>
-<li>Code Runner</li>
-<li>CodeLLDB (重要)</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/02/24/cpp_vscode_setting/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1796,7 +1818,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1809,7 +1831,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

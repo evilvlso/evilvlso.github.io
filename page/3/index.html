@@ -288,6 +288,435 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/15/Transformer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/08/15/Transformer/" itemprop="url">Transformer相关知识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-15T15:30:00+08:00">
+                2020-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/08/15/Transformer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/15/Transformer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Transformer和non-local的关系"><a href="#Transformer和non-local的关系" class="headerlink" title="Transformer和non-local的关系"></a><a href="https://www.zhihu.com/question/427061585" target="_blank" rel="noopener">Transformer和non-local的关系</a></h1><h1 id="Transformer的前世今生"><a href="#Transformer的前世今生" class="headerlink" title="Transformer的前世今生"></a><a href="https://zhuanlan.zhihu.com/p/360932588" target="_blank" rel="noopener">Transformer的前世今生</a></h1><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer:"></a>Transformer:</h2><p><strong>诸如vit之类的Transformer的视觉应用又是另外一种情况：一帮人认为Transformer在序列处理上表现这么好，不如把图像也先处理成序列（“一张图顶16个词”），带进Transformer里试试。自注意力机制的引入是为了捕捉输入序列各项之间的依赖关系，尤其是捕捉那些在序列模型很容易被丢失掉的长范围依赖关系。</strong></p>
+<ul>
+<li>long range带来的全局特性。CNN的conv算子一个问题就是感受野比较局限，为了扩大网络的关注区域，需要卷积-池化-堆叠多层这种结构，带来的问题其实是“有效/真实”感受野是以某个中心为原点向外高斯衰减的，因此CNN通常的有效attention就是图中的某一两个比较重要的parts。为了解决这个问题，CNN可以设计attention module来得到更大更均衡的attention map，很多工作也证明了attention module的有效性。而Transformer天然自带的long range特性使得从浅层到深层，都比较能利用全局的有效信息，并且multi-head机制保证了网络可以关注到多个discriminative parts，其实每一个head都是一个独立的attention，这是Transformer与CNN不同的地方之一。</li>
+<li>更好的多模态融合能力。<strong style="color:red">CNN擅长的是解构图像的信息，卷积核就是以前传统数字图像处理中的滤波操作，当然这使得CNN不擅长融合其他模态的信息，例如文字、标签、语音、时间等等各种信息。</strong>通常需要用CNN提取图像特征，再用其他模型对其他模型信息进行embedding后再网络的末端将多模态的embedding进行融合。而Transformer可以在网络的输入端对模态进行融合，因为它的思想是把图像通过conv或者直接对像素进行操作得到初始的embedding放入的Transformer中，不需要保持H<em>W</em>C的feature map结构。就类似position embedding，只要你能编码的信息，都可以非常轻松地利用进来。</li>
+</ul>
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802163946973.png" alt="image-20210802163946973" style="zoom:50%;" />
+
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802170202710.png" alt="image-20210802170202710" style="zoom:50%;" />
+
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802171036543.png" alt="image-20210802171036543" style="zoom:50%;" />
+
+<p>==注意力的计算分为三个步骤：==</p>
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802173839986.png" alt="image-20210802173839986" style="zoom:50%;" />
+
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210802173913995.png" alt="image-20210802173913995" style="zoom:50%;" />
+
+<p>在上述注意力机制的描述中涉及了三个集合：查询集合 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 、键集合 <img src="https://www.zhihu.com/equation?tex=K" alt="[公式]"> 和值集合 <img src="https://www.zhihu.com/equation?tex=V" alt="[公式]"> 。但是，这些集合并非一定要各不相同，常见情况分为三种：</p>
+<ul>
+<li><strong>（A）</strong>如果 <img src="https://www.zhihu.com/equation?tex=Q%5Cne+K+%5Cne+V" alt="[公式]">，即三个集合完全不同（如上面对 SDPA 和 MHA 的示例就是这种情况），我们简称其为 <img src="https://www.zhihu.com/equation?tex=QKV" alt="[公式]"> 模式；</li>
+<li><strong>（B）</strong>如果 <img src="https://www.zhihu.com/equation?tex=Q+%5Cne+K%3DV" alt="[公式]"> ，即键和值集合是同一个集合，我们简称这种模式为 <img src="https://www.zhihu.com/equation?tex=QVV" alt="[公式]"> 模式；</li>
+<li><strong>（C）</strong>如果 <img src="https://www.zhihu.com/equation?tex=Q%3DK%3DV" alt="[公式]"> ，即查询、键和值三个集合实际是“一回事儿”，我们将这种模式简称为 <img src="https://www.zhihu.com/equation?tex=VVV" alt="[公式]"> 模式。</li>
+</ul>
+<p>上述三种注意力模式中， <img src="https://www.zhihu.com/equation?tex=QVV" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=VVV" alt="[公式]"> 两种模式应用最为广泛，因为二者蕴含了特征表示中的两个非常重要的问题： <img src="https://www.zhihu.com/equation?tex=QVV" alt="[公式]"> 模式代表着==<strong>如何用一个特征集合表示另一个集合</strong>==，而 <img src="https://www.zhihu.com/equation?tex=VVV" alt="[公式]"> 模式代表了<strong>==如何用一个特征集合表示自己==</strong>。</p>
+<hr>
+<p>![image-20210803182503472](/Users/dongzai/Library/Application Support/typora-user-images/image-20210803182503472.png)</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffn_1 &#x3D; nn.Linear(hidden_size, activation&#x3D;&#39;relu&#39;)</span><br><span class="line">ffn_2 &#x3D; nn.Linear(units, activation&#x3D;&#39;identity&#39;)(ffn_1(X))</span><br></pre></td></tr></table></figure></div>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/" itemprop="url">matplotlib解决中文乱码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-01T00:00:00+08:00">
+                2020-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="macos查询系统字体"><a href="#macos查询系统字体" class="headerlink" title="macos查询系统字体"></a>macos查询系统字体</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib.font_manager <span class="keyword">import</span> FontManager</span><br><span class="line">fm = FontManager()</span><br><span class="line">mat_fonts = set(f.name <span class="keyword">for</span> f <span class="keyword">in</span> fm.ttflist)</span><br><span class="line">mat_fonts</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="matplotlib解决中文乱码"><a href="#matplotlib解决中文乱码" class="headerlink" title="matplotlib解决中文乱码"></a>matplotlib解决中文乱码</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.rcParams[<span class="string">'font.sans-serif'</span>] = [<span class="string">'Arial Unicode MS'</span>]</span><br></pre></td></tr></table></figure></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/25/brewinstall/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/25/brewinstall/" itemprop="url">brew安装,换源,禁更</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-25T13:55:28+08:00">
+                2020-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/25/brewinstall/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/25/brewinstall/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Brew安装"><a href="#Brew安装" class="headerlink" title="Brew安装"></a>Brew安装</h3><p>安装brew时候，某些地区因ip限制无法执行官方脚本报错如下：</p>
+<p><code>curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused</code></p>
+<p>那么可以下载<a href="https://github.com/evilvlso/Utils/blob/master/LinuxScript/brew_install.sh" target="_blank" rel="noopener">这个文件</a>(已经替换BREW_REPO)，然后执行 <code>bash brew_install.sh</code></p>
+<h3 id="Brew-更换国内镜像-中科大"><a href="#Brew-更换国内镜像-中科大" class="headerlink" title="Brew 更换国内镜像(中科大)"></a>Brew 更换国内镜像(中科大)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd "$(brew --repo)"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/brew.git</span><br><span class="line">cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git</span><br></pre></td></tr></table></figure></div>
+<h3 id="Brew-禁止update"><a href="#Brew-禁止update" class="headerlink" title="Brew 禁止update"></a>Brew 禁止update</h3><p>每次安装包搜索包都要update，这个过程又很慢所以 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export HOMEBREW_NO_AUTO_UPDATE=true</span><br></pre></td></tr></table></figure></div>
+<p>这样就不自动更新了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/25/pycharm2019/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1242,438 +1671,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/22/snowflake/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/22/snowflake/" itemprop="url">雪花算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-22T14:00:00+08:00">
-                2020-04-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/22/snowflake/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/22/snowflake/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p><code>7uQJnf1B3NnRjV</code> 像这种掺杂数字字母的字符串就是雪花算法生成的。根据设计复杂度，可保证高效性，唯一性。</p>
-</blockquote>
-<blockquote>
-<p><code>48671012016476608855539715</code> 前端可能见到这种形式。</p>
-</blockquote>
-<p>根据业务场景分配位数和意义,比如这里:</p>
-<p><code>[worker_id 8位]</code> <code>[_cur_ms 42位 存储好几十年]</code> <code>[_seq_id 6位 63/ms]</code></p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">seq_id_lock = threading.RLock()</span><br><span class="line">seq_id = <span class="number">1</span></span><br><span class="line">base_time_ms = <span class="number">1414713600000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_seq_id</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> seq_id</span><br><span class="line">    <span class="keyword">with</span> seq_id_lock:</span><br><span class="line">        seq_id = seq_id + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> seq_id &gt; <span class="number">63</span>:</span><br><span class="line">            seq_id = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> seq_id</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_cur_ms</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> int(time.time() * <span class="number">1000</span>) - base_time_ms</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_worker_id</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> os.getpid() &amp; <span class="number">0xFF</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_order</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    位运算 三部分组合起来</span></span><br><span class="line"><span class="string">    :return: 48671012016476608855539715</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    order = next_seq_id()</span><br><span class="line">    order |= (next_cur_ms() &lt;&lt; <span class="number">48</span>)</span><br><span class="line">    order |= (next_worker_id() &lt;&lt; <span class="number">56</span>)</span><br><span class="line">    <span class="keyword">return</span> order</span><br></pre></td></tr></table></figure></div>
-<p>以上生成唯一id数字形式，以供前端使用，使用下面函数生成<code>数字字母掺杂字符串</code></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_itos</span><span class="params">(i: int)</span> -&gt; str:</span></span><br><span class="line">    <span class="string">"""将整型ID转换成以数字字母表示的字符串"""</span></span><br><span class="line">    <span class="comment"># 26+26+10 =62</span></span><br><span class="line">    chs = []</span><br><span class="line">    ord_a = ord(<span class="string">"a"</span>)</span><br><span class="line">    ord_A = ord(<span class="string">"A"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(r: int)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> r &lt; <span class="number">10</span>:</span><br><span class="line">            ch = str(r)</span><br><span class="line">        <span class="keyword">elif</span> r &lt; <span class="number">36</span>:</span><br><span class="line">            ch = chr(ord_a + r - <span class="number">10</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ch = chr(ord_A + r - <span class="number">36</span>)</span><br><span class="line">        chs.append(ch)</span><br><span class="line">    <span class="keyword">while</span> i &gt; <span class="number">62</span>:</span><br><span class="line">        r = i % <span class="number">62</span></span><br><span class="line">        append(r)</span><br><span class="line">        i = i // <span class="number">62</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(chs)</span><br></pre></td></tr></table></figure></div>
-<blockquote>
-<blockquote>
-<p>大佬解析：<code>https://www.bilibili.com/video/BV1TJ411D7Cw/</code></p>
-</blockquote>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="url">布隆过滤器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-17T12:00:00+08:00">
-                2020-04-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
-<p>   <strong>特点:</strong></p>
-<ol>
-<li>不存在的一定不存在，存在的不一定存在。</li>
-<li>添加元素简单，删除很难很难。</li>
-<li>省空间，提升效率。</li>
-</ol>
-<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
-<p>   原先去重调度器和去重队列</p>
-   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
-
-<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
-<pre><code># Ensure use this Scheduler
-   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
-# Ensure all spiders share same duplicates filter through redis
-   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/" itemprop="url">gunicorn配置及使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T14:00:00+08:00">
-                2020-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p>启动:<br><code>gunicorn -c config.py app:app</code></p>
-<p>停止:<code>ps aux | grep &quot;gunicorn&quot;|grep -v &quot;grep&quot;|awk -F &quot; &quot; &#39;{print $2}| xargs -i kill -9 {}&#39;</code></p>
-<p><strong>awk grep kill</strong> 配合着来，有些粗鲁</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1746,7 +1743,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1759,7 +1756,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
