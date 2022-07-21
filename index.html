@@ -288,7 +288,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/21/itertools/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JustTango">
@@ -307,7 +307,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/" itemprop="url">八股文</a></h1>
+                <a class="post-title-link" href="/2022/07/21/itertools/" itemprop="url">itertools排列 组合 笛卡尔积</a></h1>
         
 
         <div class="post-meta">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-04-25T19:33:33+08:00">
-                2022-04-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-21T09:20:00+08:00">
+                2022-07-21
               </time>
             
 
@@ -338,8 +338,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2022/04/25/%E5%85%AB%E8%82%A1%E6%96%87/" itemprop="commentCount"></span>
+                <a href="/2022/07/21/itertools/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/21/itertools/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -369,14 +369,1064 @@
       
         
           
-            <h1 id="select-poll"><a href="#select-poll" class="headerlink" title="select/poll"></a>select/poll</h1><p>select 实现多路复用的方式是，将已连接的 Socket 都放到一个<strong>文件描述符集合</strong>，然后调用 select 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过<strong>遍历</strong>文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写， 接着再把整个文件描述符集合<strong>拷贝</strong>回用户态里，然后用户态还需要再通过<strong>遍历</strong>的方法找到可读或可写的 Socket，然后再对其处理。</p>
+            <h1 id="排列-itertools-permutations"><a href="#排列-itertools-permutations" class="headerlink" title="排列 (itertools.permutations)"></a>排列 (itertools.permutations)</h1><p>从迭代序列里选取n个数字进行排列，有顺序</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">list(itertools.permutations(a,<span class="number">2</span>))</span><br><span class="line">[(<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">list(itertools.permutations(a,<span class="number">3</span>))</span><br><span class="line">Out[<span class="number">36</span>]: [(<span class="number">4</span>, <span class="number">1</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">3</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>), (<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>)]</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="组合-itertools-combinations"><a href="#组合-itertools-combinations" class="headerlink" title="组合(itertools.combinations)"></a>组合(itertools.combinations)</h2><p>从迭代序列里选取n个数字进行组合，重在组合</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">list(itertools.combinations(a,<span class="number">2</span>))</span><br><span class="line">Out[<span class="number">32</span>]: [(<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">3</span>)]</span><br><span class="line"></span><br><span class="line">list(itertools.combinations_with_replacement(a,<span class="number">2</span>))</span><br><span class="line">Out[<span class="number">33</span>]: [(<span class="number">4</span>, <span class="number">4</span>), (<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">3</span>)]  <span class="comment">#可重复利用数字</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="笛卡尔积-itertools-product"><a href="#笛卡尔积-itertools-product" class="headerlink" title="笛卡尔积(itertools.product)"></a>笛卡尔积(itertools.product)</h2><p>对多个迭代器进行笛卡尔积组合，参数的意思是从每个迭代器中选取几个值进行组合</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&#x3D;[1,3,4]</span><br><span class="line">list(itertools.product([1,2,3],[2,3,4],repeat&#x3D;2))</span><br></pre></td></tr></table></figure></div>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/11/Untitled/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/11/Untitled/" itemprop="url">Untitled</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-11T20:23:31+08:00">
+                2022-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/11/Untitled/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/11/Untitled/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/11/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/11/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url">消息中间件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-11T00:00:00+08:00">
+                2022-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/11/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/11/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>异步处理：用户注册后，发送注册邮件和注册短信。用户注册完成后，提交任务到 MQ，发送模块并行获取 MQ 中的任务。</p>
+<p>系统解耦：比如用注册完成，再加一个发送微信通知。只需要新增发送微信消息模块，从 MQ 中读取任务，发送消息即可。无需改动注册模块的代码，这样注册模块与发送模块通过 MQ 解耦。</p>
+<p>流量削峰：秒杀和抢购等场景经常使用 MQ 进行流量削峰。活动开始时流量暴增，用户的请求写入MQ，超过 MQ 最大长度丢弃请求，业务系统接收 MQ 中的消息进行处理，达到流量削峰、保证系统可用性的目的。</p>
+<p>日志处理：日志采集方收集日志写入 kafka 的消息队列中，处理方订阅并消费 kafka 队列中的日志数据。</p>
+<p>消息通讯：点对点或者订阅发布模式，通过消息进行通讯。如微信的消息发送与接收、聊天室等。</p>
+<h2 id="如何保证消息不被重复消费"><a href="#如何保证消息不被重复消费" class="headerlink" title="如何保证消息不被重复消费?"></a>如何保证消息不被重复消费?</h2><p>消息重复消费的原因：</p>
+<p>1、生产者发送消息的时候，在指定的时间只能没有得到服务端的反馈，此时触发了重试机制，在Rabbitmq服务端就会出现重复消费，那么消费者在进行消费的时候就出现了重复消费。</p>
+<p>2、消费者消费完毕以后，消费方给MQ确认已消费的反馈，MQ 没有成功接受。该消息就不会从Rabbitmq删除掉，那么消费者再一次获取到了消息进行消费。</p>
+<p>MQ是无法保证消息不被重复消费的，只能业务系统层面考虑。不被重复消费的问题，就被转化为消息消费的幂等性的问题。幂等性就是指一次和多次请求的结果一致，多次请求不会产生副作用。</p>
+<p>保证消息消费的幂等性可以考虑下面的方式：</p>
+<p>① 给消息生成全局 id，消费成功过的消息可以直接丢弃</p>
+<p>② 消息中保存业务数据的主键字段，结合业务系统需求场景进行处理，避免多次插入、是否可以根据主键多次更新而并不影响结果等</p>
+<h2 id="Rabbitmq"><a href="#Rabbitmq" class="headerlink" title="Rabbitmq"></a>Rabbitmq</h2><p>工作者模式</p>
+<p>发布订阅模式</p>
+<p>路由模式</p>
+<p>主题模式</p>
+<p>RPC同步通信</p>
+<h2 id="Kafaka"><a href="#Kafaka" class="headerlink" title="Kafaka"></a>Kafaka</h2><p>大吞吐量</p>
+<p>磁盘顺序读写</p>
+<p>页缓存</p>
+<p>0拷贝</p>
+<p>批处理</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/09/es%E9%9D%A2%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/09/es%E9%9D%A2%E8%AF%95/" itemprop="url">Elasticseartch面试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-09T14:00:00+08:00">
+                2022-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/09/es%E9%9D%A2%E8%AF%95/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/09/es%E9%9D%A2%E8%AF%95/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><code>https://mp.weixin.qq.com/s/sWKgSncV0GclDgY4dTS0og</code></p>
+<h2 id="2、elasticsearch-的倒排索引是什么"><a href="#2、elasticsearch-的倒排索引是什么" class="headerlink" title="2、elasticsearch 的倒排索引是什么"></a>2、elasticsearch 的倒排索引是什么</h2><p>传统的我们的检索是通过文章，逐个遍历找到对应关键词的位置。</p>
+<p>而倒排索引，是通过分词策略，形成了词和文章的映射关系表，这种词典+映射表即为倒排索引。有了倒排索引，就能实现 o（1）时间复杂度的效率检索文章了，极大的提高了检索效率。倒排索引的底层实现是基于：FST（Finite State Transducer）数据结构。</p>
+<h2 id="智能提示"><a href="#智能提示" class="headerlink" title="智能提示"></a>智能提示</h2><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220716165840731.png" alt="image-20220716165840731" style="zoom:50%;" />
+
+<p><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220716165804453.png" alt="image-20220716165804453"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/09/mysql%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/09/mysql%E9%9D%A2/" itemprop="url">mysql面</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-09T00:00:00+08:00">
+                2022-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/09/mysql%E9%9D%A2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/09/mysql%E9%9D%A2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="mysql基本结构"><a href="#mysql基本结构" class="headerlink" title="mysql基本结构"></a>mysql基本结构</h2><p>大体来说，MySQL可以分为<strong>server层</strong>和<strong>存储引擎层</strong>两部分。</p>
+<p>① server层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖MySQL的大多数核心服务功能</p>
+<p>② 存储引擎层：<strong>存储引擎层负责数据的存储和提取</strong>。其架构模式是插件式的，支持InnoDB、MyISAM、Memory等多个存储引擎</p>
+<p><strong>连接器</strong>：连接器负责跟客户端建立连接、获取权限、维持和管理连接。</p>
+<p><strong>查询缓存</strong>：连接建立完成后，你就可以执行select语句了，此时会先进行查询缓存(缓存是key-value格式；key是sql语句，value是sql语句的查询结果)。</p>
+<p><strong>分析器</strong>：</p>
+<p>​    1、词法分析：MySQL需要识别出里面的字符串分别是什么，代表什么。</p>
+<p>​    2、语法分析：根据词法分析的结果，语法分析器会根据语法规则，判断你输入的这个SQL语句是否满足MySQL语法。</p>
+<p><strong>优化器</strong>：优化器是在表里面有多个索引的时候，决定使用哪个索引；或者在一个语句有多表关联（join）的时候，决定各个表的连接顺序。</p>
+<p><strong>执行器</strong>：调用存储引擎接口，执行sql语句，得到结果</p>
+<h2 id="InnoDB-VS-MyISAM"><a href="#InnoDB-VS-MyISAM" class="headerlink" title="InnoDB VS MyISAM"></a>InnoDB VS MyISAM</h2><p>1、InnoDB支持事务，MyISAM不支持，对于InnoDB每一条SQL语言都默认封装成事务，自动提交，这样会影响速度，所以最好把多条SQL语言放在begin和commit之间，组成一个事务；</p>
+<p>2、InnoDB支持外键，而MyISAM不支持。</p>
+<p>3、InnoDB是支持表锁和行级锁，MyISAM只支持表锁</p>
+<h2 id="常见的索引类型"><a href="#常见的索引类型" class="headerlink" title="常见的索引类型"></a>常见的索引类型</h2><p>索引是在MySQL的存储引擎层中实现的，而不是在服务器层实现的。所以每种存储引擎的索引都不一定完全相同，也不是所有的存储引擎都支持所有的索引类型的。</p>
+<p><strong>BTREE 索引</strong>：最常见的索引类型，大部分索引都支持 B 树索引。</p>
+<p><strong>HASH 索引</strong>：只有Memory引擎支持 ， 使用场景简单 </p>
+<p><strong>R-tree 索引（空间索引）</strong>：空间索引是MyISAM引擎的一个特殊索引类型，主要用于地理空间数据类型，通常使用较少，不做特别介绍。</p>
+<p><strong>Full-text （全文索引）</strong> ：全文索引也是MyISAM的一个特殊索引类型，主要用于全文索引，InnoDB从Mysql5.6版本开始支持全文索引。</p>
+<h2 id="索引最左前缀匹配原则"><a href="#索引最左前缀匹配原则" class="headerlink" title="索引最左前缀匹配原则"></a>索引最左前缀匹配原则</h2><ol>
+<li><p>如果索引了多列，要遵守最左前缀法则。指的是查询从索引的最左前列开始，并且不跳过索引中的列。</p>
+</li>
+<li><p><strong>范围查询: 范围查询右边的列，不能使用索引</strong></p>
+</li>
+<li><p><strong>列运算：不要在索引列上进行运算操作， 索引将失效</strong></p>
+</li>
+<li><p><strong>字符串：字符串不加单引号，造成索引失效。</strong></p>
+</li>
+<li><p><strong>模糊查询：以%开头的like模糊查询，索引失效。如果仅仅是尾部模糊匹配，索引不会失效。如果是头部模糊匹配，索引失效。</strong></p>
+</li>
+</ol>
+<h2 id="对慢查询的优化"><a href="#对慢查询的优化" class="headerlink" title="对慢查询的优化?"></a><strong>对慢查询的优化?</strong></h2><p>慢查询的优化首先要搞明白慢的原因是什么?</p>
+<p><strong>① 是查询条件没有命中索引?</strong></p>
+<p><strong>② 是load了不需要的数据列?</strong></p>
+<p><strong>③ 还是数据量太大?</strong></p>
+<h2 id="ACID是什么"><a href="#ACID是什么" class="headerlink" title="ACID是什么"></a>ACID是什么</h2><p>A=Atomicity原子性：就是上面说的,要么全部成功,要么全部失败，不可能只执行一部分操作。</p>
+<p>C=Consistency一致性：系统(数据库)总是从一个一致性的状态转移到另一个一致性的状态,不会存在中间状态。</p>
+<p>I=Isolation隔离性: <strong>通常</strong>来说:一个事务在完全提交之前,对其他事务是不可见的.注意前面的通常来说加了红色,意味着有例外情况。</p>
+<p>D=Durability持久性：一旦事务提交,那么就永远是这样子了,哪怕系统崩溃也不会影响到这个事务的结果。</p>
+<h2 id="并发事务带来哪些问题？"><a href="#并发事务带来哪些问题？" class="headerlink" title="并发事务带来哪些问题？"></a><strong>并发事务带来哪些问题？</strong></h2><p><code>https://cloud.tencent.com/developer/article/1937815</code> 讲的很清楚</p>
+<p>在典型的应用程序中，多个事务并发运行，经常会操作相同的数据来完成各自的任务（多个用户对同一数据进行操作）。并发虽然是必须的，但可能会导致以下的问题。</p>
+<p><strong>脏读（Dirty read）</strong>: 当一个事务正在访问数据并且对数据进行了修改，而这种修改还没有提交到数据库中，这时另外一个事务也访问了这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据，那么另外一个事务读到的这个数据是“脏数据”，依据“脏数据”所做的操作可能是不正确的。</p>
+<p><strong>丢失修改（Lost to modify）</strong>：指在一个事务读取一个数据时，另外一个事务也访问了该数据，那么在第一个事务中修改了这个数据后，第二个事务也修改了这个数据。这样第一个事务内的修改结果就被丢失，因此称为丢失修改。例如：事务1读取某表中的数据A=20，事务2也读取A=20，事务1修改A=A-1，事务2也修改A=A-1，最终结果A=19，事务1的修改被丢失。</p>
+<p><strong>不可重复读（Unrepeatableread）</strong>：指在一个事务内多次读同一数据。在这个事务还没有结束时，另一个事务也访问该数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改导致第一个事务两次读取的数据可能不太一样。这就发生了在一个事务内两次读到的数据是不一样的情况，因此称为不可重复读。</p>
+<p><strong>幻读（Phantom read）</strong>：幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录，就好像发生了幻觉一样，所以称为幻读。</p>
+<h2 id="join-on中相同的key匹配上时会产生笛卡尔积！"><a href="#join-on中相同的key匹配上时会产生笛卡尔积！" class="headerlink" title="join on中相同的key匹配上时会产生笛卡尔积！"></a>join on中相同的key匹配上时会产生笛卡尔积！</h2><h1 id="sql对表的修改"><a href="#sql对表的修改" class="headerlink" title="sql对表的修改"></a>sql对表的修改</h1><p><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220711165116804.png" alt="image-20220711165116804"></p>
+<h2 id="数据库设计三大范式"><a href="#数据库设计三大范式" class="headerlink" title="数据库设计三大范式"></a>数据库设计三大范式</h2><ol>
+<li>第一<strong>范式</strong>(确保每列保持原子性)。数据库表中的所有字段值都是不可分解的原子值</li>
+<li>第二<strong>范式</strong>(确保<strong>表</strong>中的每列都和主键相关)</li>
+<li>第<strong>三范式</strong>(确保每列都和主键列直接相关,而不是间接相关)</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/08/%E5%85%AB%E8%82%A1%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/08/%E5%85%AB%E8%82%A1%E6%96%87/" itemprop="url">盖今之天下 扶当今之势</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-08T09:30:00+08:00">
+                2022-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/08/%E5%85%AB%E8%82%A1%E6%96%87/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/08/%E5%85%AB%E8%82%A1%E6%96%87/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="select-poll"><a href="#select-poll" class="headerlink" title="select/poll"></a>select/poll</h1><p>select 实现多路复用的方式是，将已连接的 Socket 都放到一个<strong>文件描述符集合</strong>，然后调用 select 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过<strong>遍历</strong>文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写， 接着再把整个文件描述符集合<strong>拷贝</strong>回用户态里，然后用户态还需要再通过<strong>遍历</strong>的方法找到可读或可写的 Socket，然后再对其处理。</p>
 <p>对于 select 这种方式，需要进行 <strong>2 次「遍历」文件描述符集合</strong>，一次是在内核态里，一个次是在用户态里 ，而且还会发生 <strong>2 次「拷贝」文件描述符集合</strong>，先从用户空间传入内核空间，由内核修改后，再传出到用户空间中。</p>
 <p>poll 不再用 BitsMap 来存储所关注的文件描述符，取而代之用动态数组，以链表形式来组织，突破了 select 的文件描述符个数限制，当然还会受到系统文件描述符限制。</p>
-<p>但是 poll 和 select 并没有太大的本质区别，<strong>都是使用「线性结构」存储进程关注的 Socket 集合，因此都需要遍历文件描述符集合来找到可读或可写的 Socket，时间复杂度为 O(n)，而且也需要在用户态与内核态之间拷贝文件描述符集合</strong>，这种方式随着并发数上来，性能的损耗会呈指数级增长。</p>
-<h1 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h1><p>epoll 通过两个方面，很好解决了 select/poll 的问题。</p>
-<p><em>第一点</em>，epoll 在内核里使用<strong>红黑树来跟踪进程所有待检测的文件描述字</strong>，把需要监控的 socket 通过 <code>epoll_ctl()</code> 函数加入内核中的红黑树里，红黑树是个高效的数据结构，增删查一般时间复杂度是 <code>O(logn)</code>，通过对这棵黑红树进行操作，这样就不需要像 select/poll 每次操作时都传入整个 socket 集合，只需要传入一个待检测的 socket，减少了内核和用户空间大量的数据拷贝和内存分配。</p>
-<p><em>第二点</em>， epoll 使用事件驱动的机制，内核里<strong>维护了一个链表来记录就绪事件</strong>，当某个 socket 有事件发生时，通过回调函数内核会将其加入到这个就绪事件列表中，当用户调用 <code>epoll_wait()</code> 函数时，只会返回有事件发生的文件描述符的个数，不需要像 select/poll 那样轮询扫描整个 socket 集合，大大提高了检测的效率。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2022/07/08/%E5%85%AB%E8%82%A1%E6%96%87/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
 
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/08/python%E9%9D%A2%E7%BB%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/08/python%E9%9D%A2%E7%BB%8F/" itemprop="url">python面</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-08T00:00:00+08:00">
+                2022-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/08/python%E9%9D%A2%E7%BB%8F/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/08/python%E9%9D%A2%E7%BB%8F/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="init和new的区别"><a href="#init和new的区别" class="headerlink" title="init和new的区别?"></a>init和new的区别?</h2><p>说一个使用过__new__方法的场景吧，就是对象的单例模式，python解释器在创建一个对象时候有两步：1.为对象开辟内存空间 2.初始化对象，第一步也就对应着new方法，我们可以在new方法中修改分配空间的方法，以达到内存中只创建一个实例的功能，也就是单例模式。</p>
+<h2 id="创建百万级实例如何节省内存"><a href="#创建百万级实例如何节省内存" class="headerlink" title="创建百万级实例如何节省内存?"></a><strong>创建百万级实例如何节省内存?</strong></h2><p>可以定义类的 <strong>slot</strong> 属性，用它来声明实例属性的列表，可以用来减少内存空间的目的</p>
+<h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a><strong>命名空间</strong></h2><p>命名空间是对作用域的一种特殊的抽象</p>
+<h1 id="PEP8规范包括什么"><a href="#PEP8规范包括什么" class="headerlink" title="PEP8规范包括什么"></a>PEP8规范包括什么</h1><p>对齐方式，包的导入顺序，空格，每行的长度，注释等</p>
+<h2 id="python参数类型"><a href="#python参数类型" class="headerlink" title="python参数类型"></a>python参数类型</h2><p>位置参数、默认参数、可变参数、关键字参数</p>
+<h2 id="Supper"><a href="#Supper" class="headerlink" title="Supper()"></a>Supper()</h2><p>super() 函数是用于调用父类(超类)的一个方法。super 是用来解决多重继承问题的</p>
+<h2 id="单例模式设计"><a href="#单例模式设计" class="headerlink" title="单例模式设计"></a>单例模式设计</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Printer</span><span class="params">()</span>:</span></span><br><span class="line">    instance = <span class="literal">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls.instance <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            cls.instance = super().__new__(cls)</span><br><span class="line">    <span class="keyword">return</span> cls.instance</span><br><span class="line">printer1 = Printer()</span><br><span class="line">print(printer1)</span><br><span class="line">printer2 = Printer()</span><br><span class="line">print(printer2)</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="什么是装饰器"><a href="#什么是装饰器" class="headerlink" title="什么是装饰器?"></a>什么是装饰器?</h2><p>装饰器是python高级语言特性的重要一部分，可以做到不动源代码的情况下增加额外功能，本质上也是一个将函数作为参数的函数。比如插入日志，性能测试，食物处理，缓存。</p>
+<h2 id="python-的-GIL"><a href="#python-的-GIL" class="headerlink" title="python 的 GIL"></a><strong>python</strong> <strong>的</strong> <strong>GIL</strong></h2><p>GIL 是python的全局解释器锁，同一进程中假如有多个线程运行，一个线程在运行python程序的时候 会霸占python解释器(加了一把锁即GIL)，使该进程内的其他线程无法运行，等该线程运行完后其他 线程才能运行。如果线程运行过程中遇到耗时操作，则解释器锁解开，使其他线程运行。所以在多线程 中，线程的运行仍是有先后顺序的，并不是同时进行。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/08/redis%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/08/redis%E9%9D%A2/" itemprop="url">python面</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-08T00:00:00+08:00">
+                2022-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/08/redis%E9%9D%A2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/08/redis%E9%9D%A2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="快的原因"><a href="#快的原因" class="headerlink" title="快的原因"></a>快的原因</h1><ol>
+<li>基于内存实现的</li>
+<li>采用io多路复用模型。非阻塞io ,epoll+自己的时间循环机制</li>
+<li>单线程模型，避免不必要的上下文切换和资源竞争</li>
+<li>高效的底层数据结构</li>
+</ol>
+<p><a href="https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ</a> 不错</p>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>描述：查询一个数据库不存在的数据，不会去缓存，压力直接给到数据库<br>解决方案：</p>
+<ol>
+<li>将不存的数据也进行缓存，单过期时间设置较短些</li>
+<li>使用布隆过滤器，存储可能存在的数据，先在过滤器中查询是否存在在去判断是否请求数据库。布隆过滤器特点: 存在的不一定存在，不存在的一定不存在。<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2>描述：对于一些过期的数据，短时间有大量请求，会直接对数据库造成压力<br>解决方案：</li>
+<li>使用互斥锁。大量并发请求请求到缓存时，使用<code>setnx</code>命令返回结果为true在去数据库请求。<code>setnx key value</code>:如果不存在则设置为value，也就意味着其中一个请求拿到了锁,其他请求就不会请求db了</li>
+<li>设置用不过期<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2>描述：大量数据同一时间过期<br>解决方案:</li>
+<li>将过期时间离散开来</li>
+</ol>
+<h2 id="redis默认16个db"><a href="#redis默认16个db" class="headerlink" title="redis默认16个db"></a>redis默认16个db</h2><h2 id="redis删除策略"><a href="#redis删除策略" class="headerlink" title="redis删除策略"></a>redis删除策略</h2><ol>
+<li>定时删除。设定过期时间，到时间久删除</li>
+<li>惰性删除。设定过期时间，到时间先不删除，等到有请求访问在删除。</li>
+<li>定期删除。隔一段时间删除一批。</li>
+</ol>
+<h2 id="redis-vs-memcached"><a href="#redis-vs-memcached" class="headerlink" title="redis vs memcached"></a>redis vs memcached</h2><ol>
+<li>redis支持更多的数据结构，memcached只支持k-v数据结构</li>
+<li>redis可以对k设置过期时间<br>缺点：瓶颈在物理内存的大小 而非cpu，使用前需要评估内存是否充足</li>
+</ol>
+<h2 id="为什么要使用缓存"><a href="#为什么要使用缓存" class="headerlink" title="为什么要使用缓存"></a>为什么要使用缓存</h2><p>保证服务的高性能和高并发</p>
+<h2 id="缓存同步方案"><a href="#缓存同步方案" class="headerlink" title="缓存同步方案"></a>缓存同步方案</h2><ol>
+<li>同步方案。从业务代码层面，更新完数据可就对缓存进行更新</li>
+<li>异步方案。将更新的数据放入消息队列中，消费者从消息队列进行更新</li>
+</ol>
+<h2 id="redis的集群方案"><a href="#redis的集群方案" class="headerlink" title="redis的集群方案"></a>redis的集群方案</h2><ol>
+<li>主从模式。<br> 保证高可用；无法实现故障转移；无法实现海量数据存储</li>
+<li>哨兵模式<br> 高可用；可以自动实现故障转移；无法实现海量数据存储</li>
+<li>分片集群<br> 高可用；可以自动转移故障；可以实现海量数据存储</li>
+</ol>
+<h2 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h2><p>MULTI 开启事务；EXEC执行事务；<br><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220711104209304.png" alt="image-20220711104209304"></p>
+<h2 id="redis内存优化"><a href="#redis内存优化" class="headerlink" title="redis内存优化"></a>redis内存优化</h2><p>尽可能使用散列表(Hash)。比如你的 web 系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面。</p>
+<h2 id="如何保持mysql和redis数据一致性"><a href="#如何保持mysql和redis数据一致性" class="headerlink" title="如何保持mysql和redis数据一致性"></a>如何保持mysql和redis数据一致性</h2><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220718174349186.png" alt="image-20220718174349186" style="zoom:50%;" />
           
         
       
@@ -731,1026 +1781,11 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/10/subplots/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/09/10/subplots/" itemprop="url">subplots subplot</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-09-10T13:00:00+08:00">
-                2021-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/09/10/subplots/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/09/10/subplots/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="subplot画子图"><a href="#subplot画子图" class="headerlink" title="subplot画子图"></a>subplot画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">1</span>,title=<span class="string">"Input"</span> <span class="keyword">if</span> index==<span class="number">0</span> <span class="keyword">else</span> <span class="string">""</span>)</span><br><span class="line">    plt.imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    plt.axis(<span class="string">"off"</span>) <span class="comment"># 去掉 x y轴</span></span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">2</span>,title=<span class="string">"GT)</span></span><br><span class="line"><span class="string">    plt.imshow(y[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    plt.subplot(params["</span>batch_size<span class="string">"],params["</span>batch_size<span class="string">"],index*3+3,title="</span>Mask<span class="string">")</span></span><br><span class="line"><span class="string">    plt.imshow(mask[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    # plt.subplots_adjust(left=0.027,</span></span><br><span class="line"><span class="string">    #                     bottom=0,</span></span><br><span class="line"><span class="string">    #                     right=0.99,</span></span><br><span class="line"><span class="string">    #                     top=0.93,</span></span><br><span class="line"><span class="string">    #                     wspace=0.005,</span></span><br><span class="line"><span class="string">    #                     hspace=0.045)</span></span><br><span class="line"><span class="string">    fig.tight_layout()</span></span><br></pre></td></tr></table></figure></div>
-
-<h2 id="subplots画子图"><a href="#subplots画子图" class="headerlink" title="subplots画子图"></a>subplots画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">fig,axes=plt.subplots(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>])</span><br><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    axes[index,<span class="number">0</span>].imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    axes[index, <span class="number">0</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">1</span>].imshow(y[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">1</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">2</span>].imshow(mask[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">2</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">0</span>].set_title(<span class="string">"Input"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">1</span>].set_title(<span class="string">"GT"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">2</span>].set_title(<span class="string">"Mask"</span>)</span><br><span class="line">    plt.subplots_adjust(left=<span class="number">0.027</span>,</span><br><span class="line">                            bottom=<span class="number">0</span>,</span><br><span class="line">                            right=<span class="number">0.99</span>,</span><br><span class="line">                            top=<span class="number">0.93</span>,</span><br><span class="line">                            wspace=<span class="number">0.005</span>,</span><br><span class="line">                            hspace=<span class="number">0.045</span>)</span><br></pre></td></tr></table></figure></div>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/08/15/evaluation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/08/15/evaluation/" itemprop="url">图像分割的评价指标Dice Iou</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-08-15T15:30:00+08:00">
-                2021-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/08/15/evaluation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/08/15/evaluation/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="计算dice和mdice的方法详解"><a href="#计算dice和mdice的方法详解" class="headerlink" title="计算dice和mdice的方法详解"></a>计算dice和mdice的方法详解</h2><p>目前找到三种实现方式，且==三种方式结果不同==</p>
-<ol>
-<li><p>通过计算tp,fp,fn等根据公式<img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20210906200051794.png" alt="image-20210906200051794">计算，但我觉得使用概率计算fp等值是不准确的，保留意见</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mDiceLoss</span><span class="params">(inputs, target, beta=<span class="number">1</span>, smooth=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">    n, c, h, w = inputs.size()</span><br><span class="line">    nt,ct, ht, wt = target.size()</span><br><span class="line">    <span class="keyword">if</span> h != ht <span class="keyword">and</span> w != wt:</span><br><span class="line">        inputs = F.interpolate(inputs, size=(ht, wt), mode=<span class="string">"bilinear"</span>, align_corners=<span class="literal">True</span>)</span><br><span class="line">    temp_inputs = torch.softmax(inputs.transpose(<span class="number">1</span>, <span class="number">2</span>).transpose(<span class="number">2</span>, <span class="number">3</span>).contiguous().view(n, <span class="number">-1</span>, c), <span class="number">-1</span>)</span><br><span class="line">    temp_target = target.view(n, <span class="number">-1</span>, ct)</span><br><span class="line">    <span class="comment"># tp = torch.sum(temp_target[..., :-1] * temp_inputs, axis=[0, 1]) #和下面等效</span></span><br><span class="line">    tp = torch.sum(temp_target * temp_inputs, axis=[<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">    fp = torch.sum(temp_inputs, axis=[<span class="number">0</span>, <span class="number">1</span>]) - tp</span><br><span class="line">    fn = torch.sum(temp_target[..., :<span class="number">-1</span>], axis=[<span class="number">0</span>, <span class="number">1</span>]) - tp</span><br><span class="line"></span><br><span class="line">    score = ((<span class="number">1</span> + beta ** <span class="number">2</span>) * tp + smooth) / ((<span class="number">1</span> + beta ** <span class="number">2</span>) * tp + beta ** <span class="number">2</span> * fn + fp + smooth)</span><br><span class="line">    dice_loss = <span class="number">1</span> - torch.mean(score)</span><br><span class="line">    <span class="keyword">return</span> dice_loss</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>通过公示<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210906202123661.png" alt="image-20210906202123661" style="zoom:33%;" /> 计算得到的，但是这种方法中的<code>sum()</code>方法没有计算每个通道，而是对所有值计算的。<br>并且这种方法在网上很通用，==各位大佬也是这样计算的==。==暂时采用这种方法==。具体实现有两种方式，如下：</p>
-</li>
-</ol>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SoftDiceLoss</span><span class="params">(y_pred,y_true, epsilon=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">   <span class="keyword">if</span> len(inputs.shape) == <span class="number">4</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> len(inputs.shape) == <span class="number">3</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">0</span>)</span><br><span class="line">    numerator = <span class="number">2.</span> * torch.sum(y_pred * y_true)</span><br><span class="line">    <span class="comment"># denominator = np.sum(np.square(y_pred) + np.square(y_true), axes)</span></span><br><span class="line">    denominator = torch.sum(y_pred + y_true)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> - torch.mean((numerator + epsilon) / (denominator + epsilon))</span><br></pre></td></tr></table></figure></div>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weight=None, size_average=True)</span>:</span></span><br><span class="line">        super(DiceLoss, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, targets, smooth=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">        <span class="comment"># comment out if your model contains a sigmoid or equivalent activation layer</span></span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">4</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">3</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">0</span>)</span><br><span class="line">        <span class="comment"># flatten label and prediction tensors</span></span><br><span class="line"></span><br><span class="line">        inputs1 = inputs.view(<span class="number">-1</span>)</span><br><span class="line">        targets1 = targets.view(<span class="number">-1</span>)</span><br><span class="line">        intersection1 = (inputs1 * targets1).sum()</span><br><span class="line">        dice = (<span class="number">2.</span> * intersection1 + smooth) / (inputs1.sum() + targets1.sum() + smooth)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> - torch.mean(dice)</span><br></pre></td></tr></table></figure></div>
-
-<ol start="3">
-<li>基于第二种方法，我觉得应该计算每个通道的dice然后求均值，具体实现如下：<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SoftDiceLoss</span><span class="params">(y_pred,y_true, epsilon=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(inputs.shape) == <span class="number">4</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> len(inputs.shape) == <span class="number">3</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">0</span>)</span><br><span class="line">    numerator = <span class="number">2.</span> * torch.sum(y_pred * y_true,axis=[<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">    <span class="comment"># denominator = np.sum(np.square(y_pred) + np.square(y_true), axes)</span></span><br><span class="line">    denominator = torch.sum(y_pred + y_true,axis=[<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> - torch.mean((numerator + epsilon) / (denominator + epsilon))</span><br></pre></td></tr></table></figure></div>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weight=None, size_average=True)</span>:</span></span><br><span class="line">        super(DiceLoss, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, targets, smooth=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">        <span class="comment"># comment out if your model contains a sigmoid or equivalent activation layer</span></span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">4</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">3</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">0</span>)</span><br><span class="line">        temp_inputs=rearrange(inputs, <span class="string">"n c h w-&gt;(n h w ) c"</span>)</span><br><span class="line">        temp_target=rearrange(targets, <span class="string">"n c h w-&gt;(n h w ) c"</span>)</span><br><span class="line">        intersection = (temp_inputs * temp_target).sum(<span class="number">0</span>)</span><br><span class="line">        dice1 = (<span class="number">2.</span> * intersection + smooth) / (temp_inputs.sum(<span class="number">0</span>) + temp_target.sum(<span class="number">0</span>) + smooth)</span><br><span class="line">        print(dice1)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> - torch.mean(dice)</span><br></pre></td></tr></table></figure></div>
-
-</li>
-</ol>
-<p>这种方法分子分母和第二种方法结果一样，只是维度是<code>c</code>，==结果差在了不同维度做除法然后再求均值==。</p>
-<p>但是这种方法要学会如何使用<code>torch.sum(t,axis=[0,1])</code>维度的使用。<code>sum(0)表示在第0维做加法。</code></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/" itemprop="url">Linux下打包QT程序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-06-04T21:41:24+08:00">
-                2021-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Linux下打包QT程序"><a href="#Linux下打包QT程序" class="headerlink" title="Linux下打包QT程序"></a>Linux下打包QT程序</h1><ol>
-<li><p>还是先Release编译程序</p>
-</li>
-<li><p>将可执行程序复制到一个新目录 src</p>
-</li>
-<li><p>新建一个脚本<strong>copylib.sh</strong>，主要用来 copy 相关库的,<strong>第一个参数是可执行文件</strong></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line"></span><br><span class="line">LibDir&#x3D;$PWD&quot;&#x2F;lib&quot;</span><br><span class="line">Target&#x3D;$1</span><br><span class="line"></span><br><span class="line">lib_array&#x3D;($(ldd $Target | grep -o &quot;&#x2F;.*&quot; | grep -o &quot;&#x2F;.*&#x2F;[^[:space:]]*&quot;))</span><br><span class="line"></span><br><span class="line">$(mkdir $LibDir)</span><br><span class="line"></span><br><span class="line">for Variable in $&#123;lib_array[@]&#125;</span><br><span class="line">do</span><br><span class="line">    cp &quot;$Variable&quot; $LibDir</span><br><span class="line">done</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>先 copy 程序依赖库，<code>copylib.sh ISTSC</code>，将 lib 下的库复制出来</p>
-</li>
-<li><p>再 copy qt 运行依赖库;</p>
-<p>进入qt平台目录下 <code>/opt/Qt/5.15.2/gcc_64/plugins/platforms</code></p>
-<p>运行<code>copylib.sh libqxcb.so</code></p>
-<p>copy lib下的库到src中<br>copy platforms目录下其他库到src</p>
-</li>
-<li><p>COPY mysql的库 <code>sqldrivers/libqsql.so</code>和 <code>/usr/lib/x86_64-linux-gnu/libmysqlclient.so 到src</code></p>
-</li>
-<li><p>copy qml下的所有到sr c</p>
-</li>
-<li><p>copy gcc_x86下的lib库的内容到src下</p>
-</li>
-<li><p>可以在目录下在创建一个运行脚本,用来设置程序运行库的路径的</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">appname&#x3D;&#96;basename $0 | sed s,\.sh$,,&#96;</span><br><span class="line">dirname&#x3D;&#96;dirname $0&#96;</span><br><span class="line">tmp&#x3D;&quot;$&#123;dirname#?&#125;&quot;</span><br><span class="line">if [ &quot;$&#123;dirname%$tmp&#125;&quot; !&#x3D; &quot;&#x2F;&quot; ]; then</span><br><span class="line">dirname&#x3D;$PWD&#x2F;$dirname</span><br><span class="line">fi</span><br><span class="line">LD_LIBRARY_PATH&#x3D;$dirname</span><br><span class="line">export LD_LIBRARY_PATH</span><br><span class="line">$dirname&#x2F;$appname &quot;$@&quot;</span><br></pre></td></tr></table></figure></div>
-
-
-
-</li>
-</ol>
-<blockquote>
-<blockquote>
-<p>   <a href="https://www.huaweicloud.com/articles/ca0f1e1d3ed52d1fd572b4229026aa59.html" target="_blank" rel="noopener">参考链接</a></p>
-</blockquote>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/12/Qtnetwork/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/04/12/Qtnetwork/" itemprop="url">Qt Network使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-12T00:00:00+08:00">
-                2021-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/04/12/Qtnetwork/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/04/12/Qtnetwork/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Qt-Network"><a href="#Qt-Network" class="headerlink" title="Qt Network"></a>Qt Network</h2><ol>
-<li><p>同步请求数据</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">QNetworkAccessManager *mgr = <span class="keyword">new</span> QNetworkAccessManager(<span class="keyword">this</span>);</span><br><span class="line"><span class="function"><span class="keyword">const</span> QUrl <span class="title">url</span><span class="params">(QStringLiteral(<span class="string">"http://myserver.com/api"</span>))</span></span>;</span><br><span class="line"><span class="function">QNetworkRequest <span class="title">request</span><span class="params">(url)</span></span>;</span><br><span class="line">request.setHeader(QNetworkRequest::ContentTypeHeader, <span class="string">"application/json"</span>);</span><br><span class="line"></span><br><span class="line">QJsonObject obj;</span><br><span class="line">obj[<span class="string">"key1"</span>] = <span class="string">"value1"</span>;</span><br><span class="line">obj[<span class="string">"key2"</span>] = <span class="string">"value2"</span>;</span><br><span class="line"><span class="function">QJsonDocument <span class="title">doc</span><span class="params">(obj)</span></span>;</span><br><span class="line">QByteArray data = doc.toJson();</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="comment">// QByteArray data("&#123;\"key1\":\"value1\",\"key2\":\"value2\"&#125;");</span></span><br><span class="line">QNetworkReply *reply = mgr-&gt;post(request, data);</span><br><span class="line"></span><br><span class="line">QObject::<span class="built_in">connect</span>(reply, &amp;QNetworkReply::finished, [=]()&#123;</span><br><span class="line">    <span class="keyword">if</span>(reply-&gt;error() == QNetworkReply::NoError)&#123;</span><br><span class="line">        QString contents = QString::fromUtf8(reply-&gt;readAll());</span><br><span class="line">        qDebug() &lt;&lt; contents;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        QString err = reply-&gt;errorString();</span><br><span class="line">        qDebug() &lt;&lt; err;</span><br><span class="line">    &#125;</span><br><span class="line">    reply-&gt;deleteLater();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="url">大数据工程师and算法工程师日常</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-03T09:00:00+08:00">
-                2021-04-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>课上学到的</p>
-<h3 id="大数据工程师的工作日常"><a href="#大数据工程师的工作日常" class="headerlink" title="大数据工程师的工作日常"></a>大数据工程师的工作日常</h3><ol>
-<li>拉数据（取数，写MR，做可视化）</li>
-<li>开发报表系统（和产品核对字段和定义）</li>
-<li>搭建集群，搞运维，优化性能</li>
-<li>爬取数据，洗数据</li>
-<li>开发数据中台（业务系统，前端）</li>
-</ol>
-<h3 id="算法工程师的工作日常"><a href="#算法工程师的工作日常" class="headerlink" title="算法工程师的工作日常"></a>算法工程师的工作日常</h3><ol>
-<li><p>测数据</p>
-</li>
-<li><p>造数据</p>
-</li>
-<li><p>定义优化目标和指标（业务KPI）</p>
-</li>
-<li><p>找模型，改参数，跑模型</p>
-</li>
-<li><p>PPT</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/31/pytorch%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/03/31/pytorch%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="url">pytorch使用技巧</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-31T16:44:26+08:00">
-                2021-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/03/31/pytorch%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/03/31/pytorch%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="pytorch-np使用技巧"><a href="#pytorch-np使用技巧" class="headerlink" title="pytorch np使用技巧"></a>pytorch np使用技巧</h2><p>扩展Tensor维度</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">label &#x3D; torch.randperm(5)  # tensor([1, 3, 0, 4, 2])</span><br><span class="line">label&#x3D;torch.unsqueeze(label,0) # tensor([[0, 4, 2, 1, 3]])</span><br><span class="line"></span><br><span class="line"># numpy</span><br><span class="line">np.expand_dims(label,0)</span><br></pre></td></tr></table></figure></div>
-
-<p>numpy维度置换</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.transpose(label,(1,2,0))</span><br></pre></td></tr></table></figure></div>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/mask_blend_plot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/03/20/mask_blend_plot/" itemprop="url">掩图融合 目标画框</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-20T15:00:00+08:00">
-                2021-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/03/20/mask_blend_plot/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/03/20/mask_blend_plot/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <ol>
-<li>将掩图放到真实图片上面</li>
-<li>目标检测中为目标画框并标注</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/03/20/mask_blend_plot/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 
@@ -1818,7 +1853,7 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1831,7 +1866,7 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

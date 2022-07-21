@@ -288,6 +288,884 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/10/subplots/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/09/10/subplots/" itemprop="url">matplotlib画子图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-09-10T13:00:00+08:00">
+                2021-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/09/10/subplots/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/09/10/subplots/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="subplot画子图"><a href="#subplot画子图" class="headerlink" title="subplot画子图"></a>subplot画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">1</span>,title=<span class="string">"Input"</span> <span class="keyword">if</span> index==<span class="number">0</span> <span class="keyword">else</span> <span class="string">""</span>)</span><br><span class="line">    plt.imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    plt.axis(<span class="string">"off"</span>) <span class="comment"># 去掉 x y轴</span></span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">2</span>,title=<span class="string">"GT)</span></span><br><span class="line"><span class="string">    plt.imshow(y[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    plt.subplot(params["</span>batch_size<span class="string">"],params["</span>batch_size<span class="string">"],index*3+3,title="</span>Mask<span class="string">")</span></span><br><span class="line"><span class="string">    plt.imshow(mask[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    # plt.subplots_adjust(left=0.027,</span></span><br><span class="line"><span class="string">    #                     bottom=0,</span></span><br><span class="line"><span class="string">    #                     right=0.99,</span></span><br><span class="line"><span class="string">    #                     top=0.93,</span></span><br><span class="line"><span class="string">    #                     wspace=0.005,</span></span><br><span class="line"><span class="string">    #                     hspace=0.045)</span></span><br><span class="line"><span class="string">    fig.tight_layout()</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="subplots画子图"><a href="#subplots画子图" class="headerlink" title="subplots画子图"></a>subplots画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">fig,axes=plt.subplots(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>])</span><br><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    axes[index,<span class="number">0</span>].imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    axes[index, <span class="number">0</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">1</span>].imshow(y[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">1</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">2</span>].imshow(mask[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">2</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">0</span>].set_title(<span class="string">"Input"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">1</span>].set_title(<span class="string">"GT"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">2</span>].set_title(<span class="string">"Mask"</span>)</span><br><span class="line">    plt.subplots_adjust(left=<span class="number">0.027</span>,</span><br><span class="line">                            bottom=<span class="number">0</span>,</span><br><span class="line">                            right=<span class="number">0.99</span>,</span><br><span class="line">                            top=<span class="number">0.93</span>,</span><br><span class="line">                            wspace=<span class="number">0.005</span>,</span><br><span class="line">                            hspace=<span class="number">0.045</span>)</span><br></pre></td></tr></table></figure></div>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/08/15/evaluation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/08/15/evaluation/" itemprop="url">图像分割的评价指标Dice Iou</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-08-15T15:30:00+08:00">
+                2021-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/08/15/evaluation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/08/15/evaluation/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="计算dice和mdice的方法详解"><a href="#计算dice和mdice的方法详解" class="headerlink" title="计算dice和mdice的方法详解"></a>计算dice和mdice的方法详解</h2><p>目前找到三种实现方式，且==三种方式结果不同==</p>
+<ol>
+<li><p>通过计算tp,fp,fn等根据公式<img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20210906200051794.png" alt="image-20210906200051794">计算，但我觉得使用概率计算fp等值是不准确的，保留意见</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mDiceLoss</span><span class="params">(inputs, target, beta=<span class="number">1</span>, smooth=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">    n, c, h, w = inputs.size()</span><br><span class="line">    nt,ct, ht, wt = target.size()</span><br><span class="line">    <span class="keyword">if</span> h != ht <span class="keyword">and</span> w != wt:</span><br><span class="line">        inputs = F.interpolate(inputs, size=(ht, wt), mode=<span class="string">"bilinear"</span>, align_corners=<span class="literal">True</span>)</span><br><span class="line">    temp_inputs = torch.softmax(inputs.transpose(<span class="number">1</span>, <span class="number">2</span>).transpose(<span class="number">2</span>, <span class="number">3</span>).contiguous().view(n, <span class="number">-1</span>, c), <span class="number">-1</span>)</span><br><span class="line">    temp_target = target.view(n, <span class="number">-1</span>, ct)</span><br><span class="line">    <span class="comment"># tp = torch.sum(temp_target[..., :-1] * temp_inputs, axis=[0, 1]) #和下面等效</span></span><br><span class="line">    tp = torch.sum(temp_target * temp_inputs, axis=[<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">    fp = torch.sum(temp_inputs, axis=[<span class="number">0</span>, <span class="number">1</span>]) - tp</span><br><span class="line">    fn = torch.sum(temp_target[..., :<span class="number">-1</span>], axis=[<span class="number">0</span>, <span class="number">1</span>]) - tp</span><br><span class="line"></span><br><span class="line">    score = ((<span class="number">1</span> + beta ** <span class="number">2</span>) * tp + smooth) / ((<span class="number">1</span> + beta ** <span class="number">2</span>) * tp + beta ** <span class="number">2</span> * fn + fp + smooth)</span><br><span class="line">    dice_loss = <span class="number">1</span> - torch.mean(score)</span><br><span class="line">    <span class="keyword">return</span> dice_loss</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>通过公示<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20210906202123661.png" alt="image-20210906202123661" style="zoom:33%;" /> 计算得到的，但是这种方法中的<code>sum()</code>方法没有计算每个通道，而是对所有值计算的。<br>并且这种方法在网上很通用，==各位大佬也是这样计算的==。==暂时采用这种方法==。具体实现有两种方式，如下：</p>
+</li>
+</ol>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SoftDiceLoss</span><span class="params">(y_pred,y_true, epsilon=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">   <span class="keyword">if</span> len(inputs.shape) == <span class="number">4</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> len(inputs.shape) == <span class="number">3</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">0</span>)</span><br><span class="line">    numerator = <span class="number">2.</span> * torch.sum(y_pred * y_true)</span><br><span class="line">    <span class="comment"># denominator = np.sum(np.square(y_pred) + np.square(y_true), axes)</span></span><br><span class="line">    denominator = torch.sum(y_pred + y_true)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> - torch.mean((numerator + epsilon) / (denominator + epsilon))</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weight=None, size_average=True)</span>:</span></span><br><span class="line">        super(DiceLoss, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, targets, smooth=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">        <span class="comment"># comment out if your model contains a sigmoid or equivalent activation layer</span></span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">4</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">3</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">0</span>)</span><br><span class="line">        <span class="comment"># flatten label and prediction tensors</span></span><br><span class="line"></span><br><span class="line">        inputs1 = inputs.view(<span class="number">-1</span>)</span><br><span class="line">        targets1 = targets.view(<span class="number">-1</span>)</span><br><span class="line">        intersection1 = (inputs1 * targets1).sum()</span><br><span class="line">        dice = (<span class="number">2.</span> * intersection1 + smooth) / (inputs1.sum() + targets1.sum() + smooth)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> - torch.mean(dice)</span><br></pre></td></tr></table></figure></div>
+
+<ol start="3">
+<li>基于第二种方法，我觉得应该计算每个通道的dice然后求均值，具体实现如下：<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SoftDiceLoss</span><span class="params">(y_pred,y_true, epsilon=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(inputs.shape) == <span class="number">4</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> len(inputs.shape) == <span class="number">3</span>:</span><br><span class="line">        y_pred=torch.softmax(y_pred,<span class="number">0</span>)</span><br><span class="line">    numerator = <span class="number">2.</span> * torch.sum(y_pred * y_true,axis=[<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">    <span class="comment"># denominator = np.sum(np.square(y_pred) + np.square(y_true), axes)</span></span><br><span class="line">    denominator = torch.sum(y_pred + y_true,axis=[<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> - torch.mean((numerator + epsilon) / (denominator + epsilon))</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, weight=None, size_average=True)</span>:</span></span><br><span class="line">        super(DiceLoss, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, targets, smooth=<span class="number">1e-6</span>)</span>:</span></span><br><span class="line">        <span class="comment"># comment out if your model contains a sigmoid or equivalent activation layer</span></span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">4</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> len(inputs.shape)==<span class="number">3</span>:</span><br><span class="line">            inputs = F.softmax(inputs,dim=<span class="number">0</span>)</span><br><span class="line">        temp_inputs=rearrange(inputs, <span class="string">"n c h w-&gt;(n h w ) c"</span>)</span><br><span class="line">        temp_target=rearrange(targets, <span class="string">"n c h w-&gt;(n h w ) c"</span>)</span><br><span class="line">        intersection = (temp_inputs * temp_target).sum(<span class="number">0</span>)</span><br><span class="line">        dice1 = (<span class="number">2.</span> * intersection + smooth) / (temp_inputs.sum(<span class="number">0</span>) + temp_target.sum(<span class="number">0</span>) + smooth)</span><br><span class="line">        print(dice1)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> - torch.mean(dice)</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ol>
+<p>这种方法分子分母和第二种方法结果一样，只是维度是<code>c</code>，==结果差在了不同维度做除法然后再求均值==。</p>
+<p>但是这种方法要学会如何使用<code>torch.sum(t,axis=[0,1])</code>维度的使用。<code>sum(0)表示在第0维做加法。</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/" itemprop="url">Linux下打包QT程序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-06-04T21:41:24+08:00">
+                2021-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Linux下打包QT程序"><a href="#Linux下打包QT程序" class="headerlink" title="Linux下打包QT程序"></a>Linux下打包QT程序</h1><ol>
+<li><p>还是先Release编译程序</p>
+</li>
+<li><p>将可执行程序复制到一个新目录 src</p>
+</li>
+<li><p>新建一个脚本<strong>copylib.sh</strong>，主要用来 copy 相关库的,<strong>第一个参数是可执行文件</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line"></span><br><span class="line">LibDir&#x3D;$PWD&quot;&#x2F;lib&quot;</span><br><span class="line">Target&#x3D;$1</span><br><span class="line"></span><br><span class="line">lib_array&#x3D;($(ldd $Target | grep -o &quot;&#x2F;.*&quot; | grep -o &quot;&#x2F;.*&#x2F;[^[:space:]]*&quot;))</span><br><span class="line"></span><br><span class="line">$(mkdir $LibDir)</span><br><span class="line"></span><br><span class="line">for Variable in $&#123;lib_array[@]&#125;</span><br><span class="line">do</span><br><span class="line">    cp &quot;$Variable&quot; $LibDir</span><br><span class="line">done</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>先 copy 程序依赖库，<code>copylib.sh ISTSC</code>，将 lib 下的库复制出来</p>
+</li>
+<li><p>再 copy qt 运行依赖库;</p>
+<p>进入qt平台目录下 <code>/opt/Qt/5.15.2/gcc_64/plugins/platforms</code></p>
+<p>运行<code>copylib.sh libqxcb.so</code></p>
+<p>copy lib下的库到src中<br>copy platforms目录下其他库到src</p>
+</li>
+<li><p>COPY mysql的库 <code>sqldrivers/libqsql.so</code>和 <code>/usr/lib/x86_64-linux-gnu/libmysqlclient.so 到src</code></p>
+</li>
+<li><p>copy qml下的所有到sr c</p>
+</li>
+<li><p>copy gcc_x86下的lib库的内容到src下</p>
+</li>
+<li><p>可以在目录下在创建一个运行脚本,用来设置程序运行库的路径的</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">appname&#x3D;&#96;basename $0 | sed s,\.sh$,,&#96;</span><br><span class="line">dirname&#x3D;&#96;dirname $0&#96;</span><br><span class="line">tmp&#x3D;&quot;$&#123;dirname#?&#125;&quot;</span><br><span class="line">if [ &quot;$&#123;dirname%$tmp&#125;&quot; !&#x3D; &quot;&#x2F;&quot; ]; then</span><br><span class="line">dirname&#x3D;$PWD&#x2F;$dirname</span><br><span class="line">fi</span><br><span class="line">LD_LIBRARY_PATH&#x3D;$dirname</span><br><span class="line">export LD_LIBRARY_PATH</span><br><span class="line">$dirname&#x2F;$appname &quot;$@&quot;</span><br></pre></td></tr></table></figure></div>
+
+
+
+</li>
+</ol>
+<blockquote>
+<blockquote>
+<p>   <a href="https://www.huaweicloud.com/articles/ca0f1e1d3ed52d1fd572b4229026aa59.html" target="_blank" rel="noopener">参考链接</a></p>
+</blockquote>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/12/Qtnetwork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/04/12/Qtnetwork/" itemprop="url">Qt Network使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-12T00:00:00+08:00">
+                2021-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/04/12/Qtnetwork/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/04/12/Qtnetwork/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Qt-Network"><a href="#Qt-Network" class="headerlink" title="Qt Network"></a>Qt Network</h2><ol>
+<li><p>同步请求数据</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">QNetworkAccessManager *mgr = <span class="keyword">new</span> QNetworkAccessManager(<span class="keyword">this</span>);</span><br><span class="line"><span class="function"><span class="keyword">const</span> QUrl <span class="title">url</span><span class="params">(QStringLiteral(<span class="string">"http://myserver.com/api"</span>))</span></span>;</span><br><span class="line"><span class="function">QNetworkRequest <span class="title">request</span><span class="params">(url)</span></span>;</span><br><span class="line">request.setHeader(QNetworkRequest::ContentTypeHeader, <span class="string">"application/json"</span>);</span><br><span class="line"></span><br><span class="line">QJsonObject obj;</span><br><span class="line">obj[<span class="string">"key1"</span>] = <span class="string">"value1"</span>;</span><br><span class="line">obj[<span class="string">"key2"</span>] = <span class="string">"value2"</span>;</span><br><span class="line"><span class="function">QJsonDocument <span class="title">doc</span><span class="params">(obj)</span></span>;</span><br><span class="line">QByteArray data = doc.toJson();</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="comment">// QByteArray data("&#123;\"key1\":\"value1\",\"key2\":\"value2\"&#125;");</span></span><br><span class="line">QNetworkReply *reply = mgr-&gt;post(request, data);</span><br><span class="line"></span><br><span class="line">QObject::<span class="built_in">connect</span>(reply, &amp;QNetworkReply::finished, [=]()&#123;</span><br><span class="line">    <span class="keyword">if</span>(reply-&gt;error() == QNetworkReply::NoError)&#123;</span><br><span class="line">        QString contents = QString::fromUtf8(reply-&gt;readAll());</span><br><span class="line">        qDebug() &lt;&lt; contents;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        QString err = reply-&gt;errorString();</span><br><span class="line">        qDebug() &lt;&lt; err;</span><br><span class="line">    &#125;</span><br><span class="line">    reply-&gt;deleteLater();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="url">大数据工程师and算法工程师日常</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-03T09:00:00+08:00">
+                2021-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/04/03/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>课上学到的</p>
+<h3 id="大数据工程师的工作日常"><a href="#大数据工程师的工作日常" class="headerlink" title="大数据工程师的工作日常"></a>大数据工程师的工作日常</h3><ol>
+<li>拉数据（取数，写MR，做可视化）</li>
+<li>开发报表系统（和产品核对字段和定义）</li>
+<li>搭建集群，搞运维，优化性能</li>
+<li>爬取数据，洗数据</li>
+<li>开发数据中台（业务系统，前端）</li>
+</ol>
+<h3 id="算法工程师的工作日常"><a href="#算法工程师的工作日常" class="headerlink" title="算法工程师的工作日常"></a>算法工程师的工作日常</h3><ol>
+<li><p>测数据</p>
+</li>
+<li><p>造数据</p>
+</li>
+<li><p>定义优化目标和指标（业务KPI）</p>
+</li>
+<li><p>找模型，改参数，跑模型</p>
+</li>
+<li><p>PPT</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/20/mask_blend_plot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/03/20/mask_blend_plot/" itemprop="url">掩图融合 目标画框</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-20T15:00:00+08:00">
+                2021-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/03/20/mask_blend_plot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/03/20/mask_blend_plot/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <ol>
+<li>将掩图放到真实图片上面</li>
+<li>目标检测中为目标画框并标注</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/03/20/mask_blend_plot/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/04/QtTableView/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -838,839 +1716,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/kmeans/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/22/kmeans/" itemprop="url">Kmeans聚类算法思路实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-22T12:30:00+08:00">
-                2020-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/12/22/kmeans/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/12/22/kmeans/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>基于Kmeans思路用python简单实现该算法。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/12/22/kmeans/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/20/mergepdf/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/20/mergepdf/" itemprop="url">Merge PDF/PDF to Word</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-20T15:30:00+08:00">
-                2020-10-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/10/20/mergepdf/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/10/20/mergepdf/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>批量合并转换的一个脚本</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/10/20/mergepdf/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/12/vgg16/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/12/vgg16/" itemprop="url">keras创建VGG16模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-12T00:00:00+08:00">
-                2020-10-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/10/12/vgg16/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/10/12/vgg16/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>模型结构</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">_________________________________________________________________</span><br><span class="line">Layer (type)                 Output Shape              Param #</span><br><span class="line">=================================================================</span><br><span class="line">input_1 (InputLayer)         (None, 224, 224, 3)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block1_conv1 (Conv2D)        (None, 224, 224, 64)      1792</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block1_conv2 (Conv2D)        (None, 224, 224, 64)      36928</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block1_pool (MaxPooling2D)   (None, 112, 112, 64)      0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block2_conv1 (Conv2D)        (None, 112, 112, 128)     73856</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block2_conv2 (Conv2D)        (None, 112, 112, 128)     147584</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block2_pool (MaxPooling2D)   (None, 56, 56, 128)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_conv1 (Conv2D)        (None, 56, 56, 256)       295168</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_conv2 (Conv2D)        (None, 56, 56, 256)       590080</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_conv3 (Conv2D)        (None, 56, 56, 256)       590080</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block3_pool (MaxPooling2D)   (None, 28, 28, 256)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_conv1 (Conv2D)        (None, 28, 28, 512)       1180160</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_conv2 (Conv2D)        (None, 28, 28, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_conv3 (Conv2D)        (None, 28, 28, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block4_pool (MaxPooling2D)   (None, 14, 14, 512)       0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_conv1 (Conv2D)        (None, 14, 14, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_conv2 (Conv2D)        (None, 14, 14, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_conv3 (Conv2D)        (None, 14, 14, 512)       2359808</span><br><span class="line">_________________________________________________________________</span><br><span class="line">block5_pool (MaxPooling2D)   (None, 7, 7, 512)         0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">flatten (Flatten)            (None, 25088)             0</span><br><span class="line">_________________________________________________________________</span><br><span class="line">fullc1 (Dense)               (None, 4096)              102764544</span><br><span class="line">_________________________________________________________________</span><br><span class="line">fullc2 (Dense)               (None, 4096)              16781312</span><br><span class="line">fullc3 (Dense)               (None, 20)                81940</span><br><span class="line">=================================================================</span><br><span class="line">Total params: 134,342,484</span><br><span class="line">Trainable params: 134,342,484</span><br><span class="line">Non-trainable params: 0</span><br><span class="line">_________________________________________________________________</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/10/12/vgg16/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/25/keras%20pytorch%20model%20save/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/09/25/keras%20pytorch%20model%20save/" itemprop="url">keras pytorch 模型保存记载方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-25T13:38:41+08:00">
-                2020-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/09/25/keras%20pytorch%20model%20save/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/25/keras%20pytorch%20model%20save/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Keras模型"><a href="#Keras模型" class="headerlink" title="Keras模型"></a>Keras模型</h2><ul>
-<li>保存整个模型为 h5 文件，内容包括    <blockquote>
-<p>模型的结构<br>模型的权值<br>模型的配置，即我们通过compile编译模型的一些信息，如优化器，损失函数等<br>优化器的状态信息，我们可以接着之前的训练继续训练  </p>
-</blockquote>
-</li>
-</ul>
-<p>保存整个模型<br><code>model.save(&#39;path_to_my_model.h5&#39;)</code><br><code>keras.models.load_model(&#39;path_to_my_model.h5&#39;)</code> 加载整个模型<br>保存权重<br><code>model.save_weights(&#39;path_to_my_weights.h5&#39;)</code><br><code>new_model.load_weights(&#39;path_to_my_weights.h5&#39;)</code></p>
-<h2 id="Pytorch"><a href="#Pytorch" class="headerlink" title="Pytorch"></a>Pytorch</h2><p>保存的文件格式为pkl pth等，其实就是把权重优化器等信息序列化了。<br>保存权重<br><code>torch.save(model.state_dict(), PATH)</code>  OR</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">torch.save(&#123;</span><br><span class="line">            <span class="string">'epoch'</span>: epoch,</span><br><span class="line">            <span class="string">'model_state_dict'</span>: model.state_dict(),</span><br><span class="line">            <span class="string">'optimizer_state_dict'</span>: optimizer.state_dict(),</span><br><span class="line">            <span class="string">'loss'</span>: loss,</span><br><span class="line">            ...</span><br><span class="line">            &#125;,path)</span><br></pre></td></tr></table></figure></div>
-
-<p>加载模型</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model = Model(*args, **kwargs)</span><br><span class="line">model.load_state_dict(torch.load(PATH))</span><br><span class="line">model.eval()</span><br></pre></td></tr></table></figure></div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/" itemprop="url">标准化 vs 归一化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-01T00:00:00+08:00">
-                2020-09-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/01/%E6%A0%87%E5%87%86%E5%8C%96%20vs%20%E5%BD%92%E4%B8%80%E5%8C%96/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="标准化-（Standardization）：中心标准化"><a href="#标准化-（Standardization）：中心标准化" class="headerlink" title="标准化 （Standardization）：中心标准化"></a>标准化 （Standardization）：中心标准化</h3><p><img src="https://i.loli.net/2020/09/03/61RQ7DWjZoSpNGs.png" alt="image.png"></p>
-<p><img src="https://i.loli.net/2020/09/03/qn7Cl8NcspVxjST.png" alt="image.png"></p>
-<h3 id="归一化：离差标准化-Max-Min-Normalization"><a href="#归一化：离差标准化-Max-Min-Normalization" class="headerlink" title="归一化：离差标准化 (Max-Min Normalization)"></a>归一化：离差标准化 (Max-Min Normalization)</h3><p><img src="https://i.loli.net/2020/09/03/opNrbRPuMjDUAnq.png" alt="image.png"></p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line">scaler = MinMaxScaler()</span><br><span class="line">scaler.fit(df)</span><br><span class="line">scaled_features = scaler.transform(df)</span><br><span class="line"><span class="comment">#Convert to table format - MinMaxScaler</span></span><br><span class="line">df_MinMax = pd.DataFrame(data=scaled_features, columns=[<span class="string">"Age"</span>, <span class="string">"Salary"</span>,<span class="string">"Purchased"</span>,<span class="string">"Country_France"</span>,<span class="string">"Country_Germany"</span>, <span class="string">"Country_spain"</span>])</span><br></pre></td></tr></table></figure></div>
-
-<p>一些基于距离矩阵的机器学习模型，被称为“距离分类器”，比如K近邻算法（KNN）,支持向量机（SVM）,神经网络（Neural Network）。特征缩放对于这些模型非常重要，特别是在特征的值域非常不同时。特征缩放减少了大值域变量对计算距离的影响。</p>
-<p>如果算法不是基于距离计算，特征缩放则不重要，比如朴素贝叶斯和线性判别分析，以及树模型（梯度提升、随机森林等）。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/18/producer-consumer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/18/producer-consumer/" itemprop="url">生产者消费者模式爬谷歌学术</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-18T00:00:00+08:00">
-                2020-08-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/08/18/producer-consumer/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/18/producer-consumer/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>工作示意图如下：</p>
-<p><img src="https://i.loli.net/2020/05/18/qGjnJFP9pu8KQoM.png" alt="text-here"></p>
-<p>凑合看</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/08/18/producer-consumer/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 
@@ -1738,7 +1788,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1751,7 +1801,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
