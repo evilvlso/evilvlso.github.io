@@ -288,6 +288,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/" itemprop="url">k8s初始化镜像pull问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-16T12:32:00+08:00">
+                2020-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="因不明原因k8s初始化镜像无法pull-特记录pull脚本"><a href="#因不明原因k8s初始化镜像无法pull-特记录pull脚本" class="headerlink" title="因不明原因k8s初始化镜像无法pull,特记录pull脚本"></a>因不明原因k8s初始化镜像无法pull,特记录pull脚本</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download k8s 1.15.2 images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> get image-list by <span class="string">'kubeadm config images list --kubernetes-version=v1.15.2'</span></span></span><br><span class="line">images=(</span><br><span class="line">kube-apiserver:v1.18.1</span><br><span class="line">kube-controller-manager:v1.18.1</span><br><span class="line">kube-scheduler:v1.18.1</span><br><span class="line">kube-proxy:v1.18.1</span><br><span class="line">pause:3.2</span><br><span class="line">etcd:3.4.3-0</span><br><span class="line">coredns:1.6.7</span><br><span class="line">)</span><br><span class="line">```Shell</span><br><span class="line">&lt;!--more--&gt;</span><br></pre></td></tr></table></figure></div>
+<p>for imageName in ${images[@]};do<br>docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>    docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName k8s.gcr.io/$imageName<br>    docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/$imageName<br>done</p>
+<pre><code>## OR 使用这个一句话搞定
+`kubeadm init --apiserver-advertise-address=192.168.1.224 **--image-repository registry.aliyuncs.com/google_containers** --kubernetes-version v1.15.0  --pod-network-cidr=10.244.0.0/16`
+
+**pod-network:10.244.0.0/16**是 **flannel** 插件所需要的。视情况而定
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/16/Nginx%E5%8F%8D%E4%BB%A3%E7%AE%80%E6%98%93%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -901,7 +1038,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -914,7 +1051,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

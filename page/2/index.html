@@ -288,6 +288,151 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/22/one_hot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/01/22/one_hot/" itemprop="url">one hot编码的三种实现方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-01-22T12:30:00+08:00">
+                2022-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/01/22/one_hot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/01/22/one_hot/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="label转one-hot编码的方法"><a href="#label转one-hot编码的方法" class="headerlink" title="label转one_hot编码的方法"></a>label转one_hot编码的方法</h2><ol>
+<li><p>常见的是用numpy的方法，代码如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">y= cv2.imread(maskPath,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">y= cv2.resize(y,(self.image_size,self.image_size))</span><br><span class="line">y[y&lt;=<span class="number">100</span>]=<span class="number">0</span>  <span class="comment">#背景类</span></span><br><span class="line">y[y&gt;<span class="number">100</span>]=<span class="number">1</span>   <span class="comment">#病灶类</span></span><br><span class="line">y_onehot=np.eye(self.num_classes)[y.reshape([<span class="number">-1</span>])]</span><br><span class="line"><span class="comment"># 到第五行其实已经成为one_hot编码了,格式为  [[1,0],[1,0],[1,0],[1,0],[1,0],...[0,1],]</span></span><br><span class="line">y_onehot=y_onehot.reshape(self.num_classes,self.image_size,self.image_size)</span><br><span class="line"><span class="comment"># 这一步是为reshape，但是这种reshape方式的结果呈现并不是直觉理解的（不是通道值互斥的），原因是因为reshape的原理</span></span><br><span class="line"><span class="comment"># 正确的应该是</span></span><br><span class="line">y_onehot = rearrange(y_onehot,<span class="string">"(h w) c-&gt;c h w"</span>,h=self.image_size)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>pytorch也有one_hot编码方法，代码如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">y= cv2.imread(self.Y[index],cv2.IMREAD_GRAYSCALE)</span><br><span class="line">y= cv2.resize(y,(self.image_size,self.image_size))</span><br><span class="line">y[y&lt;=<span class="number">100</span>]=<span class="number">0</span>  <span class="comment">#背景类</span></span><br><span class="line">y[y&gt;<span class="number">100</span>]=<span class="number">1</span>   <span class="comment">#病灶类</span></span><br><span class="line"><span class="comment"># y就是图片的label</span></span><br><span class="line"></span><br><span class="line">y_onehot=F.one_hot(torch.Tensor(y.reshpe(<span class="number">-1</span>).to(torch.int64)),num_classes)</span><br><span class="line"><span class="comment"># 这一步结果是one_hot形式了，下一步需要变换shape就行</span></span><br><span class="line"><span class="comment"># 注意第一个参数是Tensor类型并且要转为torch.int64</span></span><br><span class="line">y_onehot = rearrange(y_onehot,<span class="string">"(h w) c-&gt;c h w"</span>,h=self.image_size)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>keras也有one_host编码方法，随后补充</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> to_categorical</span><br><span class="line">intput=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">y_onehot=to_categorical(input)</span><br></pre></td></tr></table></figure></div>
+
+
+
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/10/subplots/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1580,142 +1725,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/01/Papers%20Notes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/02/01/Papers%20Notes/" itemprop="url">Papers Notes</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-02-01T12:00:00+08:00">
-                2021-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/02/01/Papers%20Notes/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/02/01/Papers%20Notes/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Papers-Notes"><a href="#Papers-Notes" class="headerlink" title="Papers Notes"></a>Papers Notes</h1><p>[TOC]</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/02/01/Papers%20Notes/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1788,7 +1797,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1801,7 +1810,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
