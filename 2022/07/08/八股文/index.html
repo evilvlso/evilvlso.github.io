@@ -87,7 +87,7 @@
 <meta property="og:description" content="select&#x2F;pollselect 实现多路复用的方式是，将已连接的 Socket 都放到一个文件描述符集合，然后调用 select 函数将文件描述符集合拷贝到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过遍历文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写， 接着再把整个文件描述符集合拷贝回用户态里，然后用户态还需要再通过遍历的方法找到可读或可">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-08T01:30:00.000Z">
-<meta property="article:modified_time" content="2022-07-16T02:37:13.751Z">
+<meta property="article:modified_time" content="2022-11-22T01:12:48.606Z">
 <meta property="article:author" content="JustTango">
 <meta property="article:tag" content="note">
 <meta name="twitter:card" content="summary">
@@ -377,6 +377,16 @@
 <p><em>第一点</em>，epoll 在内核里使用<strong>红黑树来跟踪进程所有待检测的文件描述字</strong>，把需要监控的 socket 通过 <code>epoll_ctl()</code> 函数加入内核中的红黑树里，红黑树是个高效的数据结构，增删查一般时间复杂度是 <code>O(logn)</code>，通过对这棵黑红树进行操作，这样就不需要像 select/poll 每次操作时都传入整个 socket 集合，只需要传入一个待检测的 socket，减少了内核和用户空间大量的数据拷贝和内存分配。</p>
 <p><em>第二点</em>， epoll 使用事件驱动的机制，内核里<strong>维护了一个链表来记录就绪事件</strong>，当某个 socket 有事件发生时，通过回调函数内核会将其加入到这个就绪事件列表中，当用户调用 <code>epoll_wait()</code> 函数时，只会返回有事件发生的文件描述符的个数，不需要像 select/poll 那样轮询扫描整个 socket 集合，大大提高了检测的效率。</p>
 <h1 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h1><p>接口的本质是引入一个新的中间层，调用方可以通过接口与具体实现分离，解除上下游的耦合，上层的模块不再需要依赖下层的具体模块，只需要依赖一个约定好的接口。</p>
+<h1 id="粘包和半包的解决方案"><a href="#粘包和半包的解决方案" class="headerlink" title="粘包和半包的解决方案"></a>粘包和半包的解决方案</h1><ol>
+<li><p>发送方和接收方规定固定大小的缓冲区，也就是发送和接收都使用固定大小的 byte[] 数组长度，当字符长度不够时使用空字符弥补；</p>
+</li>
+<li><p>这种解决方案的实现思路是将请求的数据封装为两部分：数据头+数据正文，在数据头中存储数据正文的大小，当读取的数据小于数据头中的大小时，继续读取数据，直到读取的数据长度等于数据头中的长度时才停止。</p>
+<p>因为这种方式可以拿到数据的边界，所以也不会导致粘包和半包的问题，但这种实现方式的编码成本较大也不够优雅，因此不是最佳的实现方案，因此我们这里就略过，直接来看最终的解决方案吧。</p>
+</li>
+<li><p>以特殊字符结尾就可以知道流的边界了，因此也可以用来解决粘包和半包的问题，<strong>此实现方案是我们推荐最终解决方案</strong>。</p>
+<p>这种解决方案的核心是，使用 Java 中自带的 <code>BufferedReader</code> 和 <code>BufferedWriter</code>，也就是带缓冲区的输入字符流和输出字符流，通过写入的时候加上 <code>\n</code> 来结尾，读取的时候使用 <code>readLine</code> 按行来读取数据，这样就知道流的边界了，从而解决了粘包和半包的问题。</p>
+</li>
+</ol>
 
       
     </div>
@@ -416,7 +426,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/07/08/python%E9%9D%A2%E7%BB%8F/" rel="next" title="python面">
+              <a href="/2022/07/08/redis%E9%9D%A2/" rel="next" title="python面">
                 <i class="fa fa-chevron-left"></i> python面
               </a>
             
@@ -523,7 +533,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -587,7 +597,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#select-poll"><span class="nav-number">1.</span> <span class="nav-text">select&#x2F;poll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">2.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interface"><span class="nav-number">3.</span> <span class="nav-text">Interface</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#select-poll"><span class="nav-number">1.</span> <span class="nav-text">select&#x2F;poll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">2.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interface"><span class="nav-number">3.</span> <span class="nav-text">Interface</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#粘包和半包的解决方案"><span class="nav-number">4.</span> <span class="nav-text">粘包和半包的解决方案</span></a></li></ol></div>
             
 
           </div>
@@ -607,7 +617,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-[object Object]"></i>
   </span>

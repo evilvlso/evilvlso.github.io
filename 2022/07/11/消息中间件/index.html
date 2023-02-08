@@ -87,7 +87,7 @@
 <meta property="og:description" content="使用场景异步处理：用户注册后，发送注册邮件和注册短信。用户注册完成后，提交任务到 MQ，发送模块并行获取 MQ 中的任务。 系统解耦：比如用注册完成，再加一个发送微信通知。只需要新增发送微信消息模块，从 MQ 中读取任务，发送消息即可。无需改动注册模块的代码，这样注册模块与发送模块通过 MQ 解耦。 流量削峰：秒杀和抢购等场景经常使用 MQ 进行流量削峰。活动开始时流量暴增，用户的请求写入MQ，超">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-14T13:02:47.436Z">
+<meta property="article:modified_time" content="2022-09-03T02:01:37.081Z">
 <meta property="article:author" content="JustTango">
 <meta property="article:tag" content="MQ">
 <meta name="twitter:card" content="summary">
@@ -375,7 +375,7 @@
 <h2 id="如何保证消息不被重复消费"><a href="#如何保证消息不被重复消费" class="headerlink" title="如何保证消息不被重复消费?"></a>如何保证消息不被重复消费?</h2><p>消息重复消费的原因：</p>
 <p>1、生产者发送消息的时候，在指定的时间只能没有得到服务端的反馈，此时触发了重试机制，在Rabbitmq服务端就会出现重复消费，那么消费者在进行消费的时候就出现了重复消费。</p>
 <p>2、消费者消费完毕以后，消费方给MQ确认已消费的反馈，MQ 没有成功接受。该消息就不会从Rabbitmq删除掉，那么消费者再一次获取到了消息进行消费。</p>
-<p>MQ是无法保证消息不被重复消费的，只能业务系统层面考虑。不被重复消费的问题，就被转化为消息消费的幂等性的问题。幂等性就是指一次和多次请求的结果一致，多次请求不会产生副作用。</p>
+<p>MQ是无法保证消息不被重复消费的，只能业务系统层面考虑。不被重复消费的问题，就被转化为消息消费的幂等性的问题。<strong>幂等性就是指一次和多次请求的结果一致，多次请求不会产生副作用。</strong></p>
 <p>保证消息消费的幂等性可以考虑下面的方式：</p>
 <p>① 给消息生成全局 id，消费成功过的消息可以直接丢弃</p>
 <p>② 消息中保存业务数据的主键字段，结合业务系统需求场景进行处理，避免多次插入、是否可以根据主键多次更新而并不影响结果等</p>
@@ -438,8 +438,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2022/07/11/Untitled/" rel="prev" title="Untitled">
-                Untitled <i class="fa fa-chevron-right"></i>
+              <a href="/2022/07/21/itertools/" rel="prev" title="itertools排列 组合 笛卡尔积">
+                itertools排列 组合 笛卡尔积 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -535,7 +535,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -619,7 +619,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-[object Object]"></i>
   </span>
