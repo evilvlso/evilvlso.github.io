@@ -288,6 +288,144 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/25/exceltocsv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/02/25/exceltocsv/" itemprop="url">MACOS vscode 配置c++</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-02-25T14:00:00+08:00">
+                2021-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/02/25/exceltocsv/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/02/25/exceltocsv/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="excel-to-csv-windows脚本"><a href="#excel-to-csv-windows脚本" class="headerlink" title="excel to csv windows脚本"></a>excel to csv windows脚本</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># create a list with sheet numbers you want to process</span></span><br><span class="line">sheets = map(str,range(<span class="number">1</span>,<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># convert each sheet to csv and then read it using read_csv</span></span><br><span class="line">df=&#123;&#125;</span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> call</span><br><span class="line">excel=<span class="string">'C:\\Users\\rsignell\\OTT_Data_All_stations.xlsx'</span></span><br><span class="line"><span class="keyword">for</span> sheet <span class="keyword">in</span> sheets:</span><br><span class="line">    csv = <span class="string">'C:\\Users\\rsignell\\test'</span> + sheet + <span class="string">'.csv'</span> </span><br><span class="line">    call([<span class="string">'cscript.exe'</span>, <span class="string">'C:\\Users\\rsignell\\ExcelToCsv.vbs'</span>, excel, csv, sheet])</span><br><span class="line">    df[sheet]=pd.read_csv(csv)</span><br></pre></td></tr></table></figure></div>
+
+<p>ExcelToCsv.vbs script</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#write vbscript to file</span><br><span class="line">vbscript&#x3D;&quot;&quot;&quot;if WScript.Arguments.Count &lt; 3 Then</span><br><span class="line">    WScript.Echo &quot;Please specify the source and the destination files. Usage: ExcelToCsv &lt;xls&#x2F;xlsx source file&gt; &lt;csv destination file&gt; &lt;worksheet number (starts at 1)&gt;&quot;</span><br><span class="line">    Wscript.Quit</span><br><span class="line">End If</span><br><span class="line"></span><br><span class="line">csv_format &#x3D; 6</span><br><span class="line"></span><br><span class="line">Set objFSO &#x3D; CreateObject(&quot;Scripting.FileSystemObject&quot;)</span><br><span class="line"></span><br><span class="line">src_file &#x3D; objFSO.GetAbsolutePathName(Wscript.Arguments.Item(0))</span><br><span class="line">dest_file &#x3D; objFSO.GetAbsolutePathName(WScript.Arguments.Item(1))</span><br><span class="line">worksheet_number &#x3D; CInt(WScript.Arguments.Item(2))</span><br><span class="line"></span><br><span class="line">Dim oExcel</span><br><span class="line">Set oExcel &#x3D; CreateObject(&quot;Excel.Application&quot;)</span><br><span class="line"></span><br><span class="line">Dim oBook</span><br><span class="line">Set oBook &#x3D; oExcel.Workbooks.Open(src_file)</span><br><span class="line">oBook.Worksheets(worksheet_number).Activate</span><br><span class="line"></span><br><span class="line">oBook.SaveAs dest_file, csv_format</span><br><span class="line"></span><br><span class="line">oBook.Close False</span><br><span class="line">oExcel.Quit</span><br><span class="line">&quot;&quot;&quot;;</span><br><span class="line"></span><br><span class="line">f &#x3D; open(&#39;ExcelToCsv.vbs&#39;,&#39;w&#39;)</span><br><span class="line">f.write(vbscript.encode(&#39;utf-8&#39;))</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from xlsx2csv import Xlsx2csv</span><br><span class="line">from io import StringIO</span><br><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def read_excel(path: str, sheet_name: str) -&gt; pd.DataFrame:</span><br><span class="line">    buffer &#x3D; StringIO()</span><br><span class="line">    Xlsx2csv(path, outputencoding&#x3D;&quot;utf-8&quot;, sheet_name&#x3D;sheet_name).convert(buffer)</span><br><span class="line">    buffer.seek(0)</span><br><span class="line">    df &#x3D; pd.read_csv(buffer)</span><br><span class="line">    return df</span><br></pre></td></tr></table></figure></div>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/24/cpp_vscode_setting/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1541,139 +1679,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/" itemprop="url">matplotlib解决中文乱码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-01T00:00:00+08:00">
-                2020-07-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/01/macos%E6%9F%A5%E8%AF%A2%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="macos查询系统字体"><a href="#macos查询系统字体" class="headerlink" title="macos查询系统字体"></a>macos查询系统字体</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib.font_manager <span class="keyword">import</span> FontManager</span><br><span class="line">fm = FontManager()</span><br><span class="line">mat_fonts = set(f.name <span class="keyword">for</span> f <span class="keyword">in</span> fm.ttflist)</span><br><span class="line">mat_fonts</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="matplotlib解决中文乱码"><a href="#matplotlib解决中文乱码" class="headerlink" title="matplotlib解决中文乱码"></a>matplotlib解决中文乱码</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.rcParams[<span class="string">'font.sans-serif'</span>] = [<span class="string">'Arial Unicode MS'</span>]</span><br></pre></td></tr></table></figure></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1746,7 +1751,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

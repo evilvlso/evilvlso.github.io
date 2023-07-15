@@ -288,6 +288,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/08/redis%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JustTango">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tango">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/08/redis%E9%9D%A2/" itemprop="url">python面</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-08T00:00:00+08:00">
+                2022-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/07/08/redis%E9%9D%A2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2022/07/08/redis%E9%9D%A2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="快的原因"><a href="#快的原因" class="headerlink" title="快的原因"></a>快的原因</h1><ol>
+<li>基于内存实现的</li>
+<li>采用io多路复用模型。非阻塞io ,epoll+自己的时间循环机制</li>
+<li>单线程模型，避免不必要的上下文切换和资源竞争</li>
+<li>高效的底层数据结构</li>
+</ol>
+<p><a href="https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ</a> 不错</p>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>描述：查询一个数据库不存在的数据，不会去缓存，压力直接给到数据库<br>解决方案：</p>
+<ol>
+<li>将不存的数据也进行缓存，单过期时间设置较短些</li>
+<li>使用布隆过滤器，存储可能存在的数据，先在过滤器中查询是否存在在去判断是否请求数据库。布隆过滤器特点: 存在的不一定存在，不存在的一定不存在。<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2>描述：对于一些过期的数据，短时间有大量请求，会直接对数据库造成压力<br>解决方案：</li>
+<li>使用互斥锁。大量并发请求请求到缓存时，使用<code>setnx</code>命令返回结果为true在去数据库请求。<code>setnx key value</code>:如果不存在则设置为value，也就意味着其中一个请求拿到了锁,其他请求就不会请求db了</li>
+<li>设置用不过期<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2>描述：大量数据同一时间过期<br>解决方案:</li>
+<li>将过期时间离散开来</li>
+</ol>
+<h2 id="redis默认16个db"><a href="#redis默认16个db" class="headerlink" title="redis默认16个db"></a>redis默认16个db</h2><h2 id="redis删除策略"><a href="#redis删除策略" class="headerlink" title="redis删除策略"></a>redis删除策略</h2><ol>
+<li>定时删除。设定过期时间，到时间久删除</li>
+<li>惰性删除。设定过期时间，到时间先不删除，等到有请求访问在删除。</li>
+<li>定期删除。隔一段时间删除一批。</li>
+</ol>
+<h2 id="redis-vs-memcached"><a href="#redis-vs-memcached" class="headerlink" title="redis vs memcached"></a>redis vs memcached</h2><ol>
+<li>redis支持更多的数据结构，memcached只支持k-v数据结构</li>
+<li>redis可以对k设置过期时间<br>缺点：瓶颈在物理内存的大小 而非cpu，使用前需要评估内存是否充足</li>
+</ol>
+<h2 id="为什么要使用缓存"><a href="#为什么要使用缓存" class="headerlink" title="为什么要使用缓存"></a>为什么要使用缓存</h2><p>保证服务的高性能和高并发</p>
+<h2 id="缓存同步方案"><a href="#缓存同步方案" class="headerlink" title="缓存同步方案"></a>缓存同步方案</h2><ol>
+<li>同步方案。从业务代码层面，更新完数据可就对缓存进行更新</li>
+<li>异步方案。将更新的数据放入消息队列中，消费者从消息队列进行更新</li>
+</ol>
+<h2 id="redis的集群方案"><a href="#redis的集群方案" class="headerlink" title="redis的集群方案"></a>redis的集群方案</h2><ol>
+<li>主从模式。<br> 保证高可用；无法实现故障转移；无法实现海量数据存储</li>
+<li>哨兵模式<br> 高可用；可以自动实现故障转移；无法实现海量数据存储</li>
+<li>分片集群<br> 高可用；可以自动转移故障；可以实现海量数据存储</li>
+</ol>
+<h2 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h2><p>MULTI 开启事务；EXEC执行事务；<br><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220711104209304.png" alt="image-20220711104209304"></p>
+<h2 id="redis内存优化"><a href="#redis内存优化" class="headerlink" title="redis内存优化"></a>redis内存优化</h2><p>尽可能使用散列表(Hash)。比如你的 web 系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面。</p>
+<h2 id="如何保持mysql和redis数据一致性"><a href="#如何保持mysql和redis数据一致性" class="headerlink" title="如何保持mysql和redis数据一致性"></a>如何保持mysql和redis数据一致性</h2><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220718174349186.png" alt="image-20220718174349186" style="zoom:50%;" />
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+<div>
+  
+</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/02/25/Golang/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1616,144 +1783,6 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/25/exceltocsv/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JustTango">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tango">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/02/25/exceltocsv/" itemprop="url">MACOS vscode 配置c++</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-02-25T14:00:00+08:00">
-                2021-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/02/25/exceltocsv/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/02/25/exceltocsv/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="excel-to-csv-windows脚本"><a href="#excel-to-csv-windows脚本" class="headerlink" title="excel to csv windows脚本"></a>excel to csv windows脚本</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># create a list with sheet numbers you want to process</span></span><br><span class="line">sheets = map(str,range(<span class="number">1</span>,<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># convert each sheet to csv and then read it using read_csv</span></span><br><span class="line">df=&#123;&#125;</span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> call</span><br><span class="line">excel=<span class="string">'C:\\Users\\rsignell\\OTT_Data_All_stations.xlsx'</span></span><br><span class="line"><span class="keyword">for</span> sheet <span class="keyword">in</span> sheets:</span><br><span class="line">    csv = <span class="string">'C:\\Users\\rsignell\\test'</span> + sheet + <span class="string">'.csv'</span> </span><br><span class="line">    call([<span class="string">'cscript.exe'</span>, <span class="string">'C:\\Users\\rsignell\\ExcelToCsv.vbs'</span>, excel, csv, sheet])</span><br><span class="line">    df[sheet]=pd.read_csv(csv)</span><br></pre></td></tr></table></figure></div>
-
-<p>ExcelToCsv.vbs script</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#write vbscript to file</span><br><span class="line">vbscript&#x3D;&quot;&quot;&quot;if WScript.Arguments.Count &lt; 3 Then</span><br><span class="line">    WScript.Echo &quot;Please specify the source and the destination files. Usage: ExcelToCsv &lt;xls&#x2F;xlsx source file&gt; &lt;csv destination file&gt; &lt;worksheet number (starts at 1)&gt;&quot;</span><br><span class="line">    Wscript.Quit</span><br><span class="line">End If</span><br><span class="line"></span><br><span class="line">csv_format &#x3D; 6</span><br><span class="line"></span><br><span class="line">Set objFSO &#x3D; CreateObject(&quot;Scripting.FileSystemObject&quot;)</span><br><span class="line"></span><br><span class="line">src_file &#x3D; objFSO.GetAbsolutePathName(Wscript.Arguments.Item(0))</span><br><span class="line">dest_file &#x3D; objFSO.GetAbsolutePathName(WScript.Arguments.Item(1))</span><br><span class="line">worksheet_number &#x3D; CInt(WScript.Arguments.Item(2))</span><br><span class="line"></span><br><span class="line">Dim oExcel</span><br><span class="line">Set oExcel &#x3D; CreateObject(&quot;Excel.Application&quot;)</span><br><span class="line"></span><br><span class="line">Dim oBook</span><br><span class="line">Set oBook &#x3D; oExcel.Workbooks.Open(src_file)</span><br><span class="line">oBook.Worksheets(worksheet_number).Activate</span><br><span class="line"></span><br><span class="line">oBook.SaveAs dest_file, csv_format</span><br><span class="line"></span><br><span class="line">oBook.Close False</span><br><span class="line">oExcel.Quit</span><br><span class="line">&quot;&quot;&quot;;</span><br><span class="line"></span><br><span class="line">f &#x3D; open(&#39;ExcelToCsv.vbs&#39;,&#39;w&#39;)</span><br><span class="line">f.write(vbscript.encode(&#39;utf-8&#39;))</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure></div>
-
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from xlsx2csv import Xlsx2csv</span><br><span class="line">from io import StringIO</span><br><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def read_excel(path: str, sheet_name: str) -&gt; pd.DataFrame:</span><br><span class="line">    buffer &#x3D; StringIO()</span><br><span class="line">    Xlsx2csv(path, outputencoding&#x3D;&quot;utf-8&quot;, sheet_name&#x3D;sheet_name).convert(buffer)</span><br><span class="line">    buffer.seek(0)</span><br><span class="line">    df &#x3D; pd.read_csv(buffer)</span><br><span class="line">    return df</span><br></pre></td></tr></table></figure></div>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-<div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1826,7 +1855,7 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
