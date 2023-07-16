@@ -17,6 +17,43 @@
       </tags>
   </entry>
   <entry>
+    <title>Mysql主从配置及可能问题</title>
+    <url>/2020/04/16/Mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%8F%AF%E8%83%BD%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id="从账号"><a href="#从账号" class="headerlink" title="从账号"></a>从账号</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">grant replication slave on *.* to slave@192.168.1.8 identified by &#39;123456&#39;;</span><br></pre></td></tr></table></figure></div>
+<h3 id="my-cnf"><a href="#my-cnf" class="headerlink" title="my.cnf"></a>my.cnf</h3><a id="more"></a>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">port &#x3D; 3306</span><br><span class="line">datadir &#x3D; &#x2F;data</span><br><span class="line">log_bin &#x3D; &#x2F;data&#x2F;master-log-bin</span><br><span class="line">log_bin_index &#x3D; &#x2F;data&#x2F;master-log-bin.index</span><br><span class="line">socket &#x3D; &#x2F;tmp&#x2F;mysql.sock</span><br><span class="line">expire_logs_days &#x3D; 3</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">open_files_limit &#x3D; 10000</span><br><span class="line">binlog_format &#x3D;mixed </span><br><span class="line"># 很重要</span><br><span class="line">server_id &#x3D; 2</span><br><span class="line">log_error &#x3D; &#x2F;data&#x2F;log&#x2F;master-error.log</span><br><span class="line"></span><br><span class="line">lower_case_table_names&#x3D;1</span><br><span class="line">slave_type_conversions&#x3D;ALL_NON_LOSSY</span><br><span class="line">#从</span><br><span class="line">slave-skip-errors &#x3D;1756  </span><br><span class="line">auto_increment_offset &#x3D; 2</span><br><span class="line">auto_increment_increment &#x3D; 2</span><br><span class="line">max_connections &#x3D; 500</span><br><span class="line">character-set-server &#x3D; utf8mb4</span><br><span class="line">wait_timeout &#x3D; 120</span><br><span class="line">#GTID配置</span><br><span class="line">gtid_mode &#x3D; on</span><br><span class="line">#必须</span><br><span class="line">enforce-gtid-consistency &#x3D; true</span><br><span class="line">binlog-do-db &#x3D; shares3</span><br><span class="line"></span><br><span class="line">log_slave_updates &#x3D; on</span><br><span class="line"></span><br><span class="line">slave-parallel-workers&#x3D;0</span><br><span class="line">master-info-repository &#x3D; table</span><br><span class="line">relay-log-info-repository &#x3D; table</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">socket &#x3D; &#x2F;tmp&#x2F;mysql.sock</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>数据冲突之列的复制错误，至于跳过事物Id本身，就不复杂了。</li>
+</ul>
+<blockquote>
+<p>(1)停止slave进程<br><code>mysql&gt; STOP SLAVE;</code></p>
+<p>(2)设置事务号，事务号从Retrieved_Gtid_Set获取<br>在session里设置gtid_next，即跳过这个GTID</p>
+<p><code>mysql&gt; SET GTID_NEXT= &#39;6d257f5b-5e6b-11e8-b668-5254003de1b6:1&#39;</code></p>
+<p>(3)设置空事物</p>
+<p><code>mysql&gt; BEGIN; COMMIT;</code></p>
+<p>(4)恢复事物号</p>
+<p><code>mysql&gt; SET SESSION GTID_NEXT = AUTOMATIC;</code></p>
+<p>(5)启动slave进程</p>
+<p><code>mysql&gt; START SLAVE;</code></p>
+<p>跳过一个事务之后，重启slave，恢复正常</p>
+</blockquote>
+<ul>
+<li>对于master上的binlog被清理，slave上找不到对应的binlog，需要跳过主库上所有被清理的binlog</li>
+</ul>
+<blockquote>
+<p>在主库执行 <strong>show variables like ‘%gtid_purged%’</strong></p>
+<p>看主库清理的日志的范围，比如：6d257f5b-5e6b-11e8-b668-5254003de1b6:1-699578</p>
+<p>那么就要跳过主库上被清理的binlog的范围，需要设置从库上的gtid_purged的范围即可</p>
+</blockquote>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">&gt; stop slave;</span><br><span class="line">&gt; reset master;</span><br><span class="line">&gt; set global gtid_purged&#x3D;&#39;6d257f5b-5e6b-11e8-b668-5254003de1b6:1-699578&#39;;</span><br><span class="line">&gt; start slave;</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>Centos</tag>
+        <tag>Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux下打包QT程序</title>
     <url>/2021/06/04/Linux%E4%B8%8B%E6%89%93%E5%8C%85QT%E7%A8%8B%E5%BA%8F/</url>
     <content><![CDATA[<h1 id="Linux下打包QT程序"><a href="#Linux下打包QT程序" class="headerlink" title="Linux下打包QT程序"></a>Linux下打包QT程序</h1><ol>
@@ -55,43 +92,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Mysql主从配置及可能问题</title>
-    <url>/2020/04/16/Mysql%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%8F%AF%E8%83%BD%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h3 id="从账号"><a href="#从账号" class="headerlink" title="从账号"></a>从账号</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">grant replication slave on *.* to slave@192.168.1.8 identified by &#39;123456&#39;;</span><br></pre></td></tr></table></figure></div>
-<h3 id="my-cnf"><a href="#my-cnf" class="headerlink" title="my.cnf"></a>my.cnf</h3><a id="more"></a>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">port &#x3D; 3306</span><br><span class="line">datadir &#x3D; &#x2F;data</span><br><span class="line">log_bin &#x3D; &#x2F;data&#x2F;master-log-bin</span><br><span class="line">log_bin_index &#x3D; &#x2F;data&#x2F;master-log-bin.index</span><br><span class="line">socket &#x3D; &#x2F;tmp&#x2F;mysql.sock</span><br><span class="line">expire_logs_days &#x3D; 3</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">open_files_limit &#x3D; 10000</span><br><span class="line">binlog_format &#x3D;mixed </span><br><span class="line"># 很重要</span><br><span class="line">server_id &#x3D; 2</span><br><span class="line">log_error &#x3D; &#x2F;data&#x2F;log&#x2F;master-error.log</span><br><span class="line"></span><br><span class="line">lower_case_table_names&#x3D;1</span><br><span class="line">slave_type_conversions&#x3D;ALL_NON_LOSSY</span><br><span class="line">#从</span><br><span class="line">slave-skip-errors &#x3D;1756  </span><br><span class="line">auto_increment_offset &#x3D; 2</span><br><span class="line">auto_increment_increment &#x3D; 2</span><br><span class="line">max_connections &#x3D; 500</span><br><span class="line">character-set-server &#x3D; utf8mb4</span><br><span class="line">wait_timeout &#x3D; 120</span><br><span class="line">#GTID配置</span><br><span class="line">gtid_mode &#x3D; on</span><br><span class="line">#必须</span><br><span class="line">enforce-gtid-consistency &#x3D; true</span><br><span class="line">binlog-do-db &#x3D; shares3</span><br><span class="line"></span><br><span class="line">log_slave_updates &#x3D; on</span><br><span class="line"></span><br><span class="line">slave-parallel-workers&#x3D;0</span><br><span class="line">master-info-repository &#x3D; table</span><br><span class="line">relay-log-info-repository &#x3D; table</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">socket &#x3D; &#x2F;tmp&#x2F;mysql.sock</span><br></pre></td></tr></table></figure></div>
-
-<ul>
-<li>数据冲突之列的复制错误，至于跳过事物Id本身，就不复杂了。</li>
-</ul>
-<blockquote>
-<p>(1)停止slave进程<br><code>mysql&gt; STOP SLAVE;</code></p>
-<p>(2)设置事务号，事务号从Retrieved_Gtid_Set获取<br>在session里设置gtid_next，即跳过这个GTID</p>
-<p><code>mysql&gt; SET GTID_NEXT= &#39;6d257f5b-5e6b-11e8-b668-5254003de1b6:1&#39;</code></p>
-<p>(3)设置空事物</p>
-<p><code>mysql&gt; BEGIN; COMMIT;</code></p>
-<p>(4)恢复事物号</p>
-<p><code>mysql&gt; SET SESSION GTID_NEXT = AUTOMATIC;</code></p>
-<p>(5)启动slave进程</p>
-<p><code>mysql&gt; START SLAVE;</code></p>
-<p>跳过一个事务之后，重启slave，恢复正常</p>
-</blockquote>
-<ul>
-<li>对于master上的binlog被清理，slave上找不到对应的binlog，需要跳过主库上所有被清理的binlog</li>
-</ul>
-<blockquote>
-<p>在主库执行 <strong>show variables like ‘%gtid_purged%’</strong></p>
-<p>看主库清理的日志的范围，比如：6d257f5b-5e6b-11e8-b668-5254003de1b6:1-699578</p>
-<p>那么就要跳过主库上被清理的binlog的范围，需要设置从库上的gtid_purged的范围即可</p>
-</blockquote>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">&gt; stop slave;</span><br><span class="line">&gt; reset master;</span><br><span class="line">&gt; set global gtid_purged&#x3D;&#39;6d257f5b-5e6b-11e8-b668-5254003de1b6:1-699578&#39;;</span><br><span class="line">&gt; start slave;</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <tags>
-        <tag>Centos</tag>
-        <tag>Mysql</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Nginx反代简易配置</title>
     <url>/2020/04/16/Nginx%E5%8F%8D%E4%BB%A3%E7%AE%80%E6%98%93%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<blockquote>
@@ -118,6 +118,77 @@
       <tags>
         <tag>Centos</tag>
         <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python操作excel-openpyxl</title>
+    <url>/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/</url>
+    <content><![CDATA[<blockquote>
+<p>openpyxl是一个很好用的操作excel的库</p>
+<p>常用的操作：</p>
+<ul>
+<li>添加表头 <strong>add_sheet</strong></li>
+<li>添加数据(元组) <strong>add_data</strong></li>
+<li>设置表头格式(仅字体)  <strong>set_header_font</strong></li>
+<li>删除 <strong>sheet delete_sheet</strong></li>
+<li>保存excel <strong>save</strong></li>
+</ul>
+<p>还有很多友好的操作</p>
+</blockquote>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Xlsx</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.workbook = Workbook()</span><br><span class="line">        self.index=<span class="number">1</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_sheet</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.workbook.create_sheet(sheetname,self.index+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_data</span><span class="params">(self,data,sheet=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param sheet :sheet对象</span></span><br><span class="line"><span class="string">        :param data: data最好是一个元组</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(data,tuple):</span><br><span class="line">            sheet.append(data)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            sheet.append(tuple(data))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_header_font</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        格式化行头</span></span><br><span class="line"><span class="string">        :param sheetname:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        font = Font(<span class="string">u'宋体'</span>, size=<span class="number">13</span>, bold=<span class="literal">True</span>, color=<span class="string">'000000'</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> sheetname[<span class="string">"1"</span>]:</span><br><span class="line">            i.font = font</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_sheet</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        删除sheet</span></span><br><span class="line"><span class="string">        :param sheetname:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        self.workbook.remove(self.workbook[sheetname])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self,filename)</span>:</span></span><br><span class="line">        self.workbook.save(filename)</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Golang碎片化学习笔记</title>
+    <url>/2022/02/25/Golang/</url>
+    <content><![CDATA[<h1 id="Golang碎片化学习笔记"><a href="#Golang碎片化学习笔记" class="headerlink" title="Golang碎片化学习笔记"></a>Golang碎片化学习笔记</h1><ul>
+<li><p><code>counter := map[int]int{}  和 counter := make(map[int]int)</code>是等价的，直接上去{}初始化更装</p>
+</li>
+<li><p>对slice，map进行for遍历，得到的值取决于用几个值接收</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i,k := <span class="keyword">range</span> slice  #i为索引  k为值</span><br><span class="line"><span class="keyword">for</span> i := <span class="keyword">range</span> slice # 则i仅为索引</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k,v := <span class="keyword">range</span> <span class="keyword">map</span>  # key value都能取到</span><br><span class="line"><span class="keyword">for</span> k := <span class="keyword">range</span> <span class="keyword">map</span> # 只有k</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p><code>make</code>创建的slice map 会初始化为该类型的零值，返回变量</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="code"><pre><span class="line">a:=<span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="number">2</span>)</span><br><span class="line">a[<span class="number">0</span>]  #<span class="number">0</span> </span><br><span class="line">a[<span class="number">1</span>]  # <span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p><code>container/list</code>这是一个双向链表，他的主要方法有：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="code"><pre><span class="line">l:=list.New()</span><br><span class="line">l.Front()</span><br><span class="line">l.Back()</span><br><span class="line">l.PushBack(你的数据)</span><br><span class="line">l.PushFront(你的数据)</span><br><span class="line">l.Remove(e) #e一定是他的Element类型 比如 l.Front 而不是你的数据  e.Value才是你的数据</span><br><span class="line">l.MoveFront(e) #e是Element类型 将要移动的数据</span><br><span class="line">l.MoveBack(e)</span><br></pre></td></tr></table></figure></div>
+
+
+</li>
+</ul>
+<ul>
+<li><p>字符串遍历的结果是???</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GO"><figure class="iseeu highlight /go"><table><tr><td class="code"><pre><span class="line">a := <span class="string">"asdasf"</span></span><br><span class="line"><span class="keyword">for</span> _, c := <span class="keyword">range</span> a &#123;</span><br><span class="line">  fmt.Println(c)</span><br><span class="line">&#125;</span><br><span class="line">#<span class="number">97</span></span><br><span class="line"><span class="number">115</span></span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">97</span></span><br><span class="line"><span class="number">115</span></span><br><span class="line"><span class="number">102</span></span><br><span class="line">a := <span class="string">"够神呐虐"</span></span><br><span class="line"><span class="keyword">for</span> _,i := <span class="keyword">range</span> a &#123;</span><br><span class="line">  fmt.Println(i)</span><br><span class="line">&#125;</span><br><span class="line">#</span><br><span class="line"><span class="number">22815</span></span><br><span class="line"><span class="number">31070</span></span><br><span class="line"><span class="number">21584</span></span><br><span class="line"><span class="number">34384</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>Slice取最后一个元素 索引不能是-1 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GO"><figure class="iseeu highlight /go"><table><tr><td class="code"><pre><span class="line">a := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">fmt.Println(a[<span class="number">-1</span>])  # must be a non-negtive</span><br><span class="line">fmt.Println(a[<span class="built_in">len</span>(a)<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p><code>len()</code>获得的中文字符串长度不是你想的，获取的是字节长度</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">a :&#x3D; &quot;够神呐虐&quot;</span><br><span class="line">fmt.Println(len(a)) # 12 fuck</span><br><span class="line">b :&#x3D; []rune(a)   # 4</span><br><span class="line">b :&#x3D; []byte(a)  # 4</span><br></pre></td></tr></table></figure></div>
+
+
+</li>
+</ul>
+<ul>
+<li><p><strong>Printf、Sprintf、Fprintf区别</strong></p>
+<h1 id=""><a href="#" class="headerlink" title=""></a><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220427171722010.png" alt="image-20220427171722010"></h1></li>
+<li><p>小写变量在<strong>本包内</strong>可以访问</p>
+</li>
+<li><p>字符串匹配</p>
+</li>
+<li><pre><code>pattern []string
+pattern[0]==&quot;a&quot;  ??
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">- 使用unicode筛选匹配中文</span><br></pre></td></tr></table></figure></div>
+# 匹配所有汉字
+print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
+<li></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>golang</tag>
       </tags>
   </entry>
   <entry>
@@ -305,98 +376,25 @@
       </tags>
   </entry>
   <entry>
-    <title>Python操作excel-openpyxl</title>
-    <url>/2020/04/16/Python%E6%93%8D%E4%BD%9Cexcel-openpyxl/</url>
-    <content><![CDATA[<blockquote>
-<p>openpyxl是一个很好用的操作excel的库</p>
-<p>常用的操作：</p>
+    <title>QT-TableView</title>
+    <url>/2021/03/04/QtTableView/</url>
+    <content><![CDATA[<hr>
 <ul>
-<li>添加表头 <strong>add_sheet</strong></li>
-<li>添加数据(元组) <strong>add_data</strong></li>
-<li>设置表头格式(仅字体)  <strong>set_header_font</strong></li>
-<li>删除 <strong>sheet delete_sheet</strong></li>
-<li>保存excel <strong>save</strong></li>
+<li>TableView 初始化</li>
 </ul>
-<p>还有很多友好的操作</p>
-</blockquote>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Xlsx</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.workbook = Workbook()</span><br><span class="line">        self.index=<span class="number">1</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_sheet</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.workbook.create_sheet(sheetname,self.index+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_data</span><span class="params">(self,data,sheet=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        :param sheet :sheet对象</span></span><br><span class="line"><span class="string">        :param data: data最好是一个元组</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(data,tuple):</span><br><span class="line">            sheet.append(data)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            sheet.append(tuple(data))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_header_font</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        格式化行头</span></span><br><span class="line"><span class="string">        :param sheetname:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        font = Font(<span class="string">u'宋体'</span>, size=<span class="number">13</span>, bold=<span class="literal">True</span>, color=<span class="string">'000000'</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> sheetname[<span class="string">"1"</span>]:</span><br><span class="line">            i.font = font</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_sheet</span><span class="params">(self,sheetname=<span class="string">"Sheet"</span>)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        删除sheet</span></span><br><span class="line"><span class="string">        :param sheetname:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        self.workbook.remove(self.workbook[sheetname])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self,filename)</span>:</span></span><br><span class="line">        self.workbook.save(filename)</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Pyqt5主程序调用子窗口的方法和问题</title>
-    <url>/2022/07/29/Pyqt%E8%B0%83%E7%94%A8%E5%AD%90%E7%AA%97%E5%8F%A3/</url>
-    <content><![CDATA[<p><code>https://blog.csdn.net/weixin_40520077/article/details/104040414</code></p>
-<p>例4中需要将子窗口的继承改为<code>QDialog</code></p>
-<a id="more"></a>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::setTableHead</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(ui-&gt;tableView-&gt;model()==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">      QStandardItemModel *  theModel = <span class="keyword">new</span> QStandardItemModel(ui-&gt;tableView);</span><br><span class="line">      ui-&gt;tableView-&gt;setModel(theModel);</span><br><span class="line">   		 &#125;</span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*) ui-&gt;tableView-&gt;model();</span><br><span class="line">	 theSelection = <span class="keyword">new</span> QItemSelectionModel(theModel);<span class="comment">//选中模型类 从ui中获取 而不是设置类成员</span></span><br><span class="line">	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);</span><br><span class="line">    QStringList headerList;</span><br><span class="line">    headerList&lt;&lt;<span class="string">"序号"</span>&lt;&lt;<span class="string">"报告编号"</span>&lt;&lt;<span class="string">"姓名"</span>&lt;&lt;<span class="string">"性别"</span>&lt;&lt;<span class="string">"创建时间"</span>;</span><br><span class="line">    theModel-&gt;setHorizontalHeaderLabels(headerList);</span><br><span class="line">    theModel-&gt;setRowCount(<span class="number">5</span>);  <span class="comment">//设置表格行数 </span></span><br><span class="line">    ui-&gt;tableView-&gt;setGridStyle(Qt::SolidLine);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(<span class="literal">true</span>);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(QHeaderView::ResizeToContents);</span><br><span class="line">    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(<span class="literal">true</span>);   <span class="comment">// 是否隐藏列表头</span></span><br><span class="line">    ui-&gt;tableView-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers); <span class="comment">//是否可编辑 cell</span></span><br><span class="line">    ui-&gt;tableView-&gt;setContextMenuPolicy(Qt::CustomContextMenu);    <span class="comment">//弹出右键菜单策略</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionBehavior(QAbstractItemView::SelectRows); <span class="comment">//一选就选择整行</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionMode(QAbstractItemView::SingleSelection); <span class="comment">//只选择一行/多行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-]]></content>
-      <tags>
-        <tag>qt</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Golang碎片化学习笔记</title>
-    <url>/2022/02/25/Golang/</url>
-    <content><![CDATA[<h1 id="Golang碎片化学习笔记"><a href="#Golang碎片化学习笔记" class="headerlink" title="Golang碎片化学习笔记"></a>Golang碎片化学习笔记</h1><ul>
-<li><p><code>counter := map[int]int{}  和 counter := make(map[int]int)</code>是等价的，直接上去{}初始化更装</p>
-</li>
-<li><p>对slice，map进行for遍历，得到的值取决于用几个值接收</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i,k := <span class="keyword">range</span> slice  #i为索引  k为值</span><br><span class="line"><span class="keyword">for</span> i := <span class="keyword">range</span> slice # 则i仅为索引</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k,v := <span class="keyword">range</span> <span class="keyword">map</span>  # key value都能取到</span><br><span class="line"><span class="keyword">for</span> k := <span class="keyword">range</span> <span class="keyword">map</span> # 只有k</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p><code>make</code>创建的slice map 会初始化为该类型的零值，返回变量</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="code"><pre><span class="line">a:=<span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="number">2</span>)</span><br><span class="line">a[<span class="number">0</span>]  #<span class="number">0</span> </span><br><span class="line">a[<span class="number">1</span>]  # <span class="number">0</span></span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p><code>container/list</code>这是一个双向链表，他的主要方法有：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GOLANG"><figure class="iseeu highlight /golang"><table><tr><td class="code"><pre><span class="line">l:=list.New()</span><br><span class="line">l.Front()</span><br><span class="line">l.Back()</span><br><span class="line">l.PushBack(你的数据)</span><br><span class="line">l.PushFront(你的数据)</span><br><span class="line">l.Remove(e) #e一定是他的Element类型 比如 l.Front 而不是你的数据  e.Value才是你的数据</span><br><span class="line">l.MoveFront(e) #e是Element类型 将要移动的数据</span><br><span class="line">l.MoveBack(e)</span><br></pre></td></tr></table></figure></div>
-
-
-</li>
-</ul>
 <ul>
-<li><p>字符串遍历的结果是???</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GO"><figure class="iseeu highlight /go"><table><tr><td class="code"><pre><span class="line">a := <span class="string">"asdasf"</span></span><br><span class="line"><span class="keyword">for</span> _, c := <span class="keyword">range</span> a &#123;</span><br><span class="line">  fmt.Println(c)</span><br><span class="line">&#125;</span><br><span class="line">#<span class="number">97</span></span><br><span class="line"><span class="number">115</span></span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">97</span></span><br><span class="line"><span class="number">115</span></span><br><span class="line"><span class="number">102</span></span><br><span class="line">a := <span class="string">"够神呐虐"</span></span><br><span class="line"><span class="keyword">for</span> _,i := <span class="keyword">range</span> a &#123;</span><br><span class="line">  fmt.Println(i)</span><br><span class="line">&#125;</span><br><span class="line">#</span><br><span class="line"><span class="number">22815</span></span><br><span class="line"><span class="number">31070</span></span><br><span class="line"><span class="number">21584</span></span><br><span class="line"><span class="number">34384</span></span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>Slice取最后一个元素 索引不能是-1 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="GO"><figure class="iseeu highlight /go"><table><tr><td class="code"><pre><span class="line">a := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">fmt.Println(a[<span class="number">-1</span>])  # must be a non-negtive</span><br><span class="line">fmt.Println(a[<span class="built_in">len</span>(a)<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p><code>len()</code>获得的中文字符串长度不是你想的，获取的是字节长度</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">a :&#x3D; &quot;够神呐虐&quot;</span><br><span class="line">fmt.Println(len(a)) # 12 fuck</span><br><span class="line">b :&#x3D; []rune(a)   # 4</span><br><span class="line">b :&#x3D; []byte(a)  # 4</span><br></pre></td></tr></table></figure></div>
+<li><p>添加一行数据</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::querybtn_clicked</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*)ui-&gt;tableView-&gt;model();</span><br><span class="line">    <span class="keyword">int</span> start= theModel-&gt;rowCount();  <span class="comment">// 有start也就是从表格现有的行数下一个开始</span></span><br><span class="line">    QString sql =  QString(<span class="string">"select * from patients"</span>);</span><br><span class="line">    QList&lt;QList&lt;QVariant&gt;&gt; query_list = con-&gt;dbquery(sql);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;query_list.length();i++)&#123;</span><br><span class="line">        QList&lt;QStandardItem*&gt; ItemList;</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">0</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">1</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">2</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">3</span>].toString()==<span class="string">"0"</span>?<span class="string">"女"</span>:<span class="string">"男"</span>));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">4</span>].toString()));</span><br><span class="line">        theModel-&gt;insertRow(i+start,ItemList);  <span class="comment">// 插入</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
 
 
 </li>
 </ul>
-<ul>
-<li><p><strong>Printf、Sprintf、Fprintf区别</strong></p>
-<h1 id=""><a href="#" class="headerlink" title=""></a><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220427171722010.png" alt="image-20220427171722010"></h1></li>
-<li><p>小写变量在<strong>本包内</strong>可以访问</p>
-</li>
-<li><p>字符串匹配</p>
-</li>
-<li><pre><code>pattern []string
-pattern[0]==&quot;a&quot;  ??
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">- 使用unicode筛选匹配中文</span><br></pre></td></tr></table></figure></div>
-# 匹配所有汉字
-print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
-<li></li>
-</ul>
 ]]></content>
       <tags>
-        <tag>golang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu安装chrome脚本</title>
-    <url>/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y libxss1 libappindicator1 libindicator7</span><br><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">dpkg -i  google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure></div>
-<a id="more"></a>
-<h3 id="如果报错了"><a href="#如果报错了" class="headerlink" title="如果报错了"></a>如果报错了</h3><p><code>apt-get install -y -f</code> 就OK👌了</p>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
-        <tag>chrome</tag>
+        <tag>QT</tag>
       </tags>
   </entry>
   <entry>
@@ -435,49 +433,15 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
       </tags>
   </entry>
   <entry>
-    <title>cpp_vscode_setting</title>
-    <url>/2021/02/24/cpp_vscode_setting/</url>
-    <content><![CDATA[<hr>
-<p>title: MACOS vscode 配置c++<br>date: 2021-02-25 14:00:00<br>tags : c++</p>
-<hr>
-<h2 id="安装的插件："><a href="#安装的插件：" class="headerlink" title="安装的插件："></a>安装的插件：</h2><ul>
-<li>C/C++</li>
-<li>C/C++ Clang Command Adapter</li>
-<li>Code Runner</li>
-<li>CodeLLDB (重要)</li>
-</ul>
+    <title>Pyqt5主程序调用子窗口的方法和问题</title>
+    <url>/2022/07/29/Pyqt%E8%B0%83%E7%94%A8%E5%AD%90%E7%AA%97%E5%8F%A3/</url>
+    <content><![CDATA[<p><code>https://blog.csdn.net/weixin_40520077/article/details/104040414</code></p>
+<p>例4中需要将子窗口的继承改为<code>QDialog</code></p>
 <a id="more"></a>
 
-<h2 id="vscode配置文件"><a href="#vscode配置文件" class="headerlink" title=".vscode配置文件"></a>.vscode配置文件</h2><h3 id="c-cpp-properties-json"><a href="#c-cpp-properties-json" class="headerlink" title="c_cpp_properties.json"></a>c_cpp_properties.json</h3><p>按command+shift+P，选择编辑配置（UI），这时它会生成一个c_cpp_properties.json 编译器路径和智能感知设置）,这里我们不用去改它。</p>
-<h3 id="launch-json"><a href="#launch-json" class="headerlink" title="launch.json"></a>launch.json</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JSON"><figure class="iseeu highlight /json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"lldb"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Debug"</span>,</span><br><span class="line">            <span class="comment">//"program": "$&#123;workspaceFolder&#125;/test.out",</span></span><br><span class="line">            <span class="comment">//上一行是官方写法，但是不同的cpp调试都要改配置，非常麻烦</span></span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;workspaceFolder&#125;/$&#123;fileBasenameNoExtension&#125;"</span>,</span><br><span class="line">            <span class="attr">"args"</span>: [],</span><br><span class="line">            <span class="attr">"cwd"</span>: <span class="string">"$&#123;workspaceFolder&#125;"</span>,</span><br><span class="line">            <span class="attr">"preLaunchTask"</span>: <span class="string">"Build with Clang"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h3 id="tasks-json"><a href="#tasks-json" class="headerlink" title="tasks.json"></a>tasks.json</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JSON"><figure class="iseeu highlight /json"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">"version"</span>: <span class="string">"2.0.0"</span>,</span><br><span class="line"><span class="attr">"tasks"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">"label"</span>: <span class="string">"Build with Clang"</span>,<span class="comment">//这个任务的名字在launch.json最后一项配置</span></span><br><span class="line">        <span class="attr">"type"</span>: <span class="string">"shell"</span>,</span><br><span class="line">        <span class="attr">"command"</span>: <span class="string">"clang++"</span>,</span><br><span class="line">        <span class="attr">"args"</span>: [</span><br><span class="line">            <span class="string">"-std=c++17"</span>,</span><br><span class="line">            <span class="string">"-stdlib=libc++"</span>,</span><br><span class="line">            <span class="comment">//"test.cpp",这里是官方写法，不具有普遍性，注意两个配置文件的统一性即可</span></span><br><span class="line">            <span class="string">"$&#123;fileBasenameNoExtension&#125;.cpp"</span>,</span><br><span class="line">            <span class="string">"-o"</span>,</span><br><span class="line">            <span class="comment">//"test.out",</span></span><br><span class="line">            <span class="string">"$&#123;fileBasenameNoExtension&#125;"</span>,</span><br><span class="line">            <span class="string">"--debug"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"group"</span>: &#123;</span><br><span class="line">            <span class="attr">"kind"</span>: <span class="string">"build"</span>,</span><br><span class="line">            <span class="attr">"isDefault"</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/103308900" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/103308900</a></p>
-</blockquote>
-]]></content>
-  </entry>
-  <entry>
-    <title>QT-TableView</title>
-    <url>/2021/03/04/QtTableView/</url>
-    <content><![CDATA[<hr>
-<ul>
-<li>TableView 初始化</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::setTableHead</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(ui-&gt;tableView-&gt;model()==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">      QStandardItemModel *  theModel = <span class="keyword">new</span> QStandardItemModel(ui-&gt;tableView);</span><br><span class="line">      ui-&gt;tableView-&gt;setModel(theModel);</span><br><span class="line">   		 &#125;</span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*) ui-&gt;tableView-&gt;model();</span><br><span class="line">	 theSelection = <span class="keyword">new</span> QItemSelectionModel(theModel);<span class="comment">//选中模型类 从ui中获取 而不是设置类成员</span></span><br><span class="line">	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);</span><br><span class="line">    QStringList headerList;</span><br><span class="line">    headerList&lt;&lt;<span class="string">"序号"</span>&lt;&lt;<span class="string">"报告编号"</span>&lt;&lt;<span class="string">"姓名"</span>&lt;&lt;<span class="string">"性别"</span>&lt;&lt;<span class="string">"创建时间"</span>;</span><br><span class="line">    theModel-&gt;setHorizontalHeaderLabels(headerList);</span><br><span class="line">    theModel-&gt;setRowCount(<span class="number">5</span>);  <span class="comment">//设置表格行数 </span></span><br><span class="line">    ui-&gt;tableView-&gt;setGridStyle(Qt::SolidLine);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(<span class="literal">true</span>);</span><br><span class="line">    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(QHeaderView::ResizeToContents);</span><br><span class="line">    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(<span class="literal">true</span>);   <span class="comment">// 是否隐藏列表头</span></span><br><span class="line">    ui-&gt;tableView-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers); <span class="comment">//是否可编辑 cell</span></span><br><span class="line">    ui-&gt;tableView-&gt;setContextMenuPolicy(Qt::CustomContextMenu);    <span class="comment">//弹出右键菜单策略</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionBehavior(QAbstractItemView::SelectRows); <span class="comment">//一选就选择整行</span></span><br><span class="line">    ui-&gt;tableView-&gt;setSelectionMode(QAbstractItemView::SingleSelection); <span class="comment">//只选择一行/多行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>添加一行数据</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myc::querybtn_clicked</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    QStandardItemModel * theModel = (QStandardItemModel*)ui-&gt;tableView-&gt;model();</span><br><span class="line">    <span class="keyword">int</span> start= theModel-&gt;rowCount();  <span class="comment">// 有start也就是从表格现有的行数下一个开始</span></span><br><span class="line">    QString sql =  QString(<span class="string">"select * from patients"</span>);</span><br><span class="line">    QList&lt;QList&lt;QVariant&gt;&gt; query_list = con-&gt;dbquery(sql);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;query_list.length();i++)&#123;</span><br><span class="line">        QList&lt;QStandardItem*&gt; ItemList;</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">0</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">1</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">2</span>].toString()));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">3</span>].toString()==<span class="string">"0"</span>?<span class="string">"女"</span>:<span class="string">"男"</span>));</span><br><span class="line">        ItemList&lt;&lt;(<span class="keyword">new</span> QStandardItem(query_list[i][<span class="number">4</span>].toString()));</span><br><span class="line">        theModel-&gt;insertRow(i+start,ItemList);  <span class="comment">// 插入</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ul>
 ]]></content>
       <tags>
-        <tag>QT</tag>
+        <tag>qt</tag>
       </tags>
   </entry>
   <entry>
@@ -495,6 +459,30 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
       <tags>
         <tag>Qt</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu安装chrome脚本</title>
+    <url>/2020/04/16/Ubuntu%E5%AE%89%E8%A3%85chrome%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y libxss1 libappindicator1 libindicator7</span><br><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">dpkg -i  google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure></div>
+<a id="more"></a>
+<h3 id="如果报错了"><a href="#如果报错了" class="headerlink" title="如果报错了"></a>如果报错了</h3><p><code>apt-get install -y -f</code> 就OK👌了</p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>chrome</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>brew安装,换源,禁更</title>
+    <url>/2020/06/25/brewinstall/</url>
+    <content><![CDATA[<h3 id="Brew安装"><a href="#Brew安装" class="headerlink" title="Brew安装"></a>Brew安装</h3><p>安装brew时候，某些地区因ip限制无法执行官方脚本报错如下：</p>
+<p><code>curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused</code></p>
+<p>那么可以下载<a href="https://github.com/evilvlso/Utils/blob/master/LinuxScript/brew_install.sh" target="_blank" rel="noopener">这个文件</a>(已经替换BREW_REPO)，然后执行 <code>bash brew_install.sh</code></p>
+<h3 id="Brew-更换国内镜像-中科大"><a href="#Brew-更换国内镜像-中科大" class="headerlink" title="Brew 更换国内镜像(中科大)"></a>Brew 更换国内镜像(中科大)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line">cd "$(brew --repo)"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/brew.git</span><br><span class="line">cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git</span><br></pre></td></tr></table></figure></div>
+<h3 id="Brew-禁止update"><a href="#Brew-禁止update" class="headerlink" title="Brew 禁止update"></a>Brew 禁止update</h3><p>每次安装包搜索包都要update，这个过程又很慢所以 </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line">export HOMEBREW_NO_AUTO_UPDATE=true</span><br></pre></td></tr></table></figure></div>
+<p>这样就不自动更新了</p>
+]]></content>
   </entry>
   <entry>
     <title>anaconda更换repo</title>
@@ -518,44 +506,28 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
 ]]></content>
   </entry>
   <entry>
-    <title>brew安装,换源,禁更</title>
-    <url>/2020/06/25/brewinstall/</url>
-    <content><![CDATA[<h3 id="Brew安装"><a href="#Brew安装" class="headerlink" title="Brew安装"></a>Brew安装</h3><p>安装brew时候，某些地区因ip限制无法执行官方脚本报错如下：</p>
-<p><code>curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused</code></p>
-<p>那么可以下载<a href="https://github.com/evilvlso/Utils/blob/master/LinuxScript/brew_install.sh" target="_blank" rel="noopener">这个文件</a>(已经替换BREW_REPO)，然后执行 <code>bash brew_install.sh</code></p>
-<h3 id="Brew-更换国内镜像-中科大"><a href="#Brew-更换国内镜像-中科大" class="headerlink" title="Brew 更换国内镜像(中科大)"></a>Brew 更换国内镜像(中科大)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line">cd "$(brew --repo)"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/brew.git</span><br><span class="line">cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"</span><br><span class="line">git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git</span><br></pre></td></tr></table></figure></div>
-<h3 id="Brew-禁止update"><a href="#Brew-禁止update" class="headerlink" title="Brew 禁止update"></a>Brew 禁止update</h3><p>每次安装包搜索包都要update，这个过程又很慢所以 </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line">export HOMEBREW_NO_AUTO_UPDATE=true</span><br></pre></td></tr></table></figure></div>
-<p>这样就不自动更新了</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>MACOS vscode 配置c++</title>
-    <url>/2021/02/25/exceltocsv/</url>
-    <content><![CDATA[<h1 id="excel-to-csv-windows脚本"><a href="#excel-to-csv-windows脚本" class="headerlink" title="excel to csv windows脚本"></a>excel to csv windows脚本</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># create a list with sheet numbers you want to process</span></span><br><span class="line">sheets = map(str,range(<span class="number">1</span>,<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># convert each sheet to csv and then read it using read_csv</span></span><br><span class="line">df=&#123;&#125;</span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> call</span><br><span class="line">excel=<span class="string">'C:\\Users\\rsignell\\OTT_Data_All_stations.xlsx'</span></span><br><span class="line"><span class="keyword">for</span> sheet <span class="keyword">in</span> sheets:</span><br><span class="line">    csv = <span class="string">'C:\\Users\\rsignell\\test'</span> + sheet + <span class="string">'.csv'</span> </span><br><span class="line">    call([<span class="string">'cscript.exe'</span>, <span class="string">'C:\\Users\\rsignell\\ExcelToCsv.vbs'</span>, excel, csv, sheet])</span><br><span class="line">    df[sheet]=pd.read_csv(csv)</span><br></pre></td></tr></table></figure></div>
-
-<p>ExcelToCsv.vbs script</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">#write vbscript to file</span><br><span class="line">vbscript&#x3D;&quot;&quot;&quot;if WScript.Arguments.Count &lt; 3 Then</span><br><span class="line">    WScript.Echo &quot;Please specify the source and the destination files. Usage: ExcelToCsv &lt;xls&#x2F;xlsx source file&gt; &lt;csv destination file&gt; &lt;worksheet number (starts at 1)&gt;&quot;</span><br><span class="line">    Wscript.Quit</span><br><span class="line">End If</span><br><span class="line"></span><br><span class="line">csv_format &#x3D; 6</span><br><span class="line"></span><br><span class="line">Set objFSO &#x3D; CreateObject(&quot;Scripting.FileSystemObject&quot;)</span><br><span class="line"></span><br><span class="line">src_file &#x3D; objFSO.GetAbsolutePathName(Wscript.Arguments.Item(0))</span><br><span class="line">dest_file &#x3D; objFSO.GetAbsolutePathName(WScript.Arguments.Item(1))</span><br><span class="line">worksheet_number &#x3D; CInt(WScript.Arguments.Item(2))</span><br><span class="line"></span><br><span class="line">Dim oExcel</span><br><span class="line">Set oExcel &#x3D; CreateObject(&quot;Excel.Application&quot;)</span><br><span class="line"></span><br><span class="line">Dim oBook</span><br><span class="line">Set oBook &#x3D; oExcel.Workbooks.Open(src_file)</span><br><span class="line">oBook.Worksheets(worksheet_number).Activate</span><br><span class="line"></span><br><span class="line">oBook.SaveAs dest_file, csv_format</span><br><span class="line"></span><br><span class="line">oBook.Close False</span><br><span class="line">oExcel.Quit</span><br><span class="line">&quot;&quot;&quot;;</span><br><span class="line"></span><br><span class="line">f &#x3D; open(&#39;ExcelToCsv.vbs&#39;,&#39;w&#39;)</span><br><span class="line">f.write(vbscript.encode(&#39;utf-8&#39;))</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure></div>
-
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">from xlsx2csv import Xlsx2csv</span><br><span class="line">from io import StringIO</span><br><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def read_excel(path: str, sheet_name: str) -&gt; pd.DataFrame:</span><br><span class="line">    buffer &#x3D; StringIO()</span><br><span class="line">    Xlsx2csv(path, outputencoding&#x3D;&quot;utf-8&quot;, sheet_name&#x3D;sheet_name).convert(buffer)</span><br><span class="line">    buffer.seek(0)</span><br><span class="line">    df &#x3D; pd.read_csv(buffer)</span><br><span class="line">    return df</span><br></pre></td></tr></table></figure></div>
-
-]]></content>
-      <tags>
-        <tag>script</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gunicorn配置及使用</title>
-    <url>/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p>启动:<br><code>gunicorn -c config.py app:app</code></p>
-<p>停止:<code>ps aux | grep &quot;gunicorn&quot;|grep -v &quot;grep&quot;|awk -F &quot; &quot; &#39;{print $2}| xargs -i kill -9 {}&#39;</code></p>
-<p><strong>awk grep kill</strong> 配合着来，有些粗鲁</p>
+    <title>cpp_vscode_setting</title>
+    <url>/2021/02/24/cpp_vscode_setting/</url>
+    <content><![CDATA[<hr>
+<p>title: MACOS vscode 配置c++<br>date: 2021-02-25 14:00:00<br>tags : c++</p>
+<hr>
+<h2 id="安装的插件："><a href="#安装的插件：" class="headerlink" title="安装的插件："></a>安装的插件：</h2><ul>
+<li>C/C++</li>
+<li>C/C++ Clang Command Adapter</li>
+<li>Code Runner</li>
+<li>CodeLLDB (重要)</li>
+</ul>
 <a id="more"></a>
 
-<h3 id="配置-配置文件可是py文件"><a href="#配置-配置文件可是py文件" class="headerlink" title="配置(配置文件可是py文件)"></a>配置(配置文件可是py文件)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">import multiprocessing</span><br><span class="line">import os</span><br><span class="line">base &#x3D; os.path.abspath(os.path.dirname(__file__))</span><br><span class="line">workers &#x3D; multiprocessing.cpu_count() * 2 + 1</span><br><span class="line">threads &#x3D; 6</span><br><span class="line">reload &#x3D; 0.   # debug模式</span><br><span class="line">bind &#x3D; &#39;0.0.0.0:9999&#39;</span><br><span class="line">daemon &#x3D; &#39;false&#39;     #docker中要关闭</span><br><span class="line">worker_class &#x3D; &quot;gevent&quot;    #</span><br><span class="line">worker_connections &#x3D; 2000</span><br><span class="line">loglevel &#x3D; &#39;error&#39;</span><br><span class="line">accesslog &#x3D; os.path.join(base,&quot;gunicorn_acess.log&quot;)</span><br><span class="line">errorlog &#x3D; os.path.join(base,&quot;gunicorn_error.log&quot;)</span><br><span class="line">max_requests&#x3D;300</span><br></pre></td></tr></table></figure></div>]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
+<h2 id="vscode配置文件"><a href="#vscode配置文件" class="headerlink" title=".vscode配置文件"></a>.vscode配置文件</h2><h3 id="c-cpp-properties-json"><a href="#c-cpp-properties-json" class="headerlink" title="c_cpp_properties.json"></a>c_cpp_properties.json</h3><p>按command+shift+P，选择编辑配置（UI），这时它会生成一个c_cpp_properties.json 编译器路径和智能感知设置）,这里我们不用去改它。</p>
+<h3 id="launch-json"><a href="#launch-json" class="headerlink" title="launch.json"></a>launch.json</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JSON"><figure class="iseeu highlight /json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"lldb"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Debug"</span>,</span><br><span class="line">            <span class="comment">//"program": "$&#123;workspaceFolder&#125;/test.out",</span></span><br><span class="line">            <span class="comment">//上一行是官方写法，但是不同的cpp调试都要改配置，非常麻烦</span></span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;workspaceFolder&#125;/$&#123;fileBasenameNoExtension&#125;"</span>,</span><br><span class="line">            <span class="attr">"args"</span>: [],</span><br><span class="line">            <span class="attr">"cwd"</span>: <span class="string">"$&#123;workspaceFolder&#125;"</span>,</span><br><span class="line">            <span class="attr">"preLaunchTask"</span>: <span class="string">"Build with Clang"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="tasks-json"><a href="#tasks-json" class="headerlink" title="tasks.json"></a>tasks.json</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JSON"><figure class="iseeu highlight /json"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">"version"</span>: <span class="string">"2.0.0"</span>,</span><br><span class="line"><span class="attr">"tasks"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">"label"</span>: <span class="string">"Build with Clang"</span>,<span class="comment">//这个任务的名字在launch.json最后一项配置</span></span><br><span class="line">        <span class="attr">"type"</span>: <span class="string">"shell"</span>,</span><br><span class="line">        <span class="attr">"command"</span>: <span class="string">"clang++"</span>,</span><br><span class="line">        <span class="attr">"args"</span>: [</span><br><span class="line">            <span class="string">"-std=c++17"</span>,</span><br><span class="line">            <span class="string">"-stdlib=libc++"</span>,</span><br><span class="line">            <span class="comment">//"test.cpp",这里是官方写法，不具有普遍性，注意两个配置文件的统一性即可</span></span><br><span class="line">            <span class="string">"$&#123;fileBasenameNoExtension&#125;.cpp"</span>,</span><br><span class="line">            <span class="string">"-o"</span>,</span><br><span class="line">            <span class="comment">//"test.out",</span></span><br><span class="line">            <span class="string">"$&#123;fileBasenameNoExtension&#125;"</span>,</span><br><span class="line">            <span class="string">"--debug"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"group"</span>: &#123;</span><br><span class="line">            <span class="attr">"kind"</span>: <span class="string">"build"</span>,</span><br><span class="line">            <span class="attr">"isDefault"</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/103308900" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/103308900</a></p>
+</blockquote>
+]]></content>
   </entry>
   <entry>
     <title>图像分割的评价指标Dice Iou</title>
@@ -582,6 +554,33 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
 ]]></content>
       <tags>
         <tag>image segmentation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Elasticseartch面试</title>
+    <url>/2022/07/09/es%E9%9D%A2%E8%AF%95/</url>
+    <content><![CDATA[<p><code>https://mp.weixin.qq.com/s/sWKgSncV0GclDgY4dTS0og</code></p>
+<h2 id="2、elasticsearch-的倒排索引是什么"><a href="#2、elasticsearch-的倒排索引是什么" class="headerlink" title="2、elasticsearch 的倒排索引是什么"></a>2、elasticsearch 的倒排索引是什么</h2><p>传统的我们的检索是通过文章，逐个遍历找到对应关键词的位置。</p>
+<p>而倒排索引，是通过分词策略，形成了词和文章的映射关系表，这种词典+映射表即为倒排索引。有了倒排索引，就能实现 o（1）时间复杂度的效率检索文章了，极大的提高了检索效率。倒排索引的底层实现是基于：FST（Finite State Transducer）数据结构。</p>
+<h2 id="智能提示"><a href="#智能提示" class="headerlink" title="智能提示"></a>智能提示</h2><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220716165840731.png" alt="image-20220716165840731" style="zoom:50%;" />
+
+<p><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220716165804453.png" alt="image-20220716165804453"></p>
+]]></content>
+      <tags>
+        <tag>es</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gunicorn配置及使用</title>
+    <url>/2020/04/16/gunicorn%E9%85%8D%E7%BD%AE%E5%8F%8A%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p>启动:<br><code>gunicorn -c config.py app:app</code></p>
+<p>停止:<code>ps aux | grep &quot;gunicorn&quot;|grep -v &quot;grep&quot;|awk -F &quot; &quot; &#39;{print $2}| xargs -i kill -9 {}&#39;</code></p>
+<p><strong>awk grep kill</strong> 配合着来，有些粗鲁</p>
+<a id="more"></a>
+
+<h3 id="配置-配置文件可是py文件"><a href="#配置-配置文件可是py文件" class="headerlink" title="配置(配置文件可是py文件)"></a>配置(配置文件可是py文件)</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">import multiprocessing</span><br><span class="line">import os</span><br><span class="line">base &#x3D; os.path.abspath(os.path.dirname(__file__))</span><br><span class="line">workers &#x3D; multiprocessing.cpu_count() * 2 + 1</span><br><span class="line">threads &#x3D; 6</span><br><span class="line">reload &#x3D; 0.   # debug模式</span><br><span class="line">bind &#x3D; &#39;0.0.0.0:9999&#39;</span><br><span class="line">daemon &#x3D; &#39;false&#39;     #docker中要关闭</span><br><span class="line">worker_class &#x3D; &quot;gevent&quot;    #</span><br><span class="line">worker_connections &#x3D; 2000</span><br><span class="line">loglevel &#x3D; &#39;error&#39;</span><br><span class="line">accesslog &#x3D; os.path.join(base,&quot;gunicorn_acess.log&quot;)</span><br><span class="line">errorlog &#x3D; os.path.join(base,&quot;gunicorn_error.log&quot;)</span><br><span class="line">max_requests&#x3D;300</span><br></pre></td></tr></table></figure></div>]]></content>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -641,6 +640,21 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
       </tags>
   </entry>
   <entry>
+    <title>MACOS vscode 配置c++</title>
+    <url>/2021/02/25/exceltocsv/</url>
+    <content><![CDATA[<h1 id="excel-to-csv-windows脚本"><a href="#excel-to-csv-windows脚本" class="headerlink" title="excel to csv windows脚本"></a>excel to csv windows脚本</h1><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># create a list with sheet numbers you want to process</span></span><br><span class="line">sheets = map(str,range(<span class="number">1</span>,<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># convert each sheet to csv and then read it using read_csv</span></span><br><span class="line">df=&#123;&#125;</span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> call</span><br><span class="line">excel=<span class="string">'C:\\Users\\rsignell\\OTT_Data_All_stations.xlsx'</span></span><br><span class="line"><span class="keyword">for</span> sheet <span class="keyword">in</span> sheets:</span><br><span class="line">    csv = <span class="string">'C:\\Users\\rsignell\\test'</span> + sheet + <span class="string">'.csv'</span> </span><br><span class="line">    call([<span class="string">'cscript.exe'</span>, <span class="string">'C:\\Users\\rsignell\\ExcelToCsv.vbs'</span>, excel, csv, sheet])</span><br><span class="line">    df[sheet]=pd.read_csv(csv)</span><br></pre></td></tr></table></figure></div>
+
+<p>ExcelToCsv.vbs script</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">#write vbscript to file</span><br><span class="line">vbscript&#x3D;&quot;&quot;&quot;if WScript.Arguments.Count &lt; 3 Then</span><br><span class="line">    WScript.Echo &quot;Please specify the source and the destination files. Usage: ExcelToCsv &lt;xls&#x2F;xlsx source file&gt; &lt;csv destination file&gt; &lt;worksheet number (starts at 1)&gt;&quot;</span><br><span class="line">    Wscript.Quit</span><br><span class="line">End If</span><br><span class="line"></span><br><span class="line">csv_format &#x3D; 6</span><br><span class="line"></span><br><span class="line">Set objFSO &#x3D; CreateObject(&quot;Scripting.FileSystemObject&quot;)</span><br><span class="line"></span><br><span class="line">src_file &#x3D; objFSO.GetAbsolutePathName(Wscript.Arguments.Item(0))</span><br><span class="line">dest_file &#x3D; objFSO.GetAbsolutePathName(WScript.Arguments.Item(1))</span><br><span class="line">worksheet_number &#x3D; CInt(WScript.Arguments.Item(2))</span><br><span class="line"></span><br><span class="line">Dim oExcel</span><br><span class="line">Set oExcel &#x3D; CreateObject(&quot;Excel.Application&quot;)</span><br><span class="line"></span><br><span class="line">Dim oBook</span><br><span class="line">Set oBook &#x3D; oExcel.Workbooks.Open(src_file)</span><br><span class="line">oBook.Worksheets(worksheet_number).Activate</span><br><span class="line"></span><br><span class="line">oBook.SaveAs dest_file, csv_format</span><br><span class="line"></span><br><span class="line">oBook.Close False</span><br><span class="line">oExcel.Quit</span><br><span class="line">&quot;&quot;&quot;;</span><br><span class="line"></span><br><span class="line">f &#x3D; open(&#39;ExcelToCsv.vbs&#39;,&#39;w&#39;)</span><br><span class="line">f.write(vbscript.encode(&#39;utf-8&#39;))</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">from xlsx2csv import Xlsx2csv</span><br><span class="line">from io import StringIO</span><br><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def read_excel(path: str, sheet_name: str) -&gt; pd.DataFrame:</span><br><span class="line">    buffer &#x3D; StringIO()</span><br><span class="line">    Xlsx2csv(path, outputencoding&#x3D;&quot;utf-8&quot;, sheet_name&#x3D;sheet_name).convert(buffer)</span><br><span class="line">    buffer.seek(0)</span><br><span class="line">    df &#x3D; pd.read_csv(buffer)</span><br><span class="line">    return df</span><br></pre></td></tr></table></figure></div>
+
+]]></content>
+      <tags>
+        <tag>script</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>k8s初始化镜像pull问题</title>
     <url>/2020/04/16/k8s%E5%88%9D%E5%A7%8B%E5%8C%96%E9%95%9C%E5%83%8Fpull%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id="因不明原因k8s初始化镜像无法pull-特记录pull脚本"><a href="#因不明原因k8s初始化镜像无法pull-特记录pull脚本" class="headerlink" title="因不明原因k8s初始化镜像无法pull,特记录pull脚本"></a>因不明原因k8s初始化镜像无法pull,特记录pull脚本</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download k8s 1.15.2 images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> get image-list by <span class="string">'kubeadm config images list --kubernetes-version=v1.15.2'</span></span></span><br><span class="line">images=(</span><br><span class="line">kube-apiserver:v1.18.1</span><br><span class="line">kube-controller-manager:v1.18.1</span><br><span class="line">kube-scheduler:v1.18.1</span><br><span class="line">kube-proxy:v1.18.1</span><br><span class="line">pause:3.2</span><br><span class="line">etcd:3.4.3-0</span><br><span class="line">coredns:1.6.7</span><br><span class="line">)</span><br><span class="line">```Shell</span><br><span class="line">&lt;!--more--&gt;</span><br></pre></td></tr></table></figure></div>
@@ -653,20 +667,6 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
       <tags>
         <tag>Centos</tag>
         <tag>k8s</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Elasticseartch面试</title>
-    <url>/2022/07/09/es%E9%9D%A2%E8%AF%95/</url>
-    <content><![CDATA[<p><code>https://mp.weixin.qq.com/s/sWKgSncV0GclDgY4dTS0og</code></p>
-<h2 id="2、elasticsearch-的倒排索引是什么"><a href="#2、elasticsearch-的倒排索引是什么" class="headerlink" title="2、elasticsearch 的倒排索引是什么"></a>2、elasticsearch 的倒排索引是什么</h2><p>传统的我们的检索是通过文章，逐个遍历找到对应关键词的位置。</p>
-<p>而倒排索引，是通过分词策略，形成了词和文章的映射关系表，这种词典+映射表即为倒排索引。有了倒排索引，就能实现 o（1）时间复杂度的效率检索文章了，极大的提高了检索效率。倒排索引的底层实现是基于：FST（Finite State Transducer）数据结构。</p>
-<h2 id="智能提示"><a href="#智能提示" class="headerlink" title="智能提示"></a>智能提示</h2><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220716165840731.png" alt="image-20220716165840731" style="zoom:50%;" />
-
-<p><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220716165804453.png" alt="image-20220716165804453"></p>
-]]></content>
-      <tags>
-        <tag>es</tag>
       </tags>
   </entry>
   <entry>
@@ -685,6 +685,38 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
 <p>加载模型</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">model = Model(*args, **kwargs)</span><br><span class="line">model.load_state_dict(torch.load(PATH))</span><br><span class="line">model.eval()</span><br></pre></td></tr></table></figure></div>
 ]]></content>
+  </entry>
+  <entry>
+    <title>docker镜像</title>
+    <url>/2023/02/08/imgs/</url>
+    <content><![CDATA[<p>为打造个人流媒体服务，收藏一些有趣的docer镜像</p>
+<ul>
+<li><p><a href="https://alist.nn.ci/zh/" target="_blank" rel="noopener">AList</a></p>
+<p>一个列表存储服务，可以挂载很多网盘资源，还可以offline download</p>
+<p>一个很好的参考<a href="http://alist.xiaoya.pro/" target="_blank" rel="noopener">xiaoya</a></p>
+</li>
+<li><p><a href="https://hub.docker.com/r/whyour/qinglong" target="_blank" rel="noopener">qinglong</a></p>
+<p>支持python3、javaScript、shell、typescript 的定时任务管理面板</p>
+<p>可以挂载很多定时任务 比如 <a href="https://conveniencespace.com/index.php/2022/05/03/2022%E6%9C%80%E6%96%B0%E9%9D%92%E9%BE%99%E9%9D%A2%E6%9D%BF%E4%BA%AC%E4%B8%9C%E8%84%9A%E6%9C%AC%E5%BA%93%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD%EF%BC%89/" target="_blank" rel="noopener">jd</a></p>
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p><a href="https://hub.docker.com/r/linuxserver/transmission" target="_blank" rel="noopener">Transmission</a></p>
+<p>一个下载工具</p>
+</li>
+<li><p>Jellyfin</p>
+<p>局域网内的影音播放器，不过有了Alist暂时用不到</p>
+</li>
+<li><p><a href="https://hub.docker.com/r/suyunkai46/chatgpt-wechat" target="_blank" rel="noopener">ChatGPT</a></p>
+<p>可以对对接到微信，代码用的<a href="https://github.com/AutumnWhj/ChatGPT-wechat-bot" target="_blank" rel="noopener">别的</a></p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>docker</tag>
+      </tags>
   </entry>
   <entry>
     <title>原地逆序单链表</title>
@@ -727,38 +759,6 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
       </tags>
   </entry>
   <entry>
-    <title>docker镜像</title>
-    <url>/2023/02/08/imgs/</url>
-    <content><![CDATA[<p>为打造个人流媒体服务，收藏一些有趣的docer镜像</p>
-<ul>
-<li><p><a href="https://alist.nn.ci/zh/" target="_blank" rel="noopener">AList</a></p>
-<p>一个列表存储服务，可以挂载很多网盘资源，还可以offline download</p>
-<p>一个很好的参考<a href="http://alist.xiaoya.pro/" target="_blank" rel="noopener">xiaoya</a></p>
-</li>
-<li><p><a href="https://hub.docker.com/r/whyour/qinglong" target="_blank" rel="noopener">qinglong</a></p>
-<p>支持python3、javaScript、shell、typescript 的定时任务管理面板</p>
-<p>可以挂载很多定时任务 比如 <a href="https://conveniencespace.com/index.php/2022/05/03/2022%E6%9C%80%E6%96%B0%E9%9D%92%E9%BE%99%E9%9D%A2%E6%9D%BF%E4%BA%AC%E4%B8%9C%E8%84%9A%E6%9C%AC%E5%BA%93%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD%EF%BC%89/" target="_blank" rel="noopener">jd</a></p>
-</li>
-</ul>
-<a id="more"></a>
-
-<ul>
-<li><p><a href="https://hub.docker.com/r/linuxserver/transmission" target="_blank" rel="noopener">Transmission</a></p>
-<p>一个下载工具</p>
-</li>
-<li><p>Jellyfin</p>
-<p>局域网内的影音播放器，不过有了Alist暂时用不到</p>
-</li>
-<li><p><a href="https://hub.docker.com/r/suyunkai46/chatgpt-wechat" target="_blank" rel="noopener">ChatGPT</a></p>
-<p>可以对对接到微信，代码用的<a href="https://github.com/AutumnWhj/ChatGPT-wechat-bot" target="_blank" rel="noopener">别的</a></p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>logging添加Handler</title>
     <url>/2020/04/16/logging%E6%B7%BB%E5%8A%A0Handler/</url>
     <content><![CDATA[<h3 id="logging常用配置"><a href="#logging常用配置" class="headerlink" title="logging常用配置"></a>logging常用配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">logger = logging.getLogger(<span class="string">'what'</span>)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#设置日志格式</span></span><br><span class="line">formater=logging.Formatter(fmt=<span class="string">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,datefmt=<span class="string">'%Y/%m/%d %H:%M'</span>)</span><br><span class="line"><span class="comment">#文件Handler</span></span><br><span class="line">fh=logging.FileHandler(<span class="string">'test.log'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">fh.setLevel(logging.ERROR)</span><br><span class="line">fh.setFormatter(formater)</span><br><span class="line"><span class="comment">#自定义Handler</span></span><br><span class="line">th=CustomHandler()</span><br><span class="line">th.setFormatter(formater)</span><br><span class="line">th.setLevel(logging.INFO)</span><br><span class="line"><span class="comment">#终端Handler</span></span><br><span class="line">ch = logging.StreamHandler()</span><br><span class="line">ch.setLevel(logging.INFO)</span><br><span class="line">ch.setFormatter(formater)</span><br><span class="line"><span class="comment">#添加Handler</span></span><br><span class="line">logger.addHandler(fh)</span><br><span class="line">logger.addHandler(ch)</span><br><span class="line">logger.addHandler(th)</span><br></pre></td></tr></table></figure></div>
@@ -766,6 +766,26 @@ print(re.findall(&apos;[\u4e00-\u9fa5]&apos;, data))</code></pre></li>
 ]]></content>
       <tags>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>掩图融合 目标画框</title>
+    <url>/2021/03/20/mask_blend_plot/</url>
+    <content><![CDATA[<ol>
+<li>将掩图放到真实图片上面</li>
+<li>目标检测中为目标画框并标注</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="掩码和图片融合"><a href="#掩码和图片融合" class="headerlink" title="掩码和图片融合"></a>掩码和图片融合</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">image &#x3D; Image.blend(img,mask,0.7)  #核心就这一句 0.7表示透明度 要求img 和 mask model相同 比如都是RGB</span><br><span class="line"></span><br><span class="line">colors &#x3D; [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128), (0, 128, 128), </span><br><span class="line">(128, 128, 128), (64, 0, 0), (192, 0, 0), (64, 128, 0), (192, 128, 0), (64, 0, 128), (192, 0, 128), (64, 128, 128), (192, 128, 128), (0, 64, 0), (128, 64, 0), (0, 192, 0), (128, 192, 0), (0, 64, 128), (128, 64, 12)]</span><br><span class="line">        </span><br><span class="line"># 生成 mask 代码</span><br><span class="line">seg_img &#x3D; np.zeros(img.shape[0],img.shape[1],3)) #先建一个模版</span><br><span class="line">for c in range(self.num_classes):  # 为每个类别的每个通道画上颜色</span><br><span class="line">  seg_img[:,:,0] +&#x3D; ((img[:,: ] &#x3D;&#x3D; c )*( colors[c][0] )).astype(&#39;uint8&#39;)</span><br><span class="line">  seg_img[:,:,1] +&#x3D; ((img[:,: ] &#x3D;&#x3D; c )*( colors[c][1] )).astype(&#39;uint8&#39;)</span><br><span class="line">  seg_img[:,:,2] +&#x3D; ((img[:,: ] &#x3D;&#x3D; c )*( colors[c][2] )).astype(&#39;uint8&#39;)</span><br><span class="line"></span><br><span class="line">mask &#x3D; Image.fromarray(np.uint8(seg_img)).resize((orininal_w, orininal_h), Image.NEAREST)</span><br><span class="line">image &#x3D; Image.blend(img,mask,0.7)</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="画框并标注"><a href="#画框并标注" class="headerlink" title="画框并标注"></a>画框并标注</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">cv2.rectangle(image, (xmin, ymin),(xmax,ymax),(0,255,0),1)  # img_cv是array类型&#x2F;左上角坐标&#x2F;右下角坐标&#x2F;线颜色&#x2F;线粗细</span><br><span class="line">cv2.putText(image,&#39;str&#39;,(50,150),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)</span><br><span class="line">#照片&#x2F;添加的文字&#x2F;左上角坐标&#x2F;字体&#x2F;字体大小&#x2F;颜色&#x2F;字体粗细</span><br></pre></td></tr></table></figure></div>
+
+]]></content>
+      <tags>
+        <tag>cv2</tag>
       </tags>
   </entry>
   <entry>
@@ -845,23 +865,20 @@ time1 = time.time()
 ]]></content>
   </entry>
   <entry>
-    <title>掩图融合 目标画框</title>
-    <url>/2021/03/20/mask_blend_plot/</url>
-    <content><![CDATA[<ol>
-<li>将掩图放到真实图片上面</li>
-<li>目标检测中为目标画框并标注</li>
-</ol>
-<a id="more"></a>
+    <title>itertools排列 组合 笛卡尔积</title>
+    <url>/2022/07/21/itertools/</url>
+    <content><![CDATA[<h1 id="排列-itertools-permutations"><a href="#排列-itertools-permutations" class="headerlink" title="排列 (itertools.permutations)"></a>排列 (itertools.permutations)</h1><p>从迭代序列里选取n个数字进行排列，有顺序</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">list(itertools.permutations(a,<span class="number">2</span>))</span><br><span class="line">[(<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">list(itertools.permutations(a,<span class="number">3</span>))</span><br><span class="line">Out[<span class="number">36</span>]: [(<span class="number">4</span>, <span class="number">1</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">3</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>), (<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>)]</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="掩码和图片融合"><a href="#掩码和图片融合" class="headerlink" title="掩码和图片融合"></a>掩码和图片融合</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">image &#x3D; Image.blend(img,mask,0.7)  #核心就这一句 0.7表示透明度 要求img 和 mask model相同 比如都是RGB</span><br><span class="line"></span><br><span class="line">colors &#x3D; [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128), (0, 128, 128), </span><br><span class="line">(128, 128, 128), (64, 0, 0), (192, 0, 0), (64, 128, 0), (192, 128, 0), (64, 0, 128), (192, 0, 128), (64, 128, 128), (192, 128, 128), (0, 64, 0), (128, 64, 0), (0, 192, 0), (128, 192, 0), (0, 64, 128), (128, 64, 12)]</span><br><span class="line">        </span><br><span class="line"># 生成 mask 代码</span><br><span class="line">seg_img &#x3D; np.zeros(img.shape[0],img.shape[1],3)) #先建一个模版</span><br><span class="line">for c in range(self.num_classes):  # 为每个类别的每个通道画上颜色</span><br><span class="line">  seg_img[:,:,0] +&#x3D; ((img[:,: ] &#x3D;&#x3D; c )*( colors[c][0] )).astype(&#39;uint8&#39;)</span><br><span class="line">  seg_img[:,:,1] +&#x3D; ((img[:,: ] &#x3D;&#x3D; c )*( colors[c][1] )).astype(&#39;uint8&#39;)</span><br><span class="line">  seg_img[:,:,2] +&#x3D; ((img[:,: ] &#x3D;&#x3D; c )*( colors[c][2] )).astype(&#39;uint8&#39;)</span><br><span class="line"></span><br><span class="line">mask &#x3D; Image.fromarray(np.uint8(seg_img)).resize((orininal_w, orininal_h), Image.NEAREST)</span><br><span class="line">image &#x3D; Image.blend(img,mask,0.7)</span><br></pre></td></tr></table></figure></div>
+<h2 id="组合-itertools-combinations"><a href="#组合-itertools-combinations" class="headerlink" title="组合(itertools.combinations)"></a>组合(itertools.combinations)</h2><p>从迭代序列里选取n个数字进行组合，重在组合</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">list(itertools.combinations(a,<span class="number">2</span>))</span><br><span class="line">Out[<span class="number">32</span>]: [(<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">3</span>)]</span><br><span class="line"></span><br><span class="line">list(itertools.combinations_with_replacement(a,<span class="number">2</span>))</span><br><span class="line">Out[<span class="number">33</span>]: [(<span class="number">4</span>, <span class="number">4</span>), (<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">3</span>)]  <span class="comment">#可重复利用数字</span></span><br></pre></td></tr></table></figure></div>
 
-
-
-<h2 id="画框并标注"><a href="#画框并标注" class="headerlink" title="画框并标注"></a>画框并标注</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">cv2.rectangle(image, (xmin, ymin),(xmax,ymax),(0,255,0),1)  # img_cv是array类型&#x2F;左上角坐标&#x2F;右下角坐标&#x2F;线颜色&#x2F;线粗细</span><br><span class="line">cv2.putText(image,&#39;str&#39;,(50,150),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)</span><br><span class="line">#照片&#x2F;添加的文字&#x2F;左上角坐标&#x2F;字体&#x2F;字体大小&#x2F;颜色&#x2F;字体粗细</span><br></pre></td></tr></table></figure></div>
+<h2 id="笛卡尔积-itertools-product"><a href="#笛卡尔积-itertools-product" class="headerlink" title="笛卡尔积(itertools.product)"></a>笛卡尔积(itertools.product)</h2><p>对多个迭代器进行笛卡尔积组合，参数的意思是从每个迭代器中选取几个值进行组合</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">a&#x3D;[1,3,4]</span><br><span class="line">list(itertools.product([1,2,3],[2,3,4],repeat&#x3D;2))</span><br></pre></td></tr></table></figure></div>
 
 ]]></content>
       <tags>
-        <tag>cv2</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -879,40 +896,6 @@ time1 = time.time()
       <tags>
         <tag>docker</tag>
         <tag>nas</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mitmproxy脚本常用接口</title>
-    <url>/2022/12/21/mitmproxy/</url>
-    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">http.HTTPFlow 实例 flow</span><br><span class="line">flow.request.headers #获取所有头信息，包含Host、User-Agent、Content-type等字段</span><br><span class="line">flow.request.url #完整的请求地址，包含域名及请求参数，但是不包含放在body里面的请求参数</span><br><span class="line">flow.request.pretty_url #同flow.request.url目前没看出什么差别</span><br><span class="line">flow.request.host #域名</span><br><span class="line">flow.request.method #请求方式。POST、GET等</span><br><span class="line">flow.request.scheme #什么请求 ，如https</span><br><span class="line">flow.request.path # 请求的路径，url除域名之外的内容</span><br><span class="line">flow.request.get_text() #请求中body内容，有一些http会把请求参数放在body里面，那么可通过此方法获取，返回字典类型</span><br><span class="line">flow.request.query #返回MultiDictView类型的数据，url直接带的键值参数</span><br><span class="line">flow.request.get_content()#bytes,结果如flow.request.get_text()</span><br><span class="line">flow.request.raw_content #bytes,结果如flow.request.get_content()</span><br><span class="line">flow.request.urlencoded_form #MultiDictView，content-type：application&#x2F;x-www-form-urlencoded时的请求参数，不包含url直接带的键值参数</span><br><span class="line">flow.request.multipart_form #MultiDictView，content-type：multipart&#x2F;form-data</span><br><span class="line">时的请求参数，不包含url直接带的键值参数</span><br><span class="line"></span><br><span class="line">以上均为获取request信息的一些常用方法，对于response，同理</span><br><span class="line">flow.response.status_code #状态码</span><br><span class="line">flow.response.text#返回内容，已解码</span><br><span class="line">flow.response.content #返回内容，二进制</span><br><span class="line">flow.response.setText()#修改返回内容，不需要转码</span><br></pre></td></tr></table></figure></div>
-
-
-
-<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20221221215449683.png" alt="image-20221221215449683" style="zoom:50%;" />]]></content>
-      <tags>
-        <tag>mitmproxy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>one hot编码的三种实现方法</title>
-    <url>/2022/01/22/one_hot/</url>
-    <content><![CDATA[<h2 id="label转one-hot编码的方法"><a href="#label转one-hot编码的方法" class="headerlink" title="label转one_hot编码的方法"></a>label转one_hot编码的方法</h2><ol>
-<li><p>常见的是用numpy的方法，代码如下：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">y= cv2.imread(maskPath,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">y= cv2.resize(y,(self.image_size,self.image_size))</span><br><span class="line">y[y&lt;=<span class="number">100</span>]=<span class="number">0</span>  <span class="comment">#背景类</span></span><br><span class="line">y[y&gt;<span class="number">100</span>]=<span class="number">1</span>   <span class="comment">#病灶类</span></span><br><span class="line">y_onehot=np.eye(self.num_classes)[y.reshape([<span class="number">-1</span>])]</span><br><span class="line"><span class="comment"># 到第五行其实已经成为one_hot编码了,格式为  [[1,0],[1,0],[1,0],[1,0],[1,0],...[0,1],]</span></span><br><span class="line">y_onehot=y_onehot.reshape(self.num_classes,self.image_size,self.image_size)</span><br><span class="line"><span class="comment"># 这一步是为reshape，但是这种reshape方式的结果呈现并不是直觉理解的（不是通道值互斥的），原因是因为reshape的原理</span></span><br><span class="line"><span class="comment"># 正确的应该是</span></span><br><span class="line">y_onehot = rearrange(y_onehot,<span class="string">"(h w) c-&gt;c h w"</span>,h=self.image_size)</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>pytorch也有one_hot编码方法，代码如下：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">y= cv2.imread(self.Y[index],cv2.IMREAD_GRAYSCALE)</span><br><span class="line">y= cv2.resize(y,(self.image_size,self.image_size))</span><br><span class="line">y[y&lt;=<span class="number">100</span>]=<span class="number">0</span>  <span class="comment">#背景类</span></span><br><span class="line">y[y&gt;<span class="number">100</span>]=<span class="number">1</span>   <span class="comment">#病灶类</span></span><br><span class="line"><span class="comment"># y就是图片的label</span></span><br><span class="line"></span><br><span class="line">y_onehot=F.one_hot(torch.Tensor(y.reshpe(<span class="number">-1</span>).to(torch.int64)),num_classes)</span><br><span class="line"><span class="comment"># 这一步结果是one_hot形式了，下一步需要变换shape就行</span></span><br><span class="line"><span class="comment"># 注意第一个参数是Tensor类型并且要转为torch.int64</span></span><br><span class="line">y_onehot = rearrange(y_onehot,<span class="string">"(h w) c-&gt;c h w"</span>,h=self.image_size)</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>keras也有one_host编码方法，随后补充</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> to_categorical</span><br><span class="line">intput=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">y_onehot=to_categorical(input)</span><br></pre></td></tr></table></figure></div>
-
-
-
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>image segmentation</tag>
       </tags>
   </entry>
   <entry>
@@ -964,56 +947,37 @@ time1 = time.time()
 ]]></content>
   </entry>
   <entry>
-    <title>scrapy启动多spider</title>
-    <url>/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/</url>
-    <content><![CDATA[<h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.crawler <span class="keyword">import</span> CrawlerProcess</span><br><span class="line"><span class="keyword">from</span> scrapy.utils.project <span class="keyword">import</span> get_project_settings</span><br><span class="line">process = CrawlerProcess(get_project_settings())</span><br><span class="line"><span class="comment"># 指定多个spider</span></span><br><span class="line">process.crawl(<span class="string">"fen"</span>)</span><br><span class="line">process.crawl(<span class="string">"fuck"</span>)</span><br><span class="line"><span class="comment"># 执行所有 spider</span></span><br><span class="line"><span class="comment"># for spider_name in process.spider_loader.list():</span></span><br><span class="line"><span class="comment">#     print(spider_name)</span></span><br><span class="line">    <span class="comment"># process.crawl(spider_name)</span></span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
-]]></content>
+    <title>mitmproxy脚本常用接口</title>
+    <url>/2022/12/21/mitmproxy/</url>
+    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">http.HTTPFlow 实例 flow</span><br><span class="line">flow.request.headers #获取所有头信息，包含Host、User-Agent、Content-type等字段</span><br><span class="line">flow.request.url #完整的请求地址，包含域名及请求参数，但是不包含放在body里面的请求参数</span><br><span class="line">flow.request.pretty_url #同flow.request.url目前没看出什么差别</span><br><span class="line">flow.request.host #域名</span><br><span class="line">flow.request.method #请求方式。POST、GET等</span><br><span class="line">flow.request.scheme #什么请求 ，如https</span><br><span class="line">flow.request.path # 请求的路径，url除域名之外的内容</span><br><span class="line">flow.request.get_text() #请求中body内容，有一些http会把请求参数放在body里面，那么可通过此方法获取，返回字典类型</span><br><span class="line">flow.request.query #返回MultiDictView类型的数据，url直接带的键值参数</span><br><span class="line">flow.request.get_content()#bytes,结果如flow.request.get_text()</span><br><span class="line">flow.request.raw_content #bytes,结果如flow.request.get_content()</span><br><span class="line">flow.request.urlencoded_form #MultiDictView，content-type：application&#x2F;x-www-form-urlencoded时的请求参数，不包含url直接带的键值参数</span><br><span class="line">flow.request.multipart_form #MultiDictView，content-type：multipart&#x2F;form-data</span><br><span class="line">时的请求参数，不包含url直接带的键值参数</span><br><span class="line"></span><br><span class="line">以上均为获取request信息的一些常用方法，对于response，同理</span><br><span class="line">flow.response.status_code #状态码</span><br><span class="line">flow.response.text#返回内容，已解码</span><br><span class="line">flow.response.content #返回内容，二进制</span><br><span class="line">flow.response.setText()#修改返回内容，不需要转码</span><br></pre></td></tr></table></figure></div>
+
+
+
+<img src="/Users/dongzai/Library/Application Support/typora-user-images/image-20221221215449683.png" alt="image-20221221215449683" style="zoom:50%;" />]]></content>
       <tags>
-        <tag>python</tag>
+        <tag>mitmproxy</tag>
       </tags>
   </entry>
   <entry>
-    <title>python面</title>
-    <url>/2022/07/08/redis%E9%9D%A2/</url>
-    <content><![CDATA[<h1 id="快的原因"><a href="#快的原因" class="headerlink" title="快的原因"></a>快的原因</h1><ol>
-<li>基于内存实现的</li>
-<li>采用io多路复用模型。非阻塞io ,epoll+自己的时间循环机制</li>
-<li>单线程模型，避免不必要的上下文切换和资源竞争</li>
-<li>高效的底层数据结构</li>
+    <title>one hot编码的三种实现方法</title>
+    <url>/2022/01/22/one_hot/</url>
+    <content><![CDATA[<h2 id="label转one-hot编码的方法"><a href="#label转one-hot编码的方法" class="headerlink" title="label转one_hot编码的方法"></a>label转one_hot编码的方法</h2><ol>
+<li><p>常见的是用numpy的方法，代码如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">y= cv2.imread(maskPath,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">y= cv2.resize(y,(self.image_size,self.image_size))</span><br><span class="line">y[y&lt;=<span class="number">100</span>]=<span class="number">0</span>  <span class="comment">#背景类</span></span><br><span class="line">y[y&gt;<span class="number">100</span>]=<span class="number">1</span>   <span class="comment">#病灶类</span></span><br><span class="line">y_onehot=np.eye(self.num_classes)[y.reshape([<span class="number">-1</span>])]</span><br><span class="line"><span class="comment"># 到第五行其实已经成为one_hot编码了,格式为  [[1,0],[1,0],[1,0],[1,0],[1,0],...[0,1],]</span></span><br><span class="line">y_onehot=y_onehot.reshape(self.num_classes,self.image_size,self.image_size)</span><br><span class="line"><span class="comment"># 这一步是为reshape，但是这种reshape方式的结果呈现并不是直觉理解的（不是通道值互斥的），原因是因为reshape的原理</span></span><br><span class="line"><span class="comment"># 正确的应该是</span></span><br><span class="line">y_onehot = rearrange(y_onehot,<span class="string">"(h w) c-&gt;c h w"</span>,h=self.image_size)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>pytorch也有one_hot编码方法，代码如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">y= cv2.imread(self.Y[index],cv2.IMREAD_GRAYSCALE)</span><br><span class="line">y= cv2.resize(y,(self.image_size,self.image_size))</span><br><span class="line">y[y&lt;=<span class="number">100</span>]=<span class="number">0</span>  <span class="comment">#背景类</span></span><br><span class="line">y[y&gt;<span class="number">100</span>]=<span class="number">1</span>   <span class="comment">#病灶类</span></span><br><span class="line"><span class="comment"># y就是图片的label</span></span><br><span class="line"></span><br><span class="line">y_onehot=F.one_hot(torch.Tensor(y.reshpe(<span class="number">-1</span>).to(torch.int64)),num_classes)</span><br><span class="line"><span class="comment"># 这一步结果是one_hot形式了，下一步需要变换shape就行</span></span><br><span class="line"><span class="comment"># 注意第一个参数是Tensor类型并且要转为torch.int64</span></span><br><span class="line">y_onehot = rearrange(y_onehot,<span class="string">"(h w) c-&gt;c h w"</span>,h=self.image_size)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>keras也有one_host编码方法，随后补充</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> to_categorical</span><br><span class="line">intput=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">y_onehot=to_categorical(input)</span><br></pre></td></tr></table></figure></div>
+
+
+
+</li>
 </ol>
-<p><a href="https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ</a> 不错</p>
-<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>描述：查询一个数据库不存在的数据，不会去缓存，压力直接给到数据库<br>解决方案：</p>
-<ol>
-<li>将不存的数据也进行缓存，单过期时间设置较短些</li>
-<li>使用布隆过滤器，存储可能存在的数据，先在过滤器中查询是否存在在去判断是否请求数据库。布隆过滤器特点: 存在的不一定存在，不存在的一定不存在。<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2>描述：对于一些过期的数据，短时间有大量请求，会直接对数据库造成压力<br>解决方案：</li>
-<li>使用互斥锁。大量并发请求请求到缓存时，使用<code>setnx</code>命令返回结果为true在去数据库请求。<code>setnx key value</code>:如果不存在则设置为value，也就意味着其中一个请求拿到了锁,其他请求就不会请求db了</li>
-<li>设置用不过期<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2>描述：大量数据同一时间过期<br>解决方案:</li>
-<li>将过期时间离散开来</li>
-</ol>
-<h2 id="redis默认16个db"><a href="#redis默认16个db" class="headerlink" title="redis默认16个db"></a>redis默认16个db</h2><h2 id="redis删除策略"><a href="#redis删除策略" class="headerlink" title="redis删除策略"></a>redis删除策略</h2><ol>
-<li>定时删除。设定过期时间，到时间久删除</li>
-<li>惰性删除。设定过期时间，到时间先不删除，等到有请求访问在删除。</li>
-<li>定期删除。隔一段时间删除一批。</li>
-</ol>
-<h2 id="redis-vs-memcached"><a href="#redis-vs-memcached" class="headerlink" title="redis vs memcached"></a>redis vs memcached</h2><ol>
-<li>redis支持更多的数据结构，memcached只支持k-v数据结构</li>
-<li>redis可以对k设置过期时间<br>缺点：瓶颈在物理内存的大小 而非cpu，使用前需要评估内存是否充足</li>
-</ol>
-<h2 id="为什么要使用缓存"><a href="#为什么要使用缓存" class="headerlink" title="为什么要使用缓存"></a>为什么要使用缓存</h2><p>保证服务的高性能和高并发</p>
-<h2 id="缓存同步方案"><a href="#缓存同步方案" class="headerlink" title="缓存同步方案"></a>缓存同步方案</h2><ol>
-<li>同步方案。从业务代码层面，更新完数据可就对缓存进行更新</li>
-<li>异步方案。将更新的数据放入消息队列中，消费者从消息队列进行更新</li>
-</ol>
-<h2 id="redis的集群方案"><a href="#redis的集群方案" class="headerlink" title="redis的集群方案"></a>redis的集群方案</h2><ol>
-<li>主从模式。<br> 保证高可用；无法实现故障转移；无法实现海量数据存储</li>
-<li>哨兵模式<br> 高可用；可以自动实现故障转移；无法实现海量数据存储</li>
-<li>分片集群<br> 高可用；可以自动转移故障；可以实现海量数据存储</li>
-</ol>
-<h2 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h2><p>MULTI 开启事务；EXEC执行事务；<br><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220711104209304.png" alt="image-20220711104209304"></p>
-<h2 id="redis内存优化"><a href="#redis内存优化" class="headerlink" title="redis内存优化"></a>redis内存优化</h2><p>尽可能使用散列表(Hash)。比如你的 web 系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面。</p>
-<h2 id="如何保持mysql和redis数据一致性"><a href="#如何保持mysql和redis数据一致性" class="headerlink" title="如何保持mysql和redis数据一致性"></a>如何保持mysql和redis数据一致性</h2><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220718174349186.png" alt="image-20220718174349186" style="zoom:50%;" />]]></content>
+]]></content>
       <tags>
-        <tag>redis</tag>
+        <tag>image segmentation</tag>
       </tags>
   </entry>
   <entry>
@@ -1082,24 +1046,9 @@ time1 = time.time()
       </tags>
   </entry>
   <entry>
-    <title>选择排序,插入排序,冒泡排序C实现</title>
-    <url>/2020/05/12/sort/</url>
-    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//插入排序: 每次将待排序列记录插入到前面已经排好的子序列中</span></span><br><span class="line"><span class="comment">//稳定算法 时间复杂度O(n2)</span></span><br><span class="line"><span class="comment">//最好比较n-1  最坏比较（n+2）(n-1)/2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_insert</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,k,j;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">	k=x[i];</span><br><span class="line">	<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span>&amp;&amp;x[j]&gt;k;j--)</span><br><span class="line">		&#123;</span><br><span class="line">			x[j+<span class="number">1</span>] = x[j];</span><br><span class="line">		&#125;</span><br><span class="line">	x[j+<span class="number">1</span>] = k;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//选择排序:在n-i+1个待排序列中选取最小元素作为前面有序序列的第i个元素</span></span><br><span class="line"><span class="comment">//不稳定</span></span><br><span class="line"><span class="comment">//时间复杂度 O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_select</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,<span class="built_in">min</span>,j,tmp;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">min</span>=i;</span><br><span class="line">		<span class="keyword">for</span>(j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">			&#123;</span><br><span class="line">			<span class="keyword">if</span>(x[j]&lt;x[i])</span><br><span class="line">				<span class="built_in">min</span>=j;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">min</span>!=i)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">		tmp=x[i];</span><br><span class="line">		x[i]=x[<span class="built_in">min</span>];</span><br><span class="line">		x[<span class="built_in">min</span>]=tmp;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序:从后往前或从前往后俩俩比较相邻元素的值，若为逆序交换他们直到序列比较完，成为一趟冒泡。下一趟前面确定的元素不参与比较。 最多n-1躺比较完毕</span></span><br><span class="line"><span class="comment">//稳定</span></span><br><span class="line"><span class="comment">//时间复杂度：O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sort_bubble</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> flag,i,j;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			flag=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(j=length<span class="number">-1</span>;j&gt;=i+<span class="number">1</span>;j--)</span><br><span class="line">				&#123;</span><br><span class="line">				<span class="keyword">if</span>(x[j]&lt;x[j<span class="number">-1</span>])</span><br><span class="line">					&#123;flag=<span class="number">1</span>;</span><br><span class="line">					swap(x,j);&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			<span class="keyword">if</span>(flag==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> x[],<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> tmp;</span><br><span class="line">tmp=x[j];</span><br><span class="line">x[j]=x[j<span class="number">-1</span>];</span><br><span class="line">x[j<span class="number">-1</span>]=tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">" %d"</span>,x[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[]=&#123;<span class="number">3</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">62</span>,<span class="number">35</span>,<span class="number">2</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> length;</span><br><span class="line">length=<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(a[<span class="number">0</span>]);</span><br><span class="line"><span class="comment">//sort_select(length,a);</span></span><br><span class="line"><span class="comment">//sort_insert(length,a);</span></span><br><span class="line"><span class="comment">//sort_bubble(length,a);</span></span><br><span class="line">show(length,a);</span><br><span class="line">getchar();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <tags>
-        <tag>algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>uwsgi配置使用</title>
-    <url>/2020/04/16/uwsgi%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">uwsgi --ini uwsgi.ini             # 启动</span><br><span class="line">uwsgi --reload uwsgi.pid          # 重启</span><br><span class="line">uwsgi --stop uwsgi.pid            # 关闭</span><br></pre></td></tr></table></figure></div>
-<a id="more"></a>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line">chdir&#x3D;&#x2F;opt&#x2F;   </span><br><span class="line"></span><br><span class="line">callable&#x3D;app  #flask专用</span><br><span class="line">home&#x3D;&#x2F;root&#x2F;env&#x2F;</span><br><span class="line">wsgi-file&#x3D;xdbg&#x2F;wsgi.py</span><br><span class="line">master&#x3D;true</span><br><span class="line">py-autoreload&#x3D;1                              # py文件修改，自动加载</span><br><span class="line">processes&#x3D;4</span><br><span class="line">threads&#x3D;2</span><br><span class="line"></span><br><span class="line">pidfile&#x3D;%(chdir)&#x2F;uwsgi.pid</span><br><span class="line">socket&#x3D;&#x2F;socket&#x2F;uwsgi.sock</span><br><span class="line">chmod-socket &#x3D; 664</span><br><span class="line">vacuum&#x3D;true    #退出uwsgi是否清理中间文件，包含pid、sock和status文件</span><br><span class="line">daemonize&#x3D;%(chdir)&#x2F;cloudmonitor.log  #配合supervisor去掉并且改到stdout_logfile docker中要去掉</span><br><span class="line">static-map &#x3D; &#x2F;static&#x3D;&#x2F;opt&#x2F;static</span><br></pre></td></tr></table></figure></div>
-
-<blockquote>
-<p>参考 <a href="https://www.jianshu.com/p/c3b13b5ad3d7" target="_blank" rel="noopener">https://www.jianshu.com/p/c3b13b5ad3d7</a></p>
-</blockquote>
+    <title>scrapy启动多spider</title>
+    <url>/2020/04/16/scrapy%E5%90%AF%E5%8A%A8%E5%A4%9Aspider/</url>
+    <content><![CDATA[<h3 id="好使"><a href="#好使" class="headerlink" title="好使"></a>好使</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.crawler <span class="keyword">import</span> CrawlerProcess</span><br><span class="line"><span class="keyword">from</span> scrapy.utils.project <span class="keyword">import</span> get_project_settings</span><br><span class="line">process = CrawlerProcess(get_project_settings())</span><br><span class="line"><span class="comment"># 指定多个spider</span></span><br><span class="line">process.crawl(<span class="string">"fen"</span>)</span><br><span class="line">process.crawl(<span class="string">"fuck"</span>)</span><br><span class="line"><span class="comment"># 执行所有 spider</span></span><br><span class="line"><span class="comment"># for spider_name in process.spider_loader.list():</span></span><br><span class="line"><span class="comment">#     print(spider_name)</span></span><br><span class="line">    <span class="comment"># process.crawl(spider_name)</span></span><br><span class="line">process.start()</span><br></pre></td></tr></table></figure></div>
 ]]></content>
       <tags>
         <tag>python</tag>
@@ -1124,21 +1073,27 @@ time1 = time.time()
       </tags>
   </entry>
   <entry>
-    <title>vim作为IDE的快捷键</title>
-    <url>/2020/06/13/vim%E4%BD%9C%E4%B8%BAIDE%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<blockquote>
-<p>老是忘记，不定期更新。。</p>
+    <title>选择排序,插入排序,冒泡排序C实现</title>
+    <url>/2020/05/12/sort/</url>
+    <content><![CDATA[<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//插入排序: 每次将待排序列记录插入到前面已经排好的子序列中</span></span><br><span class="line"><span class="comment">//稳定算法 时间复杂度O(n2)</span></span><br><span class="line"><span class="comment">//最好比较n-1  最坏比较（n+2）(n-1)/2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_insert</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,k,j;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">	k=x[i];</span><br><span class="line">	<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span>&amp;&amp;x[j]&gt;k;j--)</span><br><span class="line">		&#123;</span><br><span class="line">			x[j+<span class="number">1</span>] = x[j];</span><br><span class="line">		&#125;</span><br><span class="line">	x[j+<span class="number">1</span>] = k;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//选择排序:在n-i+1个待排序列中选取最小元素作为前面有序序列的第i个元素</span></span><br><span class="line"><span class="comment">//不稳定</span></span><br><span class="line"><span class="comment">//时间复杂度 O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_select</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> x[])</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,<span class="built_in">min</span>,j,tmp;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">min</span>=i;</span><br><span class="line">		<span class="keyword">for</span>(j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">			&#123;</span><br><span class="line">			<span class="keyword">if</span>(x[j]&lt;x[i])</span><br><span class="line">				<span class="built_in">min</span>=j;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">min</span>!=i)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">		tmp=x[i];</span><br><span class="line">		x[i]=x[<span class="built_in">min</span>];</span><br><span class="line">		x[<span class="built_in">min</span>]=tmp;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序:从后往前或从前往后俩俩比较相邻元素的值，若为逆序交换他们直到序列比较完，成为一趟冒泡。下一趟前面确定的元素不参与比较。 最多n-1躺比较完毕</span></span><br><span class="line"><span class="comment">//稳定</span></span><br><span class="line"><span class="comment">//时间复杂度：O(n2)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sort_bubble</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> flag,i,j;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			flag=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(j=length<span class="number">-1</span>;j&gt;=i+<span class="number">1</span>;j--)</span><br><span class="line">				&#123;</span><br><span class="line">				<span class="keyword">if</span>(x[j]&lt;x[j<span class="number">-1</span>])</span><br><span class="line">					&#123;flag=<span class="number">1</span>;</span><br><span class="line">					swap(x,j);&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			<span class="keyword">if</span>(flag==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> x[],<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> tmp;</span><br><span class="line">tmp=x[j];</span><br><span class="line">x[j]=x[j<span class="number">-1</span>];</span><br><span class="line">x[j<span class="number">-1</span>]=tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> x[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">" %d"</span>,x[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[]=&#123;<span class="number">3</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">62</span>,<span class="number">35</span>,<span class="number">2</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> length;</span><br><span class="line">length=<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(a[<span class="number">0</span>]);</span><br><span class="line"><span class="comment">//sort_select(length,a);</span></span><br><span class="line"><span class="comment">//sort_insert(length,a);</span></span><br><span class="line"><span class="comment">//sort_bubble(length,a);</span></span><br><span class="line">show(length,a);</span><br><span class="line">getchar();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>uwsgi配置使用</title>
+    <url>/2020/04/16/uwsgi%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">uwsgi --ini uwsgi.ini             # 启动</span><br><span class="line">uwsgi --reload uwsgi.pid          # 重启</span><br><span class="line">uwsgi --stop uwsgi.pid            # 关闭</span><br></pre></td></tr></table></figure></div>
+<a id="more"></a>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line">chdir&#x3D;&#x2F;opt&#x2F;   </span><br><span class="line"></span><br><span class="line">callable&#x3D;app  #flask专用</span><br><span class="line">home&#x3D;&#x2F;root&#x2F;env&#x2F;</span><br><span class="line">wsgi-file&#x3D;xdbg&#x2F;wsgi.py</span><br><span class="line">master&#x3D;true</span><br><span class="line">py-autoreload&#x3D;1                              # py文件修改，自动加载</span><br><span class="line">processes&#x3D;4</span><br><span class="line">threads&#x3D;2</span><br><span class="line"></span><br><span class="line">pidfile&#x3D;%(chdir)&#x2F;uwsgi.pid</span><br><span class="line">socket&#x3D;&#x2F;socket&#x2F;uwsgi.sock</span><br><span class="line">chmod-socket &#x3D; 664</span><br><span class="line">vacuum&#x3D;true    #退出uwsgi是否清理中间文件，包含pid、sock和status文件</span><br><span class="line">daemonize&#x3D;%(chdir)&#x2F;cloudmonitor.log  #配合supervisor去掉并且改到stdout_logfile docker中要去掉</span><br><span class="line">static-map &#x3D; &#x2F;static&#x3D;&#x2F;opt&#x2F;static</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>参考 <a href="https://www.jianshu.com/p/c3b13b5ad3d7" target="_blank" rel="noopener">https://www.jianshu.com/p/c3b13b5ad3d7</a></p>
 </blockquote>
-<p>注释代码: <code>gcc</code></p>
-<p>“<leader>“是自定义的: <code>let mapleader=&quot;,&quot;</code></p>
-<p>运行代码: <code>&lt;leader&gt;r</code> (自定义)</p>
-<p>代码补全: <code>&lt;Ctrl+x&gt;o</code> (不同插件快捷键不同)</p>
-<p>删除一个单词: <code>daw</code></p>
-<p>删除至双引号字符为止: <code>dat&quot;</code> </p>
 ]]></content>
       <tags>
         <tag>python</tag>
-        <tag>vim</tag>
       </tags>
   </entry>
   <entry>
@@ -1158,6 +1113,49 @@ time1 = time.time()
 ]]></content>
       <tags>
         <tag>cnn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vimrc备份</title>
+    <url>/2020/04/16/vimrc%E5%A4%87%E4%BB%BD/</url>
+    <content><![CDATA[<blockquote>
+<p>万古长青的编辑器 <strong>vim</strong></p>
+<p>而且X格满满</p>
+</blockquote>
+<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">set nocompatible  </span><br><span class="line">set hlsearch</span><br><span class="line">set number  </span><br><span class="line">set history&#x3D;1000</span><br><span class="line">set background&#x3D;dark </span><br><span class="line">syntax on  </span><br><span class="line">set autoindent </span><br><span class="line">set tabstop&#x3D;4</span><br><span class="line">set expandtab</span><br><span class="line">set shiftwidth&#x3D;4</span><br><span class="line"></span><br><span class="line">let mapleader&#x3D;&quot;,&quot;</span><br><span class="line"></span><br><span class="line">&quot; colors</span><br><span class="line">set background&#x3D;dark</span><br><span class="line">colorscheme hybrid</span><br><span class="line"></span><br><span class="line">&quot; jklh</span><br><span class="line">map &lt;C-j&gt; &lt;C-W&gt;j</span><br><span class="line">map &lt;C-k&gt; &lt;C-W&gt;k</span><br><span class="line">map &lt;C-h&gt; &lt;C-W&gt;h</span><br><span class="line">map &lt;C-l&gt; &lt;C-W&gt;l</span><br><span class="line"></span><br><span class="line">&quot; vim-plug</span><br><span class="line">call plug#begin(&#39;~&#x2F;.vim&#x2F;plugged&#39;)</span><br><span class="line">Plug &#39;scrooloose&#x2F;nerdtree&#39;, &#123; &#39;on&#39;:  &#39;NERDTreeToggle&#39; &#125;</span><br><span class="line">Plug &#39;yggdroot&#x2F;indentline&#39;</span><br><span class="line">Plug &#39;python-mode&#x2F;python-mode&#39;, &#123; &#39;for&#39;: &#39;python&#39;, &#39;branch&#39;: &#39;develop&#39; &#125;</span><br><span class="line">Plug &#39;majutsushi&#x2F;tagbar&#39;</span><br><span class="line">Plug &#39;tpope&#x2F;vim-commentary&#39;</span><br><span class="line"></span><br><span class="line">call plug#end()</span><br><span class="line">&quot; NERDTree</span><br><span class="line">let NERDTreeWinSize&#x3D;25</span><br><span class="line">map &lt;F9&gt; :NERDTreeToggle&lt;CR&gt;</span><br><span class="line"></span><br><span class="line">&quot; indentline</span><br><span class="line">let g:indentline_char &#x3D; &#39;¦&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; Tagbar</span><br><span class="line">nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;</span><br><span class="line">let g:tagbar_ctags_bin &#x3D; &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ctags&quot;</span><br><span class="line">let g:tagbar_width&#x3D;28</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; python-mode</span><br><span class="line">let g:pymode_rope &#x3D; 1</span><br><span class="line">let g:pymode_rope_completion &#x3D; 1</span><br><span class="line">let g:pymode_rope_complete_on_dot &#x3D; 1</span><br><span class="line">set completeopt&#x3D;menuone,noinsert</span><br><span class="line"></span><br><span class="line">&quot; let g:pymode_rope_completion_bind &#x3D; &#39;&#39;</span><br><span class="line">&quot; Documentation</span><br><span class="line">let g:pymode_doc &#x3D; 0</span><br><span class="line">let g:pymode_doc_key &#x3D; &#39;K&#39;</span><br><span class="line">&quot;Linting</span><br><span class="line">let g:pymode_lint &#x3D; 1</span><br><span class="line">let g:pymode_lint_checker &#x3D; &quot;pyflakes,pep8&quot;</span><br><span class="line">&quot; let g:pymode_lint_on_write &#x3D; 1</span><br><span class="line">&quot; Support virtualenv</span><br><span class="line">let g:pymode_virtualenv &#x3D; 1</span><br><span class="line">&quot; Enable breakpoints plugin</span><br><span class="line">let g:pymode_breakpoint &#x3D; 1</span><br><span class="line">let g:pymode_breakpoint_bind &#x3D; &#39;&lt;leader&gt;b&#39;</span><br><span class="line">&quot; syntax highlighting</span><br><span class="line">let g:pymode_syntax &#x3D; 1</span><br><span class="line">let g:pymode_syntax_all &#x3D; 1</span><br><span class="line">let g:pymode_syntax_indent_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">let g:pymode_syntax_space_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">&quot; Don&#39;t autofold code</span><br><span class="line">let g:pymode_folding &#x3D; 0</span><br><span class="line">let g:pymode_run &#x3D; 1</span><br><span class="line">let g:pymode_run_bind &#x3D; &#39;&lt;leader&gt;r&#39;</span><br><span class="line">&quot; find definition</span><br><span class="line">let g:pymode_rope_goto_definition_bind &#x3D; &#39;&lt;C-c&gt;g&#39;</span><br><span class="line">let g:pymode_rope_goto_definition_cmd &#x3D; &#39;new&#39;</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>vim</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vim作为IDE的快捷键</title>
+    <url>/2020/06/13/vim%E4%BD%9C%E4%B8%BAIDE%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<blockquote>
+<p>老是忘记，不定期更新。。</p>
+</blockquote>
+<p>注释代码: <code>gcc</code></p>
+<p>“<leader>“是自定义的: <code>let mapleader=&quot;,&quot;</code></p>
+<p>运行代码: <code>&lt;leader&gt;r</code> (自定义)</p>
+<p>代码补全: <code>&lt;Ctrl+x&gt;o</code> (不同插件快捷键不同)</p>
+<p>删除一个单词: <code>daw</code></p>
+<p>删除至双引号字符为止: <code>dat&quot;</code> </p>
+]]></content>
+      <tags>
+        <tag>python</tag>
+        <tag>vim</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>matplotlib画子图</title>
+    <url>/2021/09/10/subplots/</url>
+    <content><![CDATA[<h2 id="subplot画子图"><a href="#subplot画子图" class="headerlink" title="subplot画子图"></a>subplot画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">1</span>,title=<span class="string">"Input"</span> <span class="keyword">if</span> index==<span class="number">0</span> <span class="keyword">else</span> <span class="string">""</span>)</span><br><span class="line">    plt.imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    plt.axis(<span class="string">"off"</span>) <span class="comment"># 去掉 x y轴</span></span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">2</span>,title=<span class="string">"GT)</span></span><br><span class="line"><span class="string">    plt.imshow(y[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    plt.subplot(params["</span>batch_size<span class="string">"],params["</span>batch_size<span class="string">"],index*3+3,title="</span>Mask<span class="string">")</span></span><br><span class="line"><span class="string">    plt.imshow(mask[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    # plt.subplots_adjust(left=0.027,</span></span><br><span class="line"><span class="string">    #                     bottom=0,</span></span><br><span class="line"><span class="string">    #                     right=0.99,</span></span><br><span class="line"><span class="string">    #                     top=0.93,</span></span><br><span class="line"><span class="string">    #                     wspace=0.005,</span></span><br><span class="line"><span class="string">    #                     hspace=0.045)</span></span><br><span class="line"><span class="string">    fig.tight_layout()</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="subplots画子图"><a href="#subplots画子图" class="headerlink" title="subplots画子图"></a>subplots画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">fig,axes=plt.subplots(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>])</span><br><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    axes[index,<span class="number">0</span>].imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    axes[index, <span class="number">0</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">1</span>].imshow(y[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">1</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">2</span>].imshow(mask[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">2</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">0</span>].set_title(<span class="string">"Input"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">1</span>].set_title(<span class="string">"GT"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">2</span>].set_title(<span class="string">"Mask"</span>)</span><br><span class="line">    plt.subplots_adjust(left=<span class="number">0.027</span>,</span><br><span class="line">                            bottom=<span class="number">0</span>,</span><br><span class="line">                            right=<span class="number">0.99</span>,</span><br><span class="line">                            top=<span class="number">0.93</span>,</span><br><span class="line">                            wspace=<span class="number">0.005</span>,</span><br><span class="line">                            hspace=<span class="number">0.045</span>)</span><br></pre></td></tr></table></figure></div>
+
+]]></content>
+      <tags>
+        <tag>matplotlib</tag>
       </tags>
   </entry>
   <entry>
@@ -1185,54 +1183,48 @@ time1 = time.time()
       </tags>
   </entry>
   <entry>
-    <title>matplotlib画子图</title>
-    <url>/2021/09/10/subplots/</url>
-    <content><![CDATA[<h2 id="subplot画子图"><a href="#subplot画子图" class="headerlink" title="subplot画子图"></a>subplot画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">1</span>,title=<span class="string">"Input"</span> <span class="keyword">if</span> index==<span class="number">0</span> <span class="keyword">else</span> <span class="string">""</span>)</span><br><span class="line">    plt.imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    plt.axis(<span class="string">"off"</span>) <span class="comment"># 去掉 x y轴</span></span><br><span class="line">    plt.subplot(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>],index*<span class="number">3</span>+<span class="number">2</span>,title=<span class="string">"GT)</span></span><br><span class="line"><span class="string">    plt.imshow(y[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    plt.subplot(params["</span>batch_size<span class="string">"],params["</span>batch_size<span class="string">"],index*3+3,title="</span>Mask<span class="string">")</span></span><br><span class="line"><span class="string">    plt.imshow(mask[index],cmap="</span>gray<span class="string">")</span></span><br><span class="line"><span class="string">    plt.axis("</span>of<span class="string">f")</span></span><br><span class="line"><span class="string">    # plt.subplots_adjust(left=0.027,</span></span><br><span class="line"><span class="string">    #                     bottom=0,</span></span><br><span class="line"><span class="string">    #                     right=0.99,</span></span><br><span class="line"><span class="string">    #                     top=0.93,</span></span><br><span class="line"><span class="string">    #                     wspace=0.005,</span></span><br><span class="line"><span class="string">    #                     hspace=0.045)</span></span><br><span class="line"><span class="string">    fig.tight_layout()</span></span><br></pre></td></tr></table></figure></div>
-
-<h2 id="subplots画子图"><a href="#subplots画子图" class="headerlink" title="subplots画子图"></a>subplots画子图</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">fig,axes=plt.subplots(params[<span class="string">"batch_size"</span>],params[<span class="string">"batch_size"</span>])</span><br><span class="line"><span class="keyword">for</span> index,n <span class="keyword">in</span> enumerate(imgName):</span><br><span class="line">    axes[index,<span class="number">0</span>].imshow(x[index].transpose(<span class="number">0</span>,<span class="number">1</span>).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous())</span><br><span class="line">    axes[index, <span class="number">0</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">1</span>].imshow(y[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">1</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[index,<span class="number">2</span>].imshow(mask[index],cmap=<span class="string">"gray"</span>)</span><br><span class="line">    axes[index, <span class="number">2</span>].axis(<span class="string">"off"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">0</span>].set_title(<span class="string">"Input"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">1</span>].set_title(<span class="string">"GT"</span>)</span><br><span class="line">    axes[<span class="number">0</span>,<span class="number">2</span>].set_title(<span class="string">"Mask"</span>)</span><br><span class="line">    plt.subplots_adjust(left=<span class="number">0.027</span>,</span><br><span class="line">                            bottom=<span class="number">0</span>,</span><br><span class="line">                            right=<span class="number">0.99</span>,</span><br><span class="line">                            top=<span class="number">0.93</span>,</span><br><span class="line">                            wspace=<span class="number">0.005</span>,</span><br><span class="line">                            hspace=<span class="number">0.045</span>)</span><br></pre></td></tr></table></figure></div>
-
-]]></content>
+    <title>python面</title>
+    <url>/2022/07/08/redis%E9%9D%A2/</url>
+    <content><![CDATA[<h1 id="快的原因"><a href="#快的原因" class="headerlink" title="快的原因"></a>快的原因</h1><ol>
+<li>基于内存实现的</li>
+<li>采用io多路复用模型。非阻塞io ,epoll+自己的时间循环机制</li>
+<li>单线程模型，避免不必要的上下文切换和资源竞争</li>
+<li>高效的底层数据结构</li>
+</ol>
+<p><a href="https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/3V_ziL_l6dCCzQz9cOmiHQ</a> 不错</p>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>描述：查询一个数据库不存在的数据，不会去缓存，压力直接给到数据库<br>解决方案：</p>
+<ol>
+<li>将不存的数据也进行缓存，单过期时间设置较短些</li>
+<li>使用布隆过滤器，存储可能存在的数据，先在过滤器中查询是否存在在去判断是否请求数据库。布隆过滤器特点: 存在的不一定存在，不存在的一定不存在。<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2>描述：对于一些过期的数据，短时间有大量请求，会直接对数据库造成压力<br>解决方案：</li>
+<li>使用互斥锁。大量并发请求请求到缓存时，使用<code>setnx</code>命令返回结果为true在去数据库请求。<code>setnx key value</code>:如果不存在则设置为value，也就意味着其中一个请求拿到了锁,其他请求就不会请求db了</li>
+<li>设置用不过期<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2>描述：大量数据同一时间过期<br>解决方案:</li>
+<li>将过期时间离散开来</li>
+</ol>
+<h2 id="redis默认16个db"><a href="#redis默认16个db" class="headerlink" title="redis默认16个db"></a>redis默认16个db</h2><h2 id="redis删除策略"><a href="#redis删除策略" class="headerlink" title="redis删除策略"></a>redis删除策略</h2><ol>
+<li>定时删除。设定过期时间，到时间久删除</li>
+<li>惰性删除。设定过期时间，到时间先不删除，等到有请求访问在删除。</li>
+<li>定期删除。隔一段时间删除一批。</li>
+</ol>
+<h2 id="redis-vs-memcached"><a href="#redis-vs-memcached" class="headerlink" title="redis vs memcached"></a>redis vs memcached</h2><ol>
+<li>redis支持更多的数据结构，memcached只支持k-v数据结构</li>
+<li>redis可以对k设置过期时间<br>缺点：瓶颈在物理内存的大小 而非cpu，使用前需要评估内存是否充足</li>
+</ol>
+<h2 id="为什么要使用缓存"><a href="#为什么要使用缓存" class="headerlink" title="为什么要使用缓存"></a>为什么要使用缓存</h2><p>保证服务的高性能和高并发</p>
+<h2 id="缓存同步方案"><a href="#缓存同步方案" class="headerlink" title="缓存同步方案"></a>缓存同步方案</h2><ol>
+<li>同步方案。从业务代码层面，更新完数据可就对缓存进行更新</li>
+<li>异步方案。将更新的数据放入消息队列中，消费者从消息队列进行更新</li>
+</ol>
+<h2 id="redis的集群方案"><a href="#redis的集群方案" class="headerlink" title="redis的集群方案"></a>redis的集群方案</h2><ol>
+<li>主从模式。<br> 保证高可用；无法实现故障转移；无法实现海量数据存储</li>
+<li>哨兵模式<br> 高可用；可以自动实现故障转移；无法实现海量数据存储</li>
+<li>分片集群<br> 高可用；可以自动转移故障；可以实现海量数据存储</li>
+</ol>
+<h2 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h2><p>MULTI 开启事务；EXEC执行事务；<br><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220711104209304.png" alt="image-20220711104209304"></p>
+<h2 id="redis内存优化"><a href="#redis内存优化" class="headerlink" title="redis内存优化"></a>redis内存优化</h2><p>尽可能使用散列表(Hash)。比如你的 web 系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面。</p>
+<h2 id="如何保持mysql和redis数据一致性"><a href="#如何保持mysql和redis数据一致性" class="headerlink" title="如何保持mysql和redis数据一致性"></a>如何保持mysql和redis数据一致性</h2><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20220718174349186.png" alt="image-20220718174349186" style="zoom:50%;" />]]></content>
       <tags>
-        <tag>matplotlib</tag>
+        <tag>redis</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>vimrc备份</title>
-    <url>/2020/04/16/vimrc%E5%A4%87%E4%BB%BD/</url>
-    <content><![CDATA[<blockquote>
-<p>万古长青的编辑器 <strong>vim</strong></p>
-<p>而且X格满满</p>
-</blockquote>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">set nocompatible  </span><br><span class="line">set hlsearch</span><br><span class="line">set number  </span><br><span class="line">set history&#x3D;1000</span><br><span class="line">set background&#x3D;dark </span><br><span class="line">syntax on  </span><br><span class="line">set autoindent </span><br><span class="line">set tabstop&#x3D;4</span><br><span class="line">set expandtab</span><br><span class="line">set shiftwidth&#x3D;4</span><br><span class="line"></span><br><span class="line">let mapleader&#x3D;&quot;,&quot;</span><br><span class="line"></span><br><span class="line">&quot; colors</span><br><span class="line">set background&#x3D;dark</span><br><span class="line">colorscheme hybrid</span><br><span class="line"></span><br><span class="line">&quot; jklh</span><br><span class="line">map &lt;C-j&gt; &lt;C-W&gt;j</span><br><span class="line">map &lt;C-k&gt; &lt;C-W&gt;k</span><br><span class="line">map &lt;C-h&gt; &lt;C-W&gt;h</span><br><span class="line">map &lt;C-l&gt; &lt;C-W&gt;l</span><br><span class="line"></span><br><span class="line">&quot; vim-plug</span><br><span class="line">call plug#begin(&#39;~&#x2F;.vim&#x2F;plugged&#39;)</span><br><span class="line">Plug &#39;scrooloose&#x2F;nerdtree&#39;, &#123; &#39;on&#39;:  &#39;NERDTreeToggle&#39; &#125;</span><br><span class="line">Plug &#39;yggdroot&#x2F;indentline&#39;</span><br><span class="line">Plug &#39;python-mode&#x2F;python-mode&#39;, &#123; &#39;for&#39;: &#39;python&#39;, &#39;branch&#39;: &#39;develop&#39; &#125;</span><br><span class="line">Plug &#39;majutsushi&#x2F;tagbar&#39;</span><br><span class="line">Plug &#39;tpope&#x2F;vim-commentary&#39;</span><br><span class="line"></span><br><span class="line">call plug#end()</span><br><span class="line">&quot; NERDTree</span><br><span class="line">let NERDTreeWinSize&#x3D;25</span><br><span class="line">map &lt;F9&gt; :NERDTreeToggle&lt;CR&gt;</span><br><span class="line"></span><br><span class="line">&quot; indentline</span><br><span class="line">let g:indentline_char &#x3D; &#39;¦&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; Tagbar</span><br><span class="line">nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;</span><br><span class="line">let g:tagbar_ctags_bin &#x3D; &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;ctags&quot;</span><br><span class="line">let g:tagbar_width&#x3D;28</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot; python-mode</span><br><span class="line">let g:pymode_rope &#x3D; 1</span><br><span class="line">let g:pymode_rope_completion &#x3D; 1</span><br><span class="line">let g:pymode_rope_complete_on_dot &#x3D; 1</span><br><span class="line">set completeopt&#x3D;menuone,noinsert</span><br><span class="line"></span><br><span class="line">&quot; let g:pymode_rope_completion_bind &#x3D; &#39;&#39;</span><br><span class="line">&quot; Documentation</span><br><span class="line">let g:pymode_doc &#x3D; 0</span><br><span class="line">let g:pymode_doc_key &#x3D; &#39;K&#39;</span><br><span class="line">&quot;Linting</span><br><span class="line">let g:pymode_lint &#x3D; 1</span><br><span class="line">let g:pymode_lint_checker &#x3D; &quot;pyflakes,pep8&quot;</span><br><span class="line">&quot; let g:pymode_lint_on_write &#x3D; 1</span><br><span class="line">&quot; Support virtualenv</span><br><span class="line">let g:pymode_virtualenv &#x3D; 1</span><br><span class="line">&quot; Enable breakpoints plugin</span><br><span class="line">let g:pymode_breakpoint &#x3D; 1</span><br><span class="line">let g:pymode_breakpoint_bind &#x3D; &#39;&lt;leader&gt;b&#39;</span><br><span class="line">&quot; syntax highlighting</span><br><span class="line">let g:pymode_syntax &#x3D; 1</span><br><span class="line">let g:pymode_syntax_all &#x3D; 1</span><br><span class="line">let g:pymode_syntax_indent_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">let g:pymode_syntax_space_errors &#x3D; g:pymode_syntax_all</span><br><span class="line">&quot; Don&#39;t autofold code</span><br><span class="line">let g:pymode_folding &#x3D; 0</span><br><span class="line">let g:pymode_run &#x3D; 1</span><br><span class="line">let g:pymode_run_bind &#x3D; &#39;&lt;leader&gt;r&#39;</span><br><span class="line">&quot; find definition</span><br><span class="line">let g:pymode_rope_goto_definition_bind &#x3D; &#39;&lt;C-c&gt;g&#39;</span><br><span class="line">let g:pymode_rope_goto_definition_cmd &#x3D; &#39;new&#39;</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <tags>
-        <tag>vim</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>公务员信息</title>
-    <url>/2023/07/15/%E5%85%AC%E5%8A%A1%E5%91%98%E4%BF%A1%E6%81%AF/</url>
-    <content><![CDATA[<hr>
-<p>title: 公务员报考信息<br>date: 2023-07-15<br>tags: 随笔</p>
-<hr>
-<h1 id="公务员报考信息"><a href="#公务员报考信息" class="headerlink" title="公务员报考信息"></a>公务员报考信息</h1><h2 id="军队文职"><a href="#军队文职" class="headerlink" title="军队文职"></a>军队文职</h2><p>报名时间：2023年1月13日8:00至17日</p>
-<p>考试时间：2023年2月19日</p>
-<p>考试科目：公共科目+ 数1/2 +物理</p>
-<p>网址：<a href="http://81rc.81.cn/" target="_blank" rel="noopener">http://81rc.81.cn/</a></p>
-<h2 id="国考"><a href="#国考" class="headerlink" title="国考"></a>国考</h2><p>报名时间：2022年10月25日8:00至11月3日18:00</p>
-<p>考试时间：2022年12月4日</p>
-<p>考试科目：行测+申论</p>
-<p>网址：<a href="http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/home/gkhome.html" target="_blank" rel="noopener">http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/home/gkhome.html</a> </p>
-<h2 id="省考"><a href="#省考" class="headerlink" title="省考"></a>省考</h2><p>报名时间：2023年1月3日-1月10日  </p>
-<p>考试时间：2月25日、26日</p>
-<p>考试科目：行测+申论</p>
-<p>网址：<a href="https://www.chinagwy.org/shanxi/" target="_blank" rel="noopener">https://www.chinagwy.org/shanxi/</a> （非官方，信息全乎）</p>
-<h2 id="事业编"><a href="#事业编" class="headerlink" title="事业编"></a>事业编</h2><p>报名时间：</p>
-<p>考试时间：</p>
-<p>考试科目：</p>
-<p>主要看公众号统计信息</p>
-<p>网址：<a href="https://www.chinagwy.org/shanxi/" target="_blank" rel="noopener">https://www.chinagwy.org/shanxi/</a> （非官方，信息全乎）</p>
-]]></content>
   </entry>
   <entry>
     <title>大数据工程师and算法工程师日常</title>
@@ -1291,20 +1283,57 @@ time1 = time.time()
       </tags>
   </entry>
   <entry>
-    <title>vscode下python环境配置文件</title>
-    <url>/2020/05/12/vscode%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>有两个配置文件 :<br>settings.json - 用来运行的配置<br>launch.json  -  用来调试的配置</p>
-<blockquote>
-<p>划取代码运行使用的是 settings.json 配置<br>vscode 下面的解释器选择可以直接更改两个文件的 python 解释器路径</p>
-</blockquote>
-<p>配置展示:<br>settings.json  </p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"launch"</span>: &#123;</span><br><span class="line"></span><br><span class="line">        <span class="attr">"configurations"</span>: [</span><br><span class="line">            &#123;<span class="attr">"name"</span>:<span class="string">"Launch"</span>,</span><br><span class="line">            <span class="attr">"type"</span>:<span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>:<span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            "cwd":"$&#123;fileDirname&#125;", ## 解决执行路径问题</span><br><span class="line">             <span class="comment">//工作路径用打开的顶层目录，影响文件读写相对路径</span></span><br><span class="line">            <span class="comment">//"cwd": "$&#123;workspaceFolder&#125;", </span></span><br><span class="line">            <span class="comment">//工作路径用当前文件所在目录，影响文件读写相对路径</span></span><br><span class="line">            <span class="comment">//"cwd": "$&#123;fileDirname&#125;",</span></span><br><span class="line">            <span class="comment">//sys.path 会加入顶层目录，影响模块导入查询路径</span></span><br><span class="line">            <span class="comment">//"env": &#123; "PYTHONPATH": "$&#123;workspaceFolder&#125;" &#125;</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        "compounds": []</span><br><span class="line">    &#125;,</span><br><span class="line">    "python.pythonPath": "/usr/local/anaconda3/envs/mrcnn/bin/python"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>launch.json  </p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JSON"><figure class="iseeu highlight /json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Python: base"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            <span class="attr">"pythonPath"</span>: <span class="string">"/usr/local/anaconda3/bin/python"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Python: env"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            <span class="attr">"pythonPath"</span>: <span class="string">"~/env/bin/python"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Python: mrcnn"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            <span class="attr">"pythonPath"</span>: <span class="string">"/usr/local/anaconda3/envs/mrcnn/bin/python"</span></span><br><span class="line">        &#125;,</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+    <title>布隆过滤器</title>
+    <url>/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
+<p>   <strong>特点:</strong></p>
+<ol>
+<li>不存在的一定不存在，存在的不一定存在。</li>
+<li>添加元素简单，删除很难很难。</li>
+<li>省空间，提升效率。</li>
+</ol>
+<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
+<p>   原先去重调度器和去重队列</p>
+   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
+<pre><code># Ensure use this Scheduler
+   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
+# Ensure all spiders share same duplicates filter through redis
+   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
 ]]></content>
       <tags>
-        <tag>vscode</tag>
+        <tag>python</tag>
+        <tag>bloomfilter</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>公务员信息</title>
+    <url>/2023/07/15/%E5%85%AC%E5%8A%A1%E5%91%98%E4%BF%A1%E6%81%AF/</url>
+    <content><![CDATA[<hr>
+<p>title: 公务员报考信息<br>date: 2023-07-15<br>tags: 随笔</p>
+<hr>
+<h1 id="公务员报考信息"><a href="#公务员报考信息" class="headerlink" title="公务员报考信息"></a>公务员报考信息</h1><h2 id="军队文职"><a href="#军队文职" class="headerlink" title="军队文职"></a>军队文职</h2><p>报名时间：2023年1月13日8:00至17日</p>
+<p>考试时间：2023年2月19日</p>
+<p>考试科目：公共科目+ 数1/2 +物理</p>
+<p>网址：<a href="http://81rc.81.cn/" target="_blank" rel="noopener">http://81rc.81.cn/</a></p>
+<p>![image-20230716111801444](/Users/dongzai/Library/Application Support/typora-user-images/image-20230716111801444.png)</p>
+<h2 id="国考"><a href="#国考" class="headerlink" title="国考"></a>国考</h2><p>报名时间：2022年10月25日8:00至11月3日18:00</p>
+<p>考试时间：2022年12月4日</p>
+<p>考试科目：行测+申论</p>
+<p>网址：<a href="http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/home/gkhome.html" target="_blank" rel="noopener">http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/home/gkhome.html</a> </p>
+<h2 id="省考"><a href="#省考" class="headerlink" title="省考"></a>省考</h2><p>报名时间：2023年1月3日-1月10日  </p>
+<p>考试时间：2月25日、26日</p>
+<p>考试科目：行测+申论</p>
+<p>网址：<a href="https://www.chinagwy.org/shanxi/" target="_blank" rel="noopener">https://www.chinagwy.org/shanxi/</a> （非官方，信息全乎）</p>
+<p>![image-20230716112253117](/Users/dongzai/Library/Application Support/typora-user-images/image-20230716112253117.png)</p>
+<p>![image-20230716112518904](/Users/dongzai/Library/Application Support/typora-user-images/image-20230716112518904.png)</p>
+<h2 id="事业编"><a href="#事业编" class="headerlink" title="事业编"></a>事业编</h2><p>报名时间：</p>
+<p>考试时间：</p>
+<p>考试科目：</p>
+<p>主要看公众号统计信息</p>
+<p>网址：<a href="https://www.chinagwy.org/shanxi/" target="_blank" rel="noopener">https://www.chinagwy.org/shanxi/</a> （非官方，信息全乎）</p>
+]]></content>
   </entry>
   <entry>
     <title>提取cookies方法总结</title>
@@ -1399,45 +1428,19 @@ time1 = time.time()
       </tags>
   </entry>
   <entry>
-    <title>itertools排列 组合 笛卡尔积</title>
-    <url>/2022/07/21/itertools/</url>
-    <content><![CDATA[<h1 id="排列-itertools-permutations"><a href="#排列-itertools-permutations" class="headerlink" title="排列 (itertools.permutations)"></a>排列 (itertools.permutations)</h1><p>从迭代序列里选取n个数字进行排列，有顺序</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">list(itertools.permutations(a,<span class="number">2</span>))</span><br><span class="line">[(<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">list(itertools.permutations(a,<span class="number">3</span>))</span><br><span class="line">Out[<span class="number">36</span>]: [(<span class="number">4</span>, <span class="number">1</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">3</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>), (<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>)]</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="组合-itertools-combinations"><a href="#组合-itertools-combinations" class="headerlink" title="组合(itertools.combinations)"></a>组合(itertools.combinations)</h2><p>从迭代序列里选取n个数字进行组合，重在组合</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">list(itertools.combinations(a,<span class="number">2</span>))</span><br><span class="line">Out[<span class="number">32</span>]: [(<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">3</span>)]</span><br><span class="line"></span><br><span class="line">list(itertools.combinations_with_replacement(a,<span class="number">2</span>))</span><br><span class="line">Out[<span class="number">33</span>]: [(<span class="number">4</span>, <span class="number">4</span>), (<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">3</span>)]  <span class="comment">#可重复利用数字</span></span><br></pre></td></tr></table></figure></div>
-
-<h2 id="笛卡尔积-itertools-product"><a href="#笛卡尔积-itertools-product" class="headerlink" title="笛卡尔积(itertools.product)"></a>笛卡尔积(itertools.product)</h2><p>对多个迭代器进行笛卡尔积组合，参数的意思是从每个迭代器中选取几个值进行组合</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line">a&#x3D;[1,3,4]</span><br><span class="line">list(itertools.product([1,2,3],[2,3,4],repeat&#x3D;2))</span><br></pre></td></tr></table></figure></div>
-
+    <title>vscode下python环境配置文件</title>
+    <url>/2020/05/12/vscode%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>有两个配置文件 :<br>settings.json - 用来运行的配置<br>launch.json  -  用来调试的配置</p>
+<blockquote>
+<p>划取代码运行使用的是 settings.json 配置<br>vscode 下面的解释器选择可以直接更改两个文件的 python 解释器路径</p>
+</blockquote>
+<p>配置展示:<br>settings.json  </p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"launch"</span>: &#123;</span><br><span class="line"></span><br><span class="line">        <span class="attr">"configurations"</span>: [</span><br><span class="line">            &#123;<span class="attr">"name"</span>:<span class="string">"Launch"</span>,</span><br><span class="line">            <span class="attr">"type"</span>:<span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>:<span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            "cwd":"$&#123;fileDirname&#125;", ## 解决执行路径问题</span><br><span class="line">             <span class="comment">//工作路径用打开的顶层目录，影响文件读写相对路径</span></span><br><span class="line">            <span class="comment">//"cwd": "$&#123;workspaceFolder&#125;", </span></span><br><span class="line">            <span class="comment">//工作路径用当前文件所在目录，影响文件读写相对路径</span></span><br><span class="line">            <span class="comment">//"cwd": "$&#123;fileDirname&#125;",</span></span><br><span class="line">            <span class="comment">//sys.path 会加入顶层目录，影响模块导入查询路径</span></span><br><span class="line">            <span class="comment">//"env": &#123; "PYTHONPATH": "$&#123;workspaceFolder&#125;" &#125;</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        "compounds": []</span><br><span class="line">    &#125;,</span><br><span class="line">    "python.pythonPath": "/usr/local/anaconda3/envs/mrcnn/bin/python"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>launch.json  </p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JSON"><figure class="iseeu highlight /json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Python: base"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            <span class="attr">"pythonPath"</span>: <span class="string">"/usr/local/anaconda3/bin/python"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Python: env"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            <span class="attr">"pythonPath"</span>: <span class="string">"~/env/bin/python"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Python: mrcnn"</span>,</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"python"</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">            <span class="attr">"console"</span>: <span class="string">"integratedTerminal"</span>,</span><br><span class="line">            <span class="attr">"pythonPath"</span>: <span class="string">"/usr/local/anaconda3/envs/mrcnn/bin/python"</span></span><br><span class="line">        &#125;,</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 ]]></content>
       <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>布隆过滤器</title>
-    <url>/2020/04/17/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="BloomFilter"><a href="#BloomFilter" class="headerlink" title="BloomFilter"></a>BloomFilter</h2><p>   <strong>原理</strong>:   一句话：一个<strong>很长的二进制向量</strong>和一个<strong>函数映射</strong></p>
-<p>   <strong>特点:</strong></p>
-<ol>
-<li>不存在的一定不存在，存在的不一定存在。</li>
-<li>添加元素简单，删除很难很难。</li>
-<li>省空间，提升效率。</li>
-</ol>
-<p><strong>应用:</strong>   <strong>scrapy-redis</strong> ：</p>
-<p>   原先去重调度器和去重队列</p>
-   <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="code"><pre><span class="line"> # Enables scheduling storing requests queue in redis.</span><br><span class="line">SCHEDULER &#x3D; &quot;scrapy_redis.scheduler.Scheduler&quot;</span><br><span class="line"> # Ensure all spiders share same duplicates filter through redis.</span><br><span class="line">DUPEFILTER_CLASS &#x3D; &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;</span><br></pre></td></tr></table></figure></div>
-
-<p>   使用 <a href="https://github.com/Python3WebSpider/ScrapyRedisBloomFilter" target="_blank" rel="noopener">scrapy-redis-bloomfilter</a> 后</p>
-<pre><code># Ensure use this Scheduler
-   SCHEDULER = &quot;scrapy_redis_bloomfilter.scheduler.Scheduler&quot;
-# Ensure all spiders share same duplicates filter through redis
-   DUPEFILTER_CLASS = &quot;scrapy_redis_bloomfilter.dupefilter.RFPDupeFilter&quot; </code></pre><p>此模块也可配合redis做持久化单独使用:<br>from scrapy_redis_bloomfilter.bloomfilter import BloomFilter    </p>
-]]></content>
-      <tags>
-        <tag>python</tag>
-        <tag>bloomfilter</tag>
+        <tag>vscode</tag>
       </tags>
   </entry>
 </search>
