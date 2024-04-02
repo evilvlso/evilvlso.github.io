@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/25767862?v=4">
+    <script>
+        if(localStorage.getItem("meek_theme")==null){}
+        else if(localStorage.getItem("meek_theme")=="dark"){document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="dark";}
+        else if(localStorage.getItem("meek_theme")=="light"){document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="light";}
+    </script>
+    
+<meta name="description" content="生产者消费者模式采集谷歌学术示例">
+<title>生产者消费者模式采集谷歌学术示例</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">生产者消费者模式采集谷歌学术示例</h1>
+<div class="title-right">
+    
+    <a href="https://evilvlso.github.io"><button id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </button></a>
+
+    
+    <a href="https://github.com/evilvlso/evilvlso.github.io/issues/13" target="_blank"><button class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </button></a>
+    
+
+    <button class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </button>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><p>工作示意图如下：</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/35e8578040aa87e04aec09fdae7d89817d1738d4dfb3988c6e8102c971dcdbc5/68747470733a2f2f692e6c6f6c692e6e65742f323032302f30352f31382f71476a6e4a4650397075384b516f4d2e706e67"><img src="https://camo.githubusercontent.com/35e8578040aa87e04aec09fdae7d89817d1738d4dfb3988c6e8102c971dcdbc5/68747470733a2f2f692e6c6f6c692e6e65742f323032302f30352f31382f71476a6e4a4650397075384b516f4d2e706e67" alt="text-here" data-canonical-src="https://i.loli.net/2020/05/18/qGjnJFP9pu8KQoM.png" style="max-width: 100%;"></a></p>
+<p>凑合看</p>
+
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">re</span>
+<span class="pl-k">import</span> <span class="pl-s1">redis</span>
+<span class="pl-k">import</span> <span class="pl-s1">requests</span>
+<span class="pl-k">import</span> <span class="pl-s1">retrying</span>
+<span class="pl-k">from</span> <span class="pl-s1">threading</span> <span class="pl-k">import</span> <span class="pl-v">Thread</span>
+<span class="pl-k">from</span> <span class="pl-s1">openpyxl</span>.<span class="pl-s1">workbook</span> <span class="pl-k">import</span> <span class="pl-v">Workbook</span>
+<span class="pl-k">from</span> <span class="pl-s1">urllib</span>.<span class="pl-s1">request</span> <span class="pl-k">import</span> <span class="pl-s1">urljoin</span>
+<span class="pl-k">from</span> <span class="pl-s1">scrapy</span>.<span class="pl-s1">selector</span> <span class="pl-k">import</span> <span class="pl-v">Selector</span>
+<span class="pl-k">from</span> <span class="pl-s1">concurrent</span>.<span class="pl-s1">futures</span> <span class="pl-k">import</span> <span class="pl-v">ThreadPoolExecutor</span>, <span class="pl-s1">as_completed</span>
+<span class="pl-k">from</span> <span class="pl-s1">queue</span> <span class="pl-k">import</span> <span class="pl-v">Queue</span>,<span class="pl-v">Empty</span>
+
+<span class="pl-s1">r</span> <span class="pl-c1">=</span> <span class="pl-s1">redis</span>.<span class="pl-v">Redis</span>(<span class="pl-s">"127.0.0.1"</span>, <span class="pl-s1">db</span><span class="pl-c1">=</span><span class="pl-c1">0</span>)
+<span class="pl-s1">q</span> <span class="pl-c1">=</span> <span class="pl-v">Queue</span>(<span class="pl-s1">maxsize</span><span class="pl-c1">=</span><span class="pl-c1">100</span>)
+
+<span class="pl-s1">proxies</span> <span class="pl-c1">=</span> {
+    <span class="pl-s">"http"</span>: <span class="pl-s">"http://127.0.0.1:1087"</span>,
+    <span class="pl-s">"https"</span>: <span class="pl-s">"http://127.0.0.1:1087"</span>
+}
+<span class="pl-s1">headers</span> <span class="pl-c1">=</span> {
+    <span class="pl-s">'authority'</span>: <span class="pl-s">'scholar.google.com'</span>,
+    <span class="pl-s">'cache-control'</span>: <span class="pl-s">'no-cache'</span>,
+    <span class="pl-s">'upgrade-insecure-requests'</span>: <span class="pl-s">'1'</span>,
+    <span class="pl-s">'user-agent'</span>: <span class="pl-s">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'</span>,
+    <span class="pl-s">'accept'</span>: <span class="pl-s">'image/webp,image/apng,image/*,*/*;q=0.8'</span>,
+    <span class="pl-s">'x-client-data'</span>: <span class="pl-s">'CJS2yQEIo7bJAQjBtskBCKmdygEI0K/KAQi8sMoBCO21ygEIjrrKAQjmxsoB'</span>,
+    <span class="pl-s">'sec-fetch-site'</span>: <span class="pl-s">'same-origin'</span>,
+    <span class="pl-s">'sec-fetch-mode'</span>: <span class="pl-s">'no-cors'</span>,
+    <span class="pl-s">'sec-fetch-user'</span>: <span class="pl-s">'?1'</span>,
+    <span class="pl-s">'sec-fetch-dest'</span>: <span class="pl-s">'empty'</span>,
+    <span class="pl-s">'referer'</span>: <span class="pl-s">'https://scholar.google.com/scholar?start=20&amp;hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=9023096709689140743&amp;scipsc='</span>,
+    <span class="pl-s">'accept-language'</span>: <span class="pl-s">'zh-CN,zh;q=0.9'</span>,
+    <span class="pl-s">'Referer'</span>: <span class="pl-s">'https://scholar.google.com/scholar?start=20&amp;hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=9023096709689140743&amp;scipsc='</span>,
+    <span class="pl-s">'User-Agent'</span>: <span class="pl-s">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'</span>,
+    <span class="pl-s">'pragma'</span>: <span class="pl-s">'no-cache'</span>,
+    <span class="pl-s">'cookie'</span>: <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>),
+}
+
+
+<span class="pl-k">def</span> <span class="pl-en">try_if_ssl_error</span>(<span class="pl-s1">exception</span>):
+    <span class="pl-k">if</span> <span class="pl-en">isinstance</span>(<span class="pl-s1">exception</span>, (
+            <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">SSLError</span>, <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">ProxyError</span>, <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">ReadTimeout</span>,
+            <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">ConnectionError</span>)):
+        <span class="pl-en">print</span>(<span class="pl-s">f"代理可能失效 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">exception</span><span class="pl-kos">}</span></span>"</span>)
+        <span class="pl-k">return</span> <span class="pl-c1">True</span>
+    <span class="pl-en">print</span>(<span class="pl-s">f"意料之外错误 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">exception</span><span class="pl-kos">}</span></span>"</span>)
+    <span class="pl-k">return</span> <span class="pl-c1">False</span>
+
+
+<span class="pl-k">def</span> <span class="pl-en">try_if_robot</span>(<span class="pl-s1">result</span>):
+    <span class="pl-k">if</span> <span class="pl-s">"you're not a robot"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span> <span class="pl-c1">or</span> <span class="pl-s">"人机身份验证"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
+        <span class="pl-en">print</span>(<span class="pl-s">"出现 Robot 检测"</span>)
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+        <span class="pl-k">return</span> <span class="pl-c1">True</span>
+    <span class="pl-k">if</span> <span class="pl-s">"detected unusual traffic"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span> <span class="pl-c1">or</span> <span class="pl-s">"异常流量"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
+        <span class="pl-en">print</span>(<span class="pl-s">"出现 流量 检测"</span>)
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+        <span class="pl-k">return</span> <span class="pl-c1">True</span>
+    <span class="pl-k">if</span> <span class="pl-s">"sending automated queries"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+        <span class="pl-en">print</span>(<span class="pl-s">" your computer or network may be sending automated queries"</span>)
+        <span class="pl-k">return</span> <span class="pl-c1">True</span>
+    <span class="pl-k">if</span> <span class="pl-s">"/recaptcha/api.js"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+        <span class="pl-en">print</span>(<span class="pl-s">"出现 验证码 检测 "</span>)
+        <span class="pl-k">return</span> <span class="pl-c1">True</span>
+    <span class="pl-k">return</span> <span class="pl-c1">False</span>
+
+
+<span class="pl-en">@<span class="pl-s1">retrying</span>.<span class="pl-en">retry</span>(<span class="pl-s1">stop_max_attempt_number</span><span class="pl-c1">=</span><span class="pl-c1">500</span>, <span class="pl-s1">retry_on_result</span><span class="pl-c1">=</span><span class="pl-s1">try_if_robot</span>, <span class="pl-s1">retry_on_exception</span><span class="pl-c1">=</span><span class="pl-s1">try_if_ssl_error</span>,</span>
+<span class="pl-en">                <span class="pl-s1">wait_fixed</span><span class="pl-c1">=</span><span class="pl-c1">10000</span>)</span>
+<span class="pl-k">def</span> <span class="pl-en">fetch</span>(<span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+    <span class="pl-s">"""</span>
+<span class="pl-s">    :param kwargs:  start cites</span>
+<span class="pl-s">    :return:</span>
+<span class="pl-s">    """</span>
+    <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">kwargs</span>.<span class="pl-en">get</span>(<span class="pl-s">"url"</span>)
+    <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">requests</span>.<span class="pl-en">get</span>(<span class="pl-s1">url</span>, <span class="pl-s1">headers</span><span class="pl-c1">=</span><span class="pl-s1">headers</span>, <span class="pl-s1">proxies</span><span class="pl-c1">=</span><span class="pl-s1">proxies</span>, <span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">7</span>)
+    <span class="pl-k">return</span> <span class="pl-s1">response</span>
+
+
+<span class="pl-k">class</span> <span class="pl-v">Proceser</span>():
+
+    <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+        <span class="pl-s1">filename</span> <span class="pl-c1">=</span> <span class="pl-s1">kwargs</span>.<span class="pl-en">get</span>(<span class="pl-s">"filename"</span>)
+        <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">filename</span>, <span class="pl-s">"r"</span>) <span class="pl-k">as</span> <span class="pl-s1">f</span>:
+            <span class="pl-s1">self</span>.<span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">f</span>.<span class="pl-en">readlines</span>()
+        <span class="pl-s1">self</span>.<span class="pl-s1">t</span> <span class="pl-c1">=</span> <span class="pl-v">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-c1">2</span>)
+        <span class="pl-k">pass</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">_proc</span>(<span class="pl-s1">self</span>, <span class="pl-s1">kw</span>):
+        <span class="pl-s">"""</span>
+<span class="pl-s"></span>
+<span class="pl-s">        :param kw:</span>
+<span class="pl-s">        :return:</span>
+<span class="pl-s">        """</span>
+        <span class="pl-s1">kw</span> <span class="pl-c1">=</span> <span class="pl-s">'+'</span>.<span class="pl-en">join</span>(<span class="pl-s1">kw</span>.<span class="pl-en">split</span>(<span class="pl-s">" "</span>))
+        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s">f"/scholar?q=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">kw</span><span class="pl-kos">}</span></span>"</span>
+        <span class="pl-s1">base_url</span> <span class="pl-c1">=</span> <span class="pl-s">"https://scholar.google.com/scholar"</span>
+        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-en">urljoin</span>(<span class="pl-s1">base_url</span>, <span class="pl-s1">url</span>)
+        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">url</span>.<span class="pl-en">replace</span>(<span class="pl-s">"zh-CN"</span>, <span class="pl-s">"en"</span>)
+        <span class="pl-s1">res</span> <span class="pl-c1">=</span> <span class="pl-en">fetch</span>(<span class="pl-s1">url</span><span class="pl-c1">=</span><span class="pl-s1">url</span>)
+        <span class="pl-k">return</span> {<span class="pl-s">"res"</span>: <span class="pl-s1">res</span>, <span class="pl-s">"kw"</span>: <span class="pl-s1">kw</span>}
+
+    <span class="pl-k">def</span> <span class="pl-en">callback</span>(<span class="pl-s1">self</span>, <span class="pl-s1">result</span>):
+        <span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">result</span>()
+        <span class="pl-s1">res</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">get</span>(<span class="pl-s">"res"</span>)
+        <span class="pl-s1">kw</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">get</span>(<span class="pl-s">"kw"</span>)
+        <span class="pl-s1">seed_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">extract</span>(<span class="pl-s1">res</span>, <span class="pl-s1">seed</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+        <span class="pl-k">for</span> <span class="pl-s1">seed_info</span> <span class="pl-c1">in</span> <span class="pl-s1">seed_infos</span>:
+            <span class="pl-s1">seed_cites</span> <span class="pl-c1">=</span> <span class="pl-s1">seed_info</span>.<span class="pl-en">get</span>(<span class="pl-s">"cites"</span>, <span class="pl-c1">0</span>)
+            <span class="pl-k">try</span>:
+                <span class="pl-s1">seed_cites</span> <span class="pl-c1">=</span> <span class="pl-en">int</span>(<span class="pl-s1">seed_cites</span>)
+            <span class="pl-k">except</span> <span class="pl-v">ValueError</span> <span class="pl-k">as</span> <span class="pl-s1">e</span>:
+                <span class="pl-en">print</span>(<span class="pl-s">f"Cites ERROR:<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">res</span>.<span class="pl-s1">url</span><span class="pl-kos">}</span></span>"</span>)
+            <span class="pl-k">else</span>:
+                <span class="pl-k">for</span> <span class="pl-s1">start</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-c1">0</span>, <span class="pl-s1">seed_cites</span>, <span class="pl-c1">20</span>):
+                    <span class="pl-s1">cite_url</span> <span class="pl-c1">=</span> <span class="pl-s">"https://scholar.google.com"</span><span class="pl-c1">+</span><span class="pl-s1">seed_info</span>[<span class="pl-s">"cites_url"</span>] <span class="pl-c1">+</span> <span class="pl-s">f"&amp;num=20&amp;start=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">start</span><span class="pl-kos">}</span></span>"</span>
+                    <span class="pl-s1">q</span>.<span class="pl-en">put</span>({
+                        <span class="pl-s">"kw"</span>: <span class="pl-s1">kw</span>,
+                        <span class="pl-s">"seed_title"</span>: <span class="pl-s1">seed_info</span>[<span class="pl-s">"title"</span>],
+                        <span class="pl-s">"seed_cites"</span>: <span class="pl-s1">seed_info</span>[<span class="pl-s">"cites"</span>],
+                        <span class="pl-s">"cite_url"</span>: <span class="pl-s1">cite_url</span>,
+                    })
+
+    <span class="pl-k">def</span> <span class="pl-en">run</span>(<span class="pl-s1">self</span>):
+        <span class="pl-s1">tasks</span> <span class="pl-c1">=</span> [<span class="pl-s1">self</span>.<span class="pl-s1">t</span>.<span class="pl-en">submit</span>(<span class="pl-s1">self</span>.<span class="pl-s1">_proc</span>, <span class="pl-s1">kw</span>) <span class="pl-k">for</span> <span class="pl-s1">kw</span> <span class="pl-c1">in</span> <span class="pl-s1">self</span>.<span class="pl-s1">data</span>]
+        <span class="pl-k">for</span> <span class="pl-s1">task</span> <span class="pl-c1">in</span> <span class="pl-en">as_completed</span>(<span class="pl-s1">tasks</span>):
+            <span class="pl-s1">self</span>.<span class="pl-en">callback</span>(<span class="pl-s1">task</span>)
+
+    <span class="pl-en">@<span class="pl-s1">staticmethod</span></span>
+    <span class="pl-k">def</span> <span class="pl-en">extract</span>(<span class="pl-s1">response</span>, <span class="pl-s1">seed</span><span class="pl-c1">=</span><span class="pl-c1">False</span>):
+        <span class="pl-k">def</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>):
+            <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(\d{0,5})'</span>, <span class="pl-s1">cites</span>))
+
+        <span class="pl-k">def</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>):
+            <span class="pl-s1">publish</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'-(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-k">return</span> <span class="pl-s1">publish</span>, <span class="pl-s1">author</span>
+
+        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s">"did not match any articles"</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-s1">text</span>:
+            <span class="pl-s1">html</span> <span class="pl-c1">=</span> <span class="pl-v">Selector</span>(<span class="pl-s1">response</span>)
+            <span class="pl-k">if</span> <span class="pl-s1">seed</span>:
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> [<span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="pl-c1">0</span>]]
+            <span class="pl-k">else</span>:
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> <span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)
+            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> []
+            <span class="pl-k">for</span> <span class="pl-s1">document</span> <span class="pl-c1">in</span> <span class="pl-s1">documents</span>:
+                <span class="pl-s1">title</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(
+                    <span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).<span class="pl-en">extract_first</span>(
+                    <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">info</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).<span class="pl-en">extract_first</span>(
+                    <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites_url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>)
+                <span class="pl-s1">publish</span>, <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>)
+                <span class="pl-s1">infos</span>.<span class="pl-en">append</span>(
+                    {<span class="pl-s">"title"</span>: <span class="pl-s1">title</span>, <span class="pl-s">"publish"</span>: <span class="pl-s1">publish</span>, <span class="pl-s">"author"</span>: <span class="pl-s1">author</span>, <span class="pl-s">"cites_url"</span>: <span class="pl-s1">cites_url</span>, <span class="pl-s">"cites"</span>: <span class="pl-s1">cites</span>,
+                     <span class="pl-s">"url"</span>: <span class="pl-s1">url</span>})
+            <span class="pl-k">return</span> <span class="pl-s1">infos</span>
+
+
+<span class="pl-k">class</span> <span class="pl-v">Customer</span>():
+    <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>,<span class="pl-s1">savefilename</span>):
+        <span class="pl-s1">self</span>.<span class="pl-s1">savefilename</span><span class="pl-c1">=</span><span class="pl-s1">savefilename</span>
+        <span class="pl-s1">self</span>.<span class="pl-s1">t</span> <span class="pl-c1">=</span> <span class="pl-v">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-c1">100</span>)
+        <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span> <span class="pl-c1">=</span> <span class="pl-v">Workbook</span>()
+        <span class="pl-s1">self</span>.<span class="pl-s1">sheet</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>[<span class="pl-s">"Sheet"</span>]
+        <span class="pl-s1">self</span>.<span class="pl-s1">sheet</span>.<span class="pl-en">append</span>((<span class="pl-s">"关键词文件名"</span>, <span class="pl-s">"第一匹配结果文献"</span>, <span class="pl-s">"本文被引用数"</span>, <span class="pl-s">"引用此文文献名"</span>, <span class="pl-s">"引用此文作者"</span>, <span class="pl-s">"引用此文期刊名"</span>, <span class="pl-s">"引用此文文献引用数"</span>, <span class="pl-s">"url"</span>))
+
+    <span class="pl-en">@<span class="pl-s1">staticmethod</span></span>
+    <span class="pl-k">def</span> <span class="pl-en">extract</span>(<span class="pl-s1">response</span>, <span class="pl-s1">seed</span><span class="pl-c1">=</span><span class="pl-c1">False</span>):
+        <span class="pl-k">def</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>):
+            <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(\d{0,5})'</span>, <span class="pl-s1">cites</span>))
+
+        <span class="pl-k">def</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>):
+            <span class="pl-s1">publish</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'-(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-k">return</span> <span class="pl-s1">publish</span>, <span class="pl-s1">author</span>
+
+        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s">"did not match any articles"</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-s1">text</span>:
+            <span class="pl-s1">html</span> <span class="pl-c1">=</span> <span class="pl-v">Selector</span>(<span class="pl-s1">response</span>)
+            <span class="pl-k">if</span> <span class="pl-s1">seed</span>:
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> [<span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="pl-c1">0</span>]]
+            <span class="pl-k">else</span>:
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> <span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)
+            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> []
+            <span class="pl-k">for</span> <span class="pl-s1">document</span> <span class="pl-c1">in</span> <span class="pl-s1">documents</span>:
+                <span class="pl-s1">title</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(
+                    <span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).<span class="pl-en">extract_first</span>(
+                    <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">info</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).<span class="pl-en">extract_first</span>(
+                    <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites_url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>)
+                <span class="pl-s1">publish</span>, <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>)
+                <span class="pl-s1">infos</span>.<span class="pl-en">append</span>(
+                    {<span class="pl-s">"title"</span>: <span class="pl-s1">title</span>, <span class="pl-s">"publish"</span>: <span class="pl-s1">publish</span>, <span class="pl-s">"author"</span>: <span class="pl-s1">author</span>, <span class="pl-s">"cites_url"</span>: <span class="pl-s1">cites_url</span>, <span class="pl-s">"cites"</span>: <span class="pl-s1">cites</span>,
+                     <span class="pl-s">"url"</span>: <span class="pl-s1">url</span>})
+            <span class="pl-k">return</span> <span class="pl-s1">infos</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">get_infos</span>(<span class="pl-s1">self</span>):
+        <span class="pl-en">print</span>(<span class="pl-s">f"Queue size is <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">q</span>.<span class="pl-en">qsize</span>()<span class="pl-kos">}</span></span>"</span>)
+        <span class="pl-k">try</span>:
+            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">q</span>.<span class="pl-en">get</span>(<span class="pl-s1">block</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">180</span>)
+            <span class="pl-k">return</span> <span class="pl-s1">infos</span>
+        <span class="pl-k">except</span> <span class="pl-v">Empty</span>:
+            <span class="pl-en">print</span>(<span class="pl-s">f"Queue size is <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">q</span>.<span class="pl-en">qsize</span>()<span class="pl-kos">}</span></span>"</span>)
+            <span class="pl-en">print</span>(<span class="pl-s">"队列0000000结束了！"</span>)
+            <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>.<span class="pl-en">save</span>(<span class="pl-s1">self</span>.<span class="pl-s1">savefilename</span>)
+
+    <span class="pl-k">def</span> <span class="pl-en">run</span>(<span class="pl-s1">self</span>):
+        <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">get_infos</span>()
+        <span class="pl-k">while</span> <span class="pl-s1">infos</span>:
+            <span class="pl-s1">self</span>.<span class="pl-s1">t</span>.<span class="pl-en">submit</span>(<span class="pl-s1">self</span>.<span class="pl-s1">_fe</span>, <span class="pl-s1">infos</span><span class="pl-c1">=</span><span class="pl-s1">infos</span>).<span class="pl-en">add_done_callback</span>(<span class="pl-s1">self</span>.<span class="pl-s1">callback</span>)
+            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">get_infos</span>()
+
+    <span class="pl-k">def</span> <span class="pl-en">_fe</span>(<span class="pl-s1">self</span>, <span class="pl-s1">infos</span>):
+        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"cite_url"</span>)
+        <span class="pl-s1">res</span> <span class="pl-c1">=</span> <span class="pl-en">fetch</span>(<span class="pl-s1">url</span><span class="pl-c1">=</span><span class="pl-s1">url</span>)
+        <span class="pl-s1">cite_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">extract</span>(<span class="pl-s1">res</span>)
+        <span class="pl-k">for</span> <span class="pl-s1">cite_info</span> <span class="pl-c1">in</span> <span class="pl-s1">cite_infos</span>:
+            <span class="pl-s1">cite_info</span>.<span class="pl-en">update</span>(<span class="pl-s1">infos</span>)
+        <span class="pl-k">return</span> <span class="pl-s1">cite_infos</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">callback</span>(<span class="pl-s1">self</span>, <span class="pl-s1">result</span>):
+        <span class="pl-s1">cite_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">result</span>()
+        <span class="pl-en">print</span>(<span class="pl-s">f"添加文献<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">len</span>(<span class="pl-s1">cite_infos</span>)<span class="pl-kos">}</span></span>"</span>)
+        <span class="pl-k">for</span> <span class="pl-s1">infos</span> <span class="pl-c1">in</span> <span class="pl-s1">cite_infos</span>:
+            <span class="pl-s1">self</span>.<span class="pl-s1">sheet</span>.<span class="pl-en">append</span>((
+                <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"kw"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"seed_title"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"seed_cites"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"title"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"author"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"publish"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"cites"</span>),<span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"url"</span>)
+            ))
+
+<span class="pl-k">if</span> <span class="pl-s1">__name__</span> <span class="pl-c1">==</span> <span class="pl-s">'__main__'</span>:
+    <span class="pl-s1">pr</span><span class="pl-c1">=</span><span class="pl-v">Proceser</span>(<span class="pl-s1">filename</span><span class="pl-c1">=</span><span class="pl-s">"again.txt"</span>)
+    <span class="pl-s1">cu</span><span class="pl-c1">=</span><span class="pl-v">Customer</span>(<span class="pl-s1">savefilename</span><span class="pl-c1">=</span><span class="pl-s">"test.xlsx"</span>)
+    <span class="pl-s1">t1</span><span class="pl-c1">=</span><span class="pl-v">Thread</span>(<span class="pl-s1">target</span><span class="pl-c1">=</span><span class="pl-s1">pr</span>.<span class="pl-s1">run</span>)
+    <span class="pl-s1">t2</span><span class="pl-c1">=</span><span class="pl-v">Thread</span>(<span class="pl-s1">target</span><span class="pl-c1">=</span><span class="pl-s1">cu</span>.<span class="pl-s1">run</span>)
+    <span class="pl-s1">t1</span>.<span class="pl-en">start</span>()
+    <span class="pl-s1">t2</span>.<span class="pl-en">start</span>()
+    <span class="pl-s1">t1</span>.<span class="pl-en">join</span>()
+    <span class="pl-s1">t2</span>.<span class="pl-en">join</span>()</pre></div></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://evilvlso.github.io"> tango </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if(""!=""){
+    var now=new Date();
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+if(localStorage.getItem("meek_theme")==null){localStorage.setItem("meek_theme","light");changeLight();}
+else if(localStorage.getItem("meek_theme")=="dark"){changeDark();}
+else if(localStorage.getItem("meek_theme")=="light"){changeLight();}
+
+function changeDark(){
+    document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="dark";
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList["moon"]);
+    document.getElementById("themeSwitch").parentNode.style.color="#00f0ff";
+    if(utterancesLoad==1){utterancesTheme("dark-blue");}
+}
+function changeLight(){
+    document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="light";
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList["sun"]);
+    document.getElementById("themeSwitch").parentNode.style.color="#ff5000";
+    if(utterancesLoad==1){utterancesTheme("github-light");}
+}
+function modeSwitch(){
+    if(document.getElementsByTagName("html")[0].attributes[0].value=="light"){changeDark();localStorage.setItem("meek_theme","dark");}
+    else{changeLight();localStorage.setItem("meek_theme","light");}
+}
+function utterancesTheme(theme){
+    const message = {type: 'set-theme',theme: theme};
+    const iframe = document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+}
+
+console.log("\n %c Gmeek last %c https://github.com/Meekdai/Gmeek \n\n", "color: #fff; background-image: linear-gradient(90deg, rgb(47, 172, 178) 0%, rgb(45, 190, 96) 100%); padding:5px 1px;", "background-image: linear-gradient(90deg, rgb(45, 190, 96) 0%, rgb(255, 255, 255) 100%); padding:5px 0;");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","evilvlso/evilvlso.github.io");
+    script.setAttribute("issue-term","title");
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else{script.setAttribute("theme","github-light");}
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+</script>
+
+
+
+</html>
