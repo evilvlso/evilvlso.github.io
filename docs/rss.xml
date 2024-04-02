@@ -1,5 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Tue, 02 Apr 2024 08:43:42 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>雪花算法</title><link>https://evilvlso.github.io/post/xue-hua-suan-fa.html</link><description>&gt; `7uQJnf1B3NnRjV` 像这种掺杂数字字母的字符串就是雪花算法生成的。</description><guid isPermaLink="true">https://evilvlso.github.io/post/xue-hua-suan-fa.html</guid><pubDate>Tue, 02 Apr 2024 08:43:11 +0000</pubDate></item><item><title>matplotlib画子图代码示例</title><link>https://evilvlso.github.io/post/matplotlib-hua-zi-tu-dai-ma-shi-li.html</link><description>## subplot画子图&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Tue, 02 Apr 2024 08:44:14 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>scrapy启动多spider</title><link>https://evilvlso.github.io/post/scrapy-qi-dong-duo-spider.html</link><description>### 好使&#13;
+```Python&#13;
+import scrapy&#13;
+from scrapy.crawler import CrawlerProcess&#13;
+from scrapy.utils.project import get_project_settings&#13;
+process = CrawlerProcess(get_project_settings())&#13;
+# 指定多个spider&#13;
+process.crawl("fen")&#13;
+process.crawl("fuck")&#13;
+# 执行所有 spider&#13;
+# for spider_name in process.spider_loader.list():&#13;
+#     print(spider_name)&#13;
+    # process.crawl(spider_name)&#13;
+process.start()&#13;
+&#13;
+```。</description><guid isPermaLink="true">https://evilvlso.github.io/post/scrapy-qi-dong-duo-spider.html</guid><pubDate>Tue, 02 Apr 2024 08:43:47 +0000</pubDate></item><item><title>雪花算法</title><link>https://evilvlso.github.io/post/xue-hua-suan-fa.html</link><description>&gt; `7uQJnf1B3NnRjV` 像这种掺杂数字字母的字符串就是雪花算法生成的。</description><guid isPermaLink="true">https://evilvlso.github.io/post/xue-hua-suan-fa.html</guid><pubDate>Tue, 02 Apr 2024 08:43:11 +0000</pubDate></item><item><title>matplotlib画子图代码示例</title><link>https://evilvlso.github.io/post/matplotlib-hua-zi-tu-dai-ma-shi-li.html</link><description>## subplot画子图&#13;
 ```python&#13;
 for index,n in enumerate(imgName):&#13;
     plt.subplot(params["batch_size"],params["batch_size"],index*3+1,title="Input" if index==0 else "")&#13;
