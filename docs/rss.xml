@@ -1,5 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Tue, 02 Apr 2024 08:44:14 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>scrapy启动多spider</title><link>https://evilvlso.github.io/post/scrapy-qi-dong-duo-spider.html</link><description>### 好使&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Tue, 02 Apr 2024 08:46:25 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>redis面试问题</title><link>https://evilvlso.github.io/post/redis-mian-shi-wen-ti.html</link><description># 快的原因&#13;
+&#13;
+1. 基于内存实现的&#13;
+2. 采用io多路复用模型。</description><guid isPermaLink="true">https://evilvlso.github.io/post/redis-mian-shi-wen-ti.html</guid><pubDate>Tue, 02 Apr 2024 08:45:56 +0000</pubDate></item><item><title>scrapy启动多spider</title><link>https://evilvlso.github.io/post/scrapy-qi-dong-duo-spider.html</link><description>### 好使&#13;
 ```Python&#13;
 import scrapy&#13;
 from scrapy.crawler import CrawlerProcess&#13;
