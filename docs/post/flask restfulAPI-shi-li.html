@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/25767862?v=4">
+    <script>
+        if(localStorage.getItem("meek_theme")==null){}
+        else if(localStorage.getItem("meek_theme")=="dark"){document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="dark";}
+        else if(localStorage.getItem("meek_theme")=="light"){document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="light";}
+    </script>
+    
+<meta name="description" content="flask restfulAPI示例">
+<title>flask restfulAPI示例</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">flask restfulAPI示例</h1>
+<div class="title-right">
+    
+    <a href="https://evilvlso.github.io"><button id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </button></a>
+
+    
+    <a href="https://github.com/evilvlso/evilvlso.github.io/issues/22" target="_blank"><button class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </button></a>
+    
+
+    <button class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </button>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><hr>
+<h2>Flask RestFul</h2>
+<ul>
+<li>字段验证</li>
+<li>格式化返回</li>
+</ul>
+<p>模版：</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">from</span> <span class="pl-s1">flask_restful</span> <span class="pl-k">import</span> <span class="pl-v">Api</span>,<span class="pl-s1">reqparse</span>,<span class="pl-v">Resource</span>,<span class="pl-s1">inputs</span>
+<span class="pl-k">from</span> <span class="pl-s1">flask_cors</span> <span class="pl-k">import</span> <span class="pl-c1">*</span>
+<span class="pl-s1">app</span><span class="pl-c1">=</span><span class="pl-v">Flask</span>(<span class="pl-s1">__name__</span>)
+<span class="pl-c"># 需要定一个api</span>
+<span class="pl-s1">api</span><span class="pl-c1">=</span><span class="pl-v">Api</span>(<span class="pl-s1">app</span>)
+<span class="pl-c"># 解决一些跨域问题</span>
+<span class="pl-v">CORS</span>(<span class="pl-s1">app</span>,<span class="pl-s1">resource</span><span class="pl-c1">=</span>{<span class="pl-s">r"/*"</span>})
+<span class="pl-c"># CORS(app, resources={r"/test": {"origins": "*"}})</span>
+
+
+<span class="pl-c"># 一定继承自 Resource</span>
+<span class="pl-k">class</span> <span class="pl-v">TestView</span>(<span class="pl-v">Resource</span>):
+	<span class="pl-k">def</span> <span class="pl-en">get</span>(<span class="pl-s1">self</span>):
+		<span class="pl-c"># 字段验证</span>
+		<span class="pl-s1">parser</span> <span class="pl-c1">=</span> <span class="pl-s1">reqparse</span>.<span class="pl-v">RequestParser</span>()
+		<span class="pl-s1">parser</span>.<span class="pl-en">add_argument</span>(<span class="pl-s">"phone"</span>,<span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">inputs</span>.<span class="pl-en">regex</span>(<span class="pl-s">r'\d{11}'</span>),<span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"输入正确手机号"</span>,<span class="pl-s1">trim</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+		<span class="pl-s1">parser</span>.<span class="pl-en">add_argument</span>(<span class="pl-s">"username"</span>,<span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">str</span>,<span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"输入姓名"</span>)
+		<span class="pl-s1">args</span><span class="pl-c1">=</span><span class="pl-s1">parser</span>.<span class="pl-en">parse_args</span>() <span class="pl-c">#参数解析完成，直接get即可获取</span>
+		<span class="pl-k">return</span> <span class="pl-s1">args</span>
+		<span class="pl-k">pass</span>
+
+<span class="pl-s1">api</span>.<span class="pl-en">add_resource</span>(<span class="pl-v">TestView</span>,<span class="pl-s">"/test"</span>,<span class="pl-s1">endpoint</span><span class="pl-c1">=</span><span class="pl-s">"test"</span>)
+	
+<span class="pl-k">if</span> <span class="pl-s1">__name__</span> <span class="pl-c1">==</span> <span class="pl-s">'__main__'</span>:
+    <span class="pl-s1">app</span>.<span class="pl-en">run</span>(<span class="pl-s1">debug</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)</pre></div>
+<h2>JWT使用</h2>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-c"># flask imports</span>
+<span class="pl-k">from</span> <span class="pl-s1">flask</span> <span class="pl-k">import</span> <span class="pl-v">Flask</span>, <span class="pl-s1">request</span>, <span class="pl-s1">jsonify</span>, <span class="pl-s1">make_response</span>
+<span class="pl-k">from</span> <span class="pl-s1">flask_sqlalchemy</span> <span class="pl-k">import</span> <span class="pl-v">SQLAlchemy</span>
+<span class="pl-k">import</span> <span class="pl-s1">uuid</span>  <span class="pl-c"># for public id</span>
+<span class="pl-k">from</span> <span class="pl-s1">werkzeug</span>.<span class="pl-s1">security</span> <span class="pl-k">import</span> <span class="pl-s1">generate_password_hash</span>, <span class="pl-s1">check_password_hash</span>
+<span class="pl-c"># imports for PyJWT authentication</span>
+<span class="pl-k">import</span> <span class="pl-s1">jwt</span>
+<span class="pl-k">from</span> <span class="pl-s1">datetime</span> <span class="pl-k">import</span> <span class="pl-s1">datetime</span>, <span class="pl-s1">timedelta</span>
+<span class="pl-k">from</span> <span class="pl-s1">functools</span> <span class="pl-k">import</span> <span class="pl-s1">wraps</span>
+
+<span class="pl-c"># creates Flask object</span>
+<span class="pl-s1">app</span> <span class="pl-c1">=</span> <span class="pl-v">Flask</span>(<span class="pl-s1">__name__</span>)
+<span class="pl-c"># configuration</span>
+<span class="pl-c"># NEVER HARDCODE YOUR CONFIGURATION IN YOUR CODE</span>
+<span class="pl-c"># INSTEAD CREATE A .env FILE AND STORE IN IT</span>
+<span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SECRET_KEY'</span>] <span class="pl-c1">=</span> <span class="pl-s">'your secret key'</span>
+<span class="pl-c"># database name</span>
+<span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SQLALCHEMY_DATABASE_URI'</span>] <span class="pl-c1">=</span> <span class="pl-s">'sqlite:///Database.db'</span>
+<span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SQLALCHEMY_TRACK_MODIFICATIONS'</span>] <span class="pl-c1">=</span> <span class="pl-c1">True</span>
+<span class="pl-c"># creates SQLALCHEMY object</span>
+<span class="pl-s1">db</span> <span class="pl-c1">=</span> <span class="pl-v">SQLAlchemy</span>(<span class="pl-s1">app</span>)
+
+
+<span class="pl-c"># Database ORMs</span>
+<span class="pl-k">class</span> <span class="pl-v">User</span>(<span class="pl-s1">db</span>.<span class="pl-v">Model</span>):
+    <span class="pl-s1">id</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">Integer</span>, <span class="pl-s1">primary_key</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">public_id</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">50</span>), <span class="pl-s1">unique</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">name</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">100</span>))
+    <span class="pl-s1">email</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">70</span>), <span class="pl-s1">unique</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">80</span>))
+
+
+<span class="pl-c"># decorator for verifying the JWT</span>
+<span class="pl-k">def</span> <span class="pl-en">token_required</span>(<span class="pl-s1">f</span>):
+    <span class="pl-en">@<span class="pl-en">wraps</span>(<span class="pl-s1">f</span>)</span>
+    <span class="pl-k">def</span> <span class="pl-en">decorated</span>(<span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
+        <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
+        <span class="pl-c"># jwt is passed in the request header</span>
+        <span class="pl-k">if</span> <span class="pl-s">'x-access-token'</span> <span class="pl-c1">in</span> <span class="pl-s1">request</span>.<span class="pl-s1">headers</span>:
+            <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-s1">headers</span>[<span class="pl-s">'x-access-token'</span>]
+        <span class="pl-c"># return 401 if token is not passed</span>
+        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">token</span>:
+            <span class="pl-k">return</span> <span class="pl-en">jsonify</span>({<span class="pl-s">'message'</span>: <span class="pl-s">'Token is missing !!'</span>}), <span class="pl-c1">401</span>
+
+        <span class="pl-k">try</span>:
+            <span class="pl-c"># decoding the payload to fetch the stored details</span>
+            <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">jwt</span>.<span class="pl-en">decode</span>(<span class="pl-s1">token</span>, <span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SECRET_KEY'</span>])
+            <span class="pl-s1">current_user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span> \
+                .<span class="pl-en">filter_by</span>(<span class="pl-s1">public_id</span><span class="pl-c1">=</span><span class="pl-s1">data</span>[<span class="pl-s">'public_id'</span>]) \
+                .<span class="pl-en">first</span>()
+        <span class="pl-k">except</span>:
+            <span class="pl-k">return</span> <span class="pl-en">jsonify</span>({
+                <span class="pl-s">'message'</span>: <span class="pl-s">'Token is invalid !!'</span>
+            }), <span class="pl-c1">401</span>
+        <span class="pl-c"># returns the current logged in users contex to the routes</span>
+        <span class="pl-k">return</span> <span class="pl-en">f</span>(<span class="pl-s1">current_user</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>)
+
+    <span class="pl-k">return</span> <span class="pl-s1">decorated</span>
+
+
+<span class="pl-c"># User Database Route</span>
+<span class="pl-c"># this route sends back list of users</span>
+<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-en">route</span>(<span class="pl-s">'/user'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'GET'</span>])</span>
+<span class="pl-en">@<span class="pl-s1">token_required</span></span>
+<span class="pl-k">def</span> <span class="pl-en">get_all_users</span>(<span class="pl-s1">current_user</span>):
+    <span class="pl-c"># querying the database</span>
+    <span class="pl-c"># for all the entries in it</span>
+    <span class="pl-s1">users</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span>.<span class="pl-en">all</span>()
+    <span class="pl-c"># converting the query objects</span>
+    <span class="pl-c"># to list of jsons</span>
+    <span class="pl-s1">output</span> <span class="pl-c1">=</span> []
+    <span class="pl-k">for</span> <span class="pl-s1">user</span> <span class="pl-c1">in</span> <span class="pl-s1">users</span>:
+        <span class="pl-c"># appending the user data json</span>
+        <span class="pl-c"># to the response list</span>
+        <span class="pl-s1">output</span>.<span class="pl-en">append</span>({
+            <span class="pl-s">'public_id'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">public_id</span>,
+            <span class="pl-s">'name'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">name</span>,
+            <span class="pl-s">'email'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">email</span>
+        })
+
+    <span class="pl-k">return</span> <span class="pl-en">jsonify</span>({<span class="pl-s">'users'</span>: <span class="pl-s1">output</span>})
+
+
+<span class="pl-c"># route for logging user in</span>
+<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-en">route</span>(<span class="pl-s">'/login'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'POST'</span>])</span>
+<span class="pl-k">def</span> <span class="pl-en">login</span>():
+    <span class="pl-c"># creates dictionary of form data</span>
+    <span class="pl-s1">auth</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-s1">form</span>
+
+    <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span> <span class="pl-c1">or</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'email'</span>) <span class="pl-c1">or</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'password'</span>):
+        <span class="pl-c"># returns 401 if any email or / and password is missing</span>
+        <span class="pl-k">return</span> <span class="pl-en">make_response</span>(
+            <span class="pl-s">'Could not verify'</span>,
+            <span class="pl-c1">401</span>,
+            {<span class="pl-s">'WWW-Authenticate'</span>: <span class="pl-s">'Basic realm ="Login required !!"'</span>}
+        )
+
+    <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span> \
+        .<span class="pl-en">filter_by</span>(<span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'email'</span>)) \
+        .<span class="pl-en">first</span>()
+
+    <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">user</span>:
+        <span class="pl-c"># returns 401 if user does not exist</span>
+        <span class="pl-k">return</span> <span class="pl-en">make_response</span>(
+            <span class="pl-s">'Could not verify'</span>,
+            <span class="pl-c1">401</span>,
+            {<span class="pl-s">'WWW-Authenticate'</span>: <span class="pl-s">'Basic realm ="User does not exist !!"'</span>}
+        )
+
+    <span class="pl-k">if</span> <span class="pl-en">check_password_hash</span>(<span class="pl-s1">user</span>.<span class="pl-s1">password</span>, <span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'password'</span>)):
+        <span class="pl-c"># generates the JWT Token</span>
+        <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-s1">jwt</span>.<span class="pl-en">encode</span>({
+            <span class="pl-s">'public_id'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">public_id</span>,
+            <span class="pl-s">'exp'</span>: <span class="pl-s1">datetime</span>.<span class="pl-en">utcnow</span>() <span class="pl-c1">+</span> <span class="pl-en">timedelta</span>(<span class="pl-s1">minutes</span><span class="pl-c1">=</span><span class="pl-c1">30</span>)
+        }, <span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SECRET_KEY'</span>])
+
+        <span class="pl-k">return</span> <span class="pl-en">make_response</span>(<span class="pl-en">jsonify</span>({<span class="pl-s">'token'</span>: <span class="pl-s1">token</span>.<span class="pl-en">decode</span>(<span class="pl-s">'UTF-8'</span>)}), <span class="pl-c1">201</span>)
+    <span class="pl-c"># returns 403 if password is wrong</span>
+    <span class="pl-k">return</span> <span class="pl-en">make_response</span>(
+        <span class="pl-s">'Could not verify'</span>,
+        <span class="pl-c1">403</span>,
+        {<span class="pl-s">'WWW-Authenticate'</span>: <span class="pl-s">'Basic realm ="Wrong Password !!"'</span>}
+    )
+
+
+<span class="pl-c"># signup route</span>
+<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-en">route</span>(<span class="pl-s">'/signup'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'POST'</span>])</span>
+<span class="pl-k">def</span> <span class="pl-en">signup</span>():
+    <span class="pl-c"># creates a dictionary of the form data</span>
+    <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-s1">form</span>
+
+    <span class="pl-c"># gets name, email and password</span>
+    <span class="pl-s1">name</span>, <span class="pl-s1">email</span> <span class="pl-c1">=</span> <span class="pl-s1">data</span>.<span class="pl-en">get</span>(<span class="pl-s">'name'</span>), <span class="pl-s1">data</span>.<span class="pl-en">get</span>(<span class="pl-s">'email'</span>)
+    <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s1">data</span>.<span class="pl-en">get</span>(<span class="pl-s">'password'</span>)
+
+    <span class="pl-c"># checking for existing user</span>
+    <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span> \
+        .<span class="pl-en">filter_by</span>(<span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">email</span>) \
+        .<span class="pl-en">first</span>()
+    <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">user</span>:
+        <span class="pl-c"># database ORM object</span>
+        <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>(
+            <span class="pl-s1">public_id</span><span class="pl-c1">=</span><span class="pl-en">str</span>(<span class="pl-s1">uuid</span>.<span class="pl-en">uuid4</span>()),
+            <span class="pl-s1">name</span><span class="pl-c1">=</span><span class="pl-s1">name</span>,
+            <span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">email</span>,
+            <span class="pl-s1">password</span><span class="pl-c1">=</span><span class="pl-en">generate_password_hash</span>(<span class="pl-s1">password</span>)
+        )
+        <span class="pl-c"># insert user</span>
+        <span class="pl-s1">db</span>.<span class="pl-s1">session</span>.<span class="pl-en">add</span>(<span class="pl-s1">user</span>)
+        <span class="pl-s1">db</span>.<span class="pl-s1">session</span>.<span class="pl-en">commit</span>()
+
+        <span class="pl-k">return</span> <span class="pl-en">make_response</span>(<span class="pl-s">'Successfully registered.'</span>, <span class="pl-c1">201</span>)
+    <span class="pl-k">else</span>:
+        <span class="pl-c"># returns 202 if user already exists</span>
+        <span class="pl-k">return</span> <span class="pl-en">make_response</span>(<span class="pl-s">'User already exists. Please Log in.'</span>, <span class="pl-c1">202</span>)
+
+
+<span class="pl-k">if</span> <span class="pl-s1">__name__</span> <span class="pl-c1">==</span> <span class="pl-s">"__main__"</span>:
+    <span class="pl-c"># setting debug to True enables hot reload</span>
+    <span class="pl-c"># and also provides a debugger shell</span>
+    <span class="pl-c"># if you hit an error while running the server</span>
+    <span class="pl-s1">app</span>.<span class="pl-en">run</span>(<span class="pl-s1">debug</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)</pre></div></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://evilvlso.github.io"> tango </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if(""!=""){
+    var now=new Date();
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+if(localStorage.getItem("meek_theme")==null){localStorage.setItem("meek_theme","light");changeLight();}
+else if(localStorage.getItem("meek_theme")=="dark"){changeDark();}
+else if(localStorage.getItem("meek_theme")=="light"){changeLight();}
+
+function changeDark(){
+    document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="dark";
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList["moon"]);
+    document.getElementById("themeSwitch").parentNode.style.color="#00f0ff";
+    if(utterancesLoad==1){utterancesTheme("dark-blue");}
+}
+function changeLight(){
+    document.getElementsByTagName("html")[0].attributes.getNamedItem("data-color-mode").value="light";
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList["sun"]);
+    document.getElementById("themeSwitch").parentNode.style.color="#ff5000";
+    if(utterancesLoad==1){utterancesTheme("github-light");}
+}
+function modeSwitch(){
+    if(document.getElementsByTagName("html")[0].attributes[0].value=="light"){changeDark();localStorage.setItem("meek_theme","dark");}
+    else{changeLight();localStorage.setItem("meek_theme","light");}
+}
+function utterancesTheme(theme){
+    const message = {type: 'set-theme',theme: theme};
+    const iframe = document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+}
+
+console.log("\n %c Gmeek last %c https://github.com/Meekdai/Gmeek \n\n", "color: #fff; background-image: linear-gradient(90deg, rgb(47, 172, 178) 0%, rgb(45, 190, 96) 100%); padding:5px 1px;", "background-image: linear-gradient(90deg, rgb(45, 190, 96) 0%, rgb(255, 255, 255) 100%); padding:5px 0;");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","evilvlso/evilvlso.github.io");
+    script.setAttribute("issue-term","title");
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else{script.setAttribute("theme","github-light");}
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+</script>
+
+
+
+</html>
