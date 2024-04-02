@@ -9,8 +9,8 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="gunicorn配置及使用">
-<title>gunicorn配置及使用</title>
+<meta name="description" content="考试信息记录">
+<title>考试信息记录</title>
 
 
 </head>
@@ -41,7 +41,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 <body>
     <div id="header">
-<h1 class="postTitle">gunicorn配置及使用</h1>
+<h1 class="postTitle">考试信息记录</h1>
 <div class="title-right">
     
     <a href="https://evilvlso.github.io"><button id="buttonHome" class="btn btn-invisible circle" title="首页">
@@ -51,7 +51,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     </button></a>
 
     
-    <a href="https://github.com/evilvlso/evilvlso.github.io/issues/21" target="_blank"><button class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/evilvlso/evilvlso.github.io/issues/24" target="_blank"><button class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -67,28 +67,49 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody"><h3>常用操作</h3>
-<p>启动:<br>
-<code class="notranslate">gunicorn -c config.py app:app</code></p>
-<p>停止:<code class="notranslate">ps aux | grep "gunicorn"|grep -v "grep"|awk -F " " '{print $2}| xargs -i kill -9 {}'</code></p>
-<p><strong>awk grep kill</strong> 配合着来，有些粗鲁</p>
+<div class="markdown-body" id="postBody"><h1>公务员市直报考信息</h1>
+<h2>军队文职</h2>
+<p>报名时间：2023年1月13日8:00至17日</p>
+<p>考试时间：2023年2月19日</p>
+<p>考试科目：公共科目+ 数1/2 +物理</p>
+<p>网址：<a href="http://81rc.81.cn/" rel="nofollow">http://81rc.81.cn/</a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20230716111801444.png"><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20230716111801444.png" alt="image-20230716111801444" style="max-width: 100%;"></a></p>
+<h2>国考</h2>
+<p>报名时间：2022年10月25日8:00至11月3日18:00</p>
+<p>考试时间：2022年12月4日</p>
+<p>考试科目：行测+申论</p>
+<p>网址：<a href="http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/home/gkhome.html" rel="nofollow">http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/home/gkhome.html</a></p>
 
-<h3>配置(配置文件可是py文件)</h3>
-<pre class="notranslate"><code class="notranslate">import multiprocessing
-import os
-base = os.path.abspath(os.path.dirname(__file__))
-workers = multiprocessing.cpu_count() * 2 + 1
-threads = 6
-reload = 0.   # debug模式
-bind = '0.0.0.0:9999'
-daemon = 'false'     #docker中要关闭
-worker_class = "gevent"    #
-worker_connections = 2000
-loglevel = 'error'
-accesslog = os.path.join(base,"gunicorn_acess.log")
-errorlog = os.path.join(base,"gunicorn_error.log")
-max_requests=300
-</code></pre></div>
+<h2>省考</h2>
+<p>报名时间：2023年1月3日-1月10日</p>
+<p>考试时间：2月25日、26日</p>
+<p>考试科目：行测+申论</p>
+<p>网址：<a href="https://www.chinagwy.org/shanxi/" rel="nofollow">https://www.chinagwy.org/shanxi/</a> （非官方，信息全乎）</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20230716112253117.png"><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20230716112253117.png" alt="image-20230716112253117" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20230716112518904.png"><img src="https://raw.githubusercontent.com/evilvlso/picsbed/master/image-20230716112518904.png" alt="image-20230716112518904" style="max-width: 100%;"></a></p>
+<h2>事业编</h2>
+<p>报名时间：</p>
+<p>考试时间：</p>
+<p>考试科目：</p>
+<p>主要看公众号统计信息</p>
+<p>网址：<a href="https://www.chinagwy.org/shanxi/" rel="nofollow">https://www.chinagwy.org/shanxi/</a> （非官方，信息全乎）</p>
+<h1>长治职业技术学院2023教师招聘</h1>
+<p>报名时间：2023-07-19 12:20:57 和市直一起发布的</p>
+<p>考试时间：</p>
+<p>考试科目：</p>
+<p>主要看公众号统计信息</p>
+<p><a href="https://www.czzy.cn/#/newNotice" rel="nofollow">https://www.czzy.cn/#/newNotice</a></p>
+<p>网址：报名网址为：长治市人力资源和社会保障局网站（<a href="https://rsj.changzhi.gov.cn/%EF%BC%89" rel="nofollow">https://rsj.changzhi.gov.cn/）</a></p>
+<p>![image-20231006195844013](/Users/dongzai/Library/Application Support/typora-user-images/image-20231006195844013.png)</p>
+<p>![image-20231006195939668](/Users/dongzai/Library/Application Support/typora-user-images/image-20231006195939668.png)</p>
+<h1>山西机电职业技术学院</h1>
+<p><a href="https://www.sxjdxy.org/xwzx/tzgg.htm" rel="nofollow">https://www.sxjdxy.org/xwzx/tzgg.htm</a></p>
+<h2>太原城市职业技术学院</h2>
+<p><a href="https://www.cntcvc.com/ReadNews.html?id=8671" rel="nofollow">https://www.cntcvc.com/ReadNews.html?id=8671</a></p>
+<h2>山西职业技术学院</h2>
+<p><a href="https://www.sxzy.edu.cn/tzgg.htm" rel="nofollow">https://www.sxzy.edu.cn/tzgg.htm</a></p>
+<h2>中国地震第二监测中心</h2>
+<p><a href="https://www.smac.ac.cn/index.php?s=/Home/Article/lists/category/tongzhi.html" rel="nofollow">https://www.smac.ac.cn/index.php?s=/Home/Article/lists/category/tongzhi.html</a></p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
 <div class="comments" id="comments"></div>
