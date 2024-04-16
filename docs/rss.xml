@@ -1,5 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Tue, 02 Apr 2024 16:14:59 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>考试信息记录</title><link>https://evilvlso.github.io/post/kao-shi-xin-xi-ji-lu.html</link><description># 公务员市直报考信息&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Tue, 16 Apr 2024 02:35:11 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>将网页内容转换为markdown的工具</title><link>https://evilvlso.github.io/post/jiang-wang-ye-nei-rong-zhuan-huan-wei-markdown-de-gong-ju.html</link><description>### 将网页内容转换为markdown的工具&#13;
+&#13;
+* https://markdowndown.vercel.app/ &#13;
+* https://jina.ai/reader/#demo （转为为对LLM输入友好的格式）&#13;
+&#13;
+比如[[文章的排版规范](https://open.leancloud.cn/copywriting-style-guide/)](。</description><guid isPermaLink="true">https://evilvlso.github.io/post/jiang-wang-ye-nei-rong-zhuan-huan-wei-markdown-de-gong-ju.html</guid><pubDate>Tue, 16 Apr 2024 02:34:45 +0000</pubDate></item><item><title>考试信息记录</title><link>https://evilvlso.github.io/post/kao-shi-xin-xi-ji-lu.html</link><description># 公务员市直报考信息&#13;
 &#13;
 ## 军队文职&#13;
 &#13;
