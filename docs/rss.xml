@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Tue, 16 Apr 2024 10:06:28 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>一些平台/工具地址记录</title><link>https://evilvlso.github.io/post/yi-xie-ping-tai---gong-ju-di-zhi-ji-lu.html</link><description>&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Sat, 20 Apr 2024 10:58:28 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>通过ssh反向隧道从公网访问到本地服务</title><link>https://evilvlso.github.io/post/tong-guo-ssh-fan-xiang-sui-dao-cong-gong-wang-fang-wen-dao-ben-di-fu-wu.html</link><description>## 通过ssh反向隧道从公网访问到本地服务&#13;
+&#13;
+核心操作&#13;
+&#13;
+```&#13;
+!mkdir  ~/.ssh/&#13;
+!touch  ~/.ssh/known_hosts&#13;
+!ssh-keyscan -t rsa remote.moe &gt;&gt; ~/.ssh/known_hosts&#13;
+!rm /root/.ssh/id_rsa&#13;
+!ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -q -N ""&#13;
+!python /kaggle/working/ComfyUI/main.py &amp; ssh -R 80:127.0.0.1:8188 -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa remote.moe&#13;
+```&#13;
+&#13;
+这里用到了 [remote.moe](https://github.com/fasmide/remotemoe)这个项目。</description><guid isPermaLink="true">https://evilvlso.github.io/post/tong-guo-ssh-fan-xiang-sui-dao-cong-gong-wang-fang-wen-dao-ben-di-fu-wu.html</guid><pubDate>Sat, 20 Apr 2024 10:57:56 +0000</pubDate></item><item><title>一些平台/工具地址记录</title><link>https://evilvlso.github.io/post/yi-xie-ping-tai---gong-ju-di-zhi-ji-lu.html</link><description>&#13;
 IP 购买网站：&#13;
 [https://panel.proxyline.net/](https://www.youtube.com/redirect?event=video_description&amp;redir_token=QUFFLUhqa2tLREhWOUhaZ3pVVEtSalVFb2tBR1hVQUk5Z3xBQ3Jtc0ttYUpKM0VZUWpNTXNnQmY2d0dTUEx3WTNfWEs5OXFNUk9YX3dhRWktQmxWWGtLTFJPWTRwR2p2a3gzbURLa0JncEhnYWw1elJ0ZV9ZQmtreHU4MmNaUlo4dTNNOVpranpNb2VmOW9WMi1ja3ZWRmZtZw&amp;q=https%3A%2F%2Fpanel.proxyline.net%2F&amp;v=u7EHk7iNCpU)&#13;
 &#13;
