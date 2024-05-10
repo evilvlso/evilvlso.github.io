@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Fri, 10 May 2024 12:26:32 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>通过ssh反向隧道从公网访问到本地服务</title><link>https://evilvlso.github.io/post/tong-guo-ssh-fan-xiang-sui-dao-cong-gong-wang-fang-wen-dao-ben-di-fu-wu.html</link><description>## 通过ssh反向隧道从公网访问到本地服务&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>tango</title><link>https://evilvlso.github.io</link><description>just tango </description><copyright>tango</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/25767862?v=4</url><title>avatar</title><link>https://evilvlso.github.io</link></image><lastBuildDate>Fri, 10 May 2024 12:39:04 +0000</lastBuildDate><managingEditor>tango</managingEditor><ttl>60</ttl><webMaster>tango</webMaster><item><title>通过ssh反向隧道从公网访问到本地服务</title><link>https://evilvlso.github.io/post/tong-guo-ssh-fan-xiang-sui-dao-cong-gong-wang-fang-wen-dao-ben-di-fu-wu.html</link><description>## 通过ssh反向隧道从公网访问到本地服务&#13;
 &#13;
 核心操作&#13;
 &#13;
@@ -47,7 +47,8 @@ Discord 注册：&#13;
 LLM+爬虫总结&#13;
 1. Jina Reader：https://x.com/tuturetom/stat/tuturetom/status/1779377811905769960&#13;
 2. FireCrawl https://x.com/tuturetom/stat/tuturetom/status/1784405836733030531&#13;
-3. Skyvern：[https://x.com/tuturetom/stat/tuturetom/status/1787296091475780054](https://twitter.com/tuturetom/status/1787296091475780054)。</description><guid isPermaLink="true">https://evilvlso.github.io/post/jiang-wang-ye-nei-rong-zhuan-huan-wei-markdown-de-gong-ju.html</guid><pubDate>Tue, 16 Apr 2024 02:34:45 +0000</pubDate></item><item><title>考试信息记录</title><link>https://evilvlso.github.io/post/kao-shi-xin-xi-ji-lu.html</link><description># 公务员市直报考信息&#13;
+3. Skyvern：[https://x.com/tuturetom/stat/tuturetom/status/1787296091475780054](https://twitter.com/tuturetom/status/1787296091475780054)&#13;
+4. scrapegraph-ai: [https://scrapegraph-ai.readthedocs.io/en/latest/getting_started/examples.html#openai-models]。</description><guid isPermaLink="true">https://evilvlso.github.io/post/jiang-wang-ye-nei-rong-zhuan-huan-wei-markdown-de-gong-ju.html</guid><pubDate>Tue, 16 Apr 2024 02:34:45 +0000</pubDate></item><item><title>考试信息记录</title><link>https://evilvlso.github.io/post/kao-shi-xin-xi-ji-lu.html</link><description># 公务员市直报考信息&#13;
 &#13;
 ## 军队文职&#13;
 &#13;
