@@ -9,7 +9,106 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="Mysql主从配置及可能问题">
+<meta name="description" content="---
+### 从账号
+```
+grant replication slave on *.* to slave@192.168.1.8 identified by '123456';
+```
+### my.cnf
+<!--more-->
+```
+[mysqld]
+port = 3306
+datadir = /data
+log_bin = /data/master-log-bin
+log_bin_index = /data/master-log-bin.index
+socket = /tmp/mysql.sock
+expire_logs_days = 3
+<!--more-->
+open_files_limit = 10000
+binlog_format =mixed 
+# 很重要
+server_id = 2
+log_error = /data/log/master-error.log
+
+lower_case_table_names=1
+slave_type_conversions=ALL_NON_LOSSY
+#从
+slave-skip-errors =1756  
+auto_increment_offset = 2
+auto_increment_increment = 2
+max_connections = 500
+character-set-server = utf8mb4
+wait_timeout = 120
+#GTID配置
+gtid_mode = on
+#必须
+enforce-gtid-consistency = true
+binlog-do-db = shares3
+
+log_slave_updates = on
+
+slave-parallel-workers=0
+master-info-repository = table
+relay-log-info-repository = table
+
+[mysql]
+socket = /tmp/mysql.sock
+```
+
+*  数据冲突之列的复制错误，至于跳过事物Id本身，就不复杂了。">
+<meta property="og:title" content="Mysql主从配置及可能问题">
+<meta property="og:description" content="---
+### 从账号
+```
+grant replication slave on *.* to slave@192.168.1.8 identified by '123456';
+```
+### my.cnf
+<!--more-->
+```
+[mysqld]
+port = 3306
+datadir = /data
+log_bin = /data/master-log-bin
+log_bin_index = /data/master-log-bin.index
+socket = /tmp/mysql.sock
+expire_logs_days = 3
+<!--more-->
+open_files_limit = 10000
+binlog_format =mixed 
+# 很重要
+server_id = 2
+log_error = /data/log/master-error.log
+
+lower_case_table_names=1
+slave_type_conversions=ALL_NON_LOSSY
+#从
+slave-skip-errors =1756  
+auto_increment_offset = 2
+auto_increment_increment = 2
+max_connections = 500
+character-set-server = utf8mb4
+wait_timeout = 120
+#GTID配置
+gtid_mode = on
+#必须
+enforce-gtid-consistency = true
+binlog-do-db = shares3
+
+log_slave_updates = on
+
+slave-parallel-workers=0
+master-info-repository = table
+relay-log-info-repository = table
+
+[mysql]
+socket = /tmp/mysql.sock
+```
+
+*  数据冲突之列的复制错误，至于跳过事物Id本身，就不复杂了。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://evilvlso.github.io/post/Mysql-zhu-cong-pei-zhi-ji-ke-neng-wen-ti.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/25767862?v=4">
 <title>Mysql主从配置及可能问题</title>
 
 

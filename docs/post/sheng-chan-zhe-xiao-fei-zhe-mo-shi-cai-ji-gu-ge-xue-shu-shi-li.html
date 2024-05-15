@@ -9,7 +9,524 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="生产者消费者模式采集谷歌学术示例">
+<meta name="description" content="工作示意图如下：
+
+![text-here](https://i.loli.net/2020/05/18/qGjnJFP9pu8KQoM.png)
+
+
+凑合看
+
+<!--more-->
+
+```Python
+
+import re
+import redis
+import requests
+import retrying
+from threading import Thread
+from openpyxl.workbook import Workbook
+from urllib.request import urljoin
+from scrapy.selector import Selector
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from queue import Queue,Empty
+
+r = redis.Redis("127.0.0.1", db=0)
+q = Queue(maxsize=100)
+
+proxies = {
+    "http": "http://127.0.0.1:1087",
+    "https": "http://127.0.0.1:1087"
+}
+headers = {
+    'authority': 'scholar.google.com',
+    'cache-control': 'no-cache',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36',
+    'accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+    'x-client-data': 'CJS2yQEIo7bJAQjBtskBCKmdygEI0K/KAQi8sMoBCO21ygEIjrrKAQjmxsoB',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-mode': 'no-cors',
+    'sec-fetch-user': '?1',
+    'sec-fetch-dest': 'empty',
+    'referer': 'https://scholar.google.com/scholar?start=20&hl=en&as_sdt=2005&sciodt=0,5&cites=9023096709689140743&scipsc=',
+    'accept-language': 'zh-CN,zh;q=0.9',
+    'Referer': 'https://scholar.google.com/scholar?start=20&hl=en&as_sdt=2005&sciodt=0,5&cites=9023096709689140743&scipsc=',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36',
+    'pragma': 'no-cache',
+    'cookie': r.get("cookies").decode("ASCII"),
+}
+
+
+def try_if_ssl_error(exception):
+    if isinstance(exception, (
+            requests.exceptions.SSLError, requests.exceptions.ProxyError, requests.exceptions.ReadTimeout,
+            requests.exceptions.ConnectionError)):
+        print(f"代理可能失效 {exception}")
+        return True
+    print(f"意料之外错误 {exception}")
+    return False
+
+
+def try_if_robot(result):
+    if "you're not a robot" in result.text or "人机身份验证" in result.text:
+        print("出现 Robot 检测")
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        return True
+    if "detected unusual traffic" in result.text or "异常流量" in result.text:
+        print("出现 流量 检测")
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        return True
+    if "sending automated queries" in result.text:
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        print(" your computer or network may be sending automated queries")
+        return True
+    if "/recaptcha/api.js" in result.text:
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        print("出现 验证码 检测 ")
+        return True
+    return False
+
+
+@retrying.retry(stop_max_attempt_number=500, retry_on_result=try_if_robot, retry_on_exception=try_if_ssl_error,
+                wait_fixed=10000)
+def fetch(**kwargs):
+    """
+    :param kwargs:  start cites
+    :return:
+    """
+    url = kwargs.get("url")
+    response = requests.get(url, headers=headers, proxies=proxies, timeout=7)
+    return response
+
+
+class Proceser():
+
+    def __init__(self, *args, **kwargs):
+        filename = kwargs.get("filename")
+        with open(filename, "r") as f:
+            self.data = f.readlines()
+        self.t = ThreadPoolExecutor(max_workers=2)
+        pass
+
+    def _proc(self, kw):
+        """
+
+        :param kw:
+        :return:
+        """
+        kw = '+'.join(kw.split(" "))
+        url = f"/scholar?q={kw}"
+        base_url = "https://scholar.google.com/scholar"
+        url = urljoin(base_url, url)
+        url = url.replace("zh-CN", "en")
+        res = fetch(url=url)
+        return {"res": res, "kw": kw}
+
+    def callback(self, result):
+        result = result.result()
+        res = result.get("res")
+        kw = result.get("kw")
+        seed_infos = self.extract(res, seed=True)
+        for seed_info in seed_infos:
+            seed_cites = seed_info.get("cites", 0)
+            try:
+                seed_cites = int(seed_cites)
+            except ValueError as e:
+                print(f"Cites ERROR:{res.url}")
+            else:
+                for start in range(0, seed_cites, 20):
+                    cite_url = "https://scholar.google.com"+seed_info["cites_url"] + f"&num=20&start={start}"
+                    q.put({
+                        "kw": kw,
+                        "seed_title": seed_info["title"],
+                        "seed_cites": seed_info["cites"],
+                        "cite_url": cite_url,
+                    })
+
+    def run(self):
+        tasks = [self.t.submit(self._proc, kw) for kw in self.data]
+        for task in as_completed(tasks):
+            self.callback(task)
+
+    @staticmethod
+    def extract(response, seed=False):
+        def _proc_cites(cites):
+            return ''.join(re.findall(r'(\d{0,5})', cites))
+
+        def _proc_info(info):
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            return publish, author
+
+        if not "did not match any articles" in response.text:
+            html = Selector(response)
+            if seed:
+                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+            else:
+                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+            infos = []
+            for document in documents:
+                title = document.xpath(
+                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
+                    default="")
+                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
+                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
+                    default="")
+                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
+                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                cites = _proc_cites(cites)
+                publish, author = _proc_info(info)
+                infos.append(
+                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
+                     "url": url})
+            return infos
+
+
+class Customer():
+    def __init__(self,savefilename):
+        self.savefilename=savefilename
+        self.t = ThreadPoolExecutor(max_workers=100)
+        self.workbook = Workbook()
+        self.sheet = self.workbook["Sheet"]
+        self.sheet.append(("关键词文件名", "第一匹配结果文献", "本文被引用数", "引用此文文献名", "引用此文作者", "引用此文期刊名", "引用此文文献引用数", "url"))
+
+    @staticmethod
+    def extract(response, seed=False):
+        def _proc_cites(cites):
+            return ''.join(re.findall(r'(\d{0,5})', cites))
+
+        def _proc_info(info):
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            return publish, author
+
+        if not "did not match any articles" in response.text:
+            html = Selector(response)
+            if seed:
+                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+            else:
+                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+            infos = []
+            for document in documents:
+                title = document.xpath(
+                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
+                    default="")
+                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
+                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
+                    default="")
+                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
+                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                cites = _proc_cites(cites)
+                publish, author = _proc_info(info)
+                infos.append(
+                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
+                     "url": url})
+            return infos
+
+    def get_infos(self):
+        print(f"Queue size is {q.qsize()}")
+        try:
+            infos = q.get(block=True,timeout=180)
+            return infos
+        except Empty:
+            print(f"Queue size is {q.qsize()}")
+            print("队列0000000结束了！")
+            self.workbook.save(self.savefilename)
+
+    def run(self):
+        infos = self.get_infos()
+        while infos:
+            self.t.submit(self._fe, infos=infos).add_done_callback(self.callback)
+            infos = self.get_infos()
+
+    def _fe(self, infos):
+        url = infos.get("cite_url")
+        res = fetch(url=url)
+        cite_infos = self.extract(res)
+        for cite_info in cite_infos:
+            cite_info.update(infos)
+        return cite_infos
+
+    def callback(self, result):
+        cite_infos = result.result()
+        print(f"添加文献{len(cite_infos)}")
+        for infos in cite_infos:
+            self.sheet.append((
+                infos.get("kw"), infos.get("seed_title"), infos.get("seed_cites"), infos.get("title"), infos.get("author"), infos.get("publish"), infos.get("cites"),infos.get("url")
+            ))
+
+if __name__ == '__main__':
+    pr=Proceser(filename="again.txt")
+    cu=Customer(savefilename="test.xlsx")
+    t1=Thread(target=pr.run)
+    t2=Thread(target=cu.run)
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+```。">
+<meta property="og:title" content="生产者消费者模式采集谷歌学术示例">
+<meta property="og:description" content="工作示意图如下：
+
+![text-here](https://i.loli.net/2020/05/18/qGjnJFP9pu8KQoM.png)
+
+
+凑合看
+
+<!--more-->
+
+```Python
+
+import re
+import redis
+import requests
+import retrying
+from threading import Thread
+from openpyxl.workbook import Workbook
+from urllib.request import urljoin
+from scrapy.selector import Selector
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from queue import Queue,Empty
+
+r = redis.Redis("127.0.0.1", db=0)
+q = Queue(maxsize=100)
+
+proxies = {
+    "http": "http://127.0.0.1:1087",
+    "https": "http://127.0.0.1:1087"
+}
+headers = {
+    'authority': 'scholar.google.com',
+    'cache-control': 'no-cache',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36',
+    'accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+    'x-client-data': 'CJS2yQEIo7bJAQjBtskBCKmdygEI0K/KAQi8sMoBCO21ygEIjrrKAQjmxsoB',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-mode': 'no-cors',
+    'sec-fetch-user': '?1',
+    'sec-fetch-dest': 'empty',
+    'referer': 'https://scholar.google.com/scholar?start=20&hl=en&as_sdt=2005&sciodt=0,5&cites=9023096709689140743&scipsc=',
+    'accept-language': 'zh-CN,zh;q=0.9',
+    'Referer': 'https://scholar.google.com/scholar?start=20&hl=en&as_sdt=2005&sciodt=0,5&cites=9023096709689140743&scipsc=',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36',
+    'pragma': 'no-cache',
+    'cookie': r.get("cookies").decode("ASCII"),
+}
+
+
+def try_if_ssl_error(exception):
+    if isinstance(exception, (
+            requests.exceptions.SSLError, requests.exceptions.ProxyError, requests.exceptions.ReadTimeout,
+            requests.exceptions.ConnectionError)):
+        print(f"代理可能失效 {exception}")
+        return True
+    print(f"意料之外错误 {exception}")
+    return False
+
+
+def try_if_robot(result):
+    if "you're not a robot" in result.text or "人机身份验证" in result.text:
+        print("出现 Robot 检测")
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        return True
+    if "detected unusual traffic" in result.text or "异常流量" in result.text:
+        print("出现 流量 检测")
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        return True
+    if "sending automated queries" in result.text:
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        print(" your computer or network may be sending automated queries")
+        return True
+    if "/recaptcha/api.js" in result.text:
+        headers["cookie"] = r.get("cookies").decode("ASCII")
+        print("出现 验证码 检测 ")
+        return True
+    return False
+
+
+@retrying.retry(stop_max_attempt_number=500, retry_on_result=try_if_robot, retry_on_exception=try_if_ssl_error,
+                wait_fixed=10000)
+def fetch(**kwargs):
+    """
+    :param kwargs:  start cites
+    :return:
+    """
+    url = kwargs.get("url")
+    response = requests.get(url, headers=headers, proxies=proxies, timeout=7)
+    return response
+
+
+class Proceser():
+
+    def __init__(self, *args, **kwargs):
+        filename = kwargs.get("filename")
+        with open(filename, "r") as f:
+            self.data = f.readlines()
+        self.t = ThreadPoolExecutor(max_workers=2)
+        pass
+
+    def _proc(self, kw):
+        """
+
+        :param kw:
+        :return:
+        """
+        kw = '+'.join(kw.split(" "))
+        url = f"/scholar?q={kw}"
+        base_url = "https://scholar.google.com/scholar"
+        url = urljoin(base_url, url)
+        url = url.replace("zh-CN", "en")
+        res = fetch(url=url)
+        return {"res": res, "kw": kw}
+
+    def callback(self, result):
+        result = result.result()
+        res = result.get("res")
+        kw = result.get("kw")
+        seed_infos = self.extract(res, seed=True)
+        for seed_info in seed_infos:
+            seed_cites = seed_info.get("cites", 0)
+            try:
+                seed_cites = int(seed_cites)
+            except ValueError as e:
+                print(f"Cites ERROR:{res.url}")
+            else:
+                for start in range(0, seed_cites, 20):
+                    cite_url = "https://scholar.google.com"+seed_info["cites_url"] + f"&num=20&start={start}"
+                    q.put({
+                        "kw": kw,
+                        "seed_title": seed_info["title"],
+                        "seed_cites": seed_info["cites"],
+                        "cite_url": cite_url,
+                    })
+
+    def run(self):
+        tasks = [self.t.submit(self._proc, kw) for kw in self.data]
+        for task in as_completed(tasks):
+            self.callback(task)
+
+    @staticmethod
+    def extract(response, seed=False):
+        def _proc_cites(cites):
+            return ''.join(re.findall(r'(\d{0,5})', cites))
+
+        def _proc_info(info):
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            return publish, author
+
+        if not "did not match any articles" in response.text:
+            html = Selector(response)
+            if seed:
+                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+            else:
+                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+            infos = []
+            for document in documents:
+                title = document.xpath(
+                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
+                    default="")
+                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
+                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
+                    default="")
+                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
+                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                cites = _proc_cites(cites)
+                publish, author = _proc_info(info)
+                infos.append(
+                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
+                     "url": url})
+            return infos
+
+
+class Customer():
+    def __init__(self,savefilename):
+        self.savefilename=savefilename
+        self.t = ThreadPoolExecutor(max_workers=100)
+        self.workbook = Workbook()
+        self.sheet = self.workbook["Sheet"]
+        self.sheet.append(("关键词文件名", "第一匹配结果文献", "本文被引用数", "引用此文文献名", "引用此文作者", "引用此文期刊名", "引用此文文献引用数", "url"))
+
+    @staticmethod
+    def extract(response, seed=False):
+        def _proc_cites(cites):
+            return ''.join(re.findall(r'(\d{0,5})', cites))
+
+        def _proc_info(info):
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            return publish, author
+
+        if not "did not match any articles" in response.text:
+            html = Selector(response)
+            if seed:
+                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+            else:
+                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+            infos = []
+            for document in documents:
+                title = document.xpath(
+                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
+                    default="")
+                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
+                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
+                    default="")
+                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
+                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                cites = _proc_cites(cites)
+                publish, author = _proc_info(info)
+                infos.append(
+                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
+                     "url": url})
+            return infos
+
+    def get_infos(self):
+        print(f"Queue size is {q.qsize()}")
+        try:
+            infos = q.get(block=True,timeout=180)
+            return infos
+        except Empty:
+            print(f"Queue size is {q.qsize()}")
+            print("队列0000000结束了！")
+            self.workbook.save(self.savefilename)
+
+    def run(self):
+        infos = self.get_infos()
+        while infos:
+            self.t.submit(self._fe, infos=infos).add_done_callback(self.callback)
+            infos = self.get_infos()
+
+    def _fe(self, infos):
+        url = infos.get("cite_url")
+        res = fetch(url=url)
+        cite_infos = self.extract(res)
+        for cite_info in cite_infos:
+            cite_info.update(infos)
+        return cite_infos
+
+    def callback(self, result):
+        cite_infos = result.result()
+        print(f"添加文献{len(cite_infos)}")
+        for infos in cite_infos:
+            self.sheet.append((
+                infos.get("kw"), infos.get("seed_title"), infos.get("seed_cites"), infos.get("title"), infos.get("author"), infos.get("publish"), infos.get("cites"),infos.get("url")
+            ))
+
+if __name__ == '__main__':
+    pr=Proceser(filename="again.txt")
+    cu=Customer(savefilename="test.xlsx")
+    t1=Thread(target=pr.run)
+    t2=Thread(target=cu.run)
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+```。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://evilvlso.github.io/post/sheng-chan-zhe-xiao-fei-zhe-mo-shi-cai-ji-gu-ge-xue-shu-shi-li.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/25767862?v=4">
 <title>生产者消费者模式采集谷歌学术示例</title>
 <link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 

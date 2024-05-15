@@ -9,7 +9,30 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="Ubuntu安装chrome脚本">
+<meta name="description" content="---
+```Shell
+#!/bin/bash
+apt-get update
+apt-get install -y libxss1 libappindicator1 libindicator7
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+dpkg -i  google-chrome-stable_current_amd64.deb
+```
+### 如果报错了
+`apt-get install -y -f ` 就OK👌了。">
+<meta property="og:title" content="Ubuntu安装chrome脚本">
+<meta property="og:description" content="---
+```Shell
+#!/bin/bash
+apt-get update
+apt-get install -y libxss1 libappindicator1 libindicator7
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+dpkg -i  google-chrome-stable_current_amd64.deb
+```
+### 如果报错了
+`apt-get install -y -f ` 就OK👌了。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://evilvlso.github.io/post/Ubuntu-an-zhuang-chrome-jiao-ben.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/25767862?v=4">
 <title>Ubuntu安装chrome脚本</title>
 <link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
