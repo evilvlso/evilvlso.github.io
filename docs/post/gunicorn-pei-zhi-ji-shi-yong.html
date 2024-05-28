@@ -14,7 +14,7 @@
 启动:
 `gunicorn -c config.py app:app`
 
-停止:`ps aux | grep "gunicorn"|grep -v "grep"|awk -F " " '{print $2}| xargs -i kill -9 {}'`
+停止:`ps aux | grep 'gunicorn'|grep -v 'grep'|awk -F ' ' '{print $2}| xargs -i kill -9 {}'`
 
 **awk grep kill** 配合着来，有些粗鲁
 <!--more-->
@@ -30,11 +30,11 @@ threads = 6
 reload = 0.   # debug模式
 bind = '0.0.0.0:9999'
 daemon = 'false'     #docker中要关闭
-worker_class = "gevent"    #
+worker_class = 'gevent'    #
 worker_connections = 2000
 loglevel = 'error'
-accesslog = os.path.join(base,"gunicorn_acess.log")
-errorlog = os.path.join(base,"gunicorn_error.log")
+accesslog = os.path.join(base,'gunicorn_acess.log')
+errorlog = os.path.join(base,'gunicorn_error.log')
 max_requests=300
 ```。">
 <meta property="og:title" content="gunicorn配置及使用">
@@ -43,7 +43,7 @@ max_requests=300
 启动:
 `gunicorn -c config.py app:app`
 
-停止:`ps aux | grep "gunicorn"|grep -v "grep"|awk -F " " '{print $2}| xargs -i kill -9 {}'`
+停止:`ps aux | grep 'gunicorn'|grep -v 'grep'|awk -F ' ' '{print $2}| xargs -i kill -9 {}'`
 
 **awk grep kill** 配合着来，有些粗鲁
 <!--more-->
@@ -59,11 +59,11 @@ threads = 6
 reload = 0.   # debug模式
 bind = '0.0.0.0:9999'
 daemon = 'false'     #docker中要关闭
-worker_class = "gevent"    #
+worker_class = 'gevent'    #
 worker_connections = 2000
 loglevel = 'error'
-accesslog = os.path.join(base,"gunicorn_acess.log")
-errorlog = os.path.join(base,"gunicorn_error.log")
+accesslog = os.path.join(base,'gunicorn_acess.log')
+errorlog = os.path.join(base,'gunicorn_error.log')
 max_requests=300
 ```。">
 <meta property="og:type" content="article">
@@ -240,7 +240,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

@@ -31,12 +31,12 @@ from scrapy.selector import Selector
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from queue import Queue,Empty
 
-r = redis.Redis("127.0.0.1", db=0)
+r = redis.Redis('127.0.0.1', db=0)
 q = Queue(maxsize=100)
 
 proxies = {
-    "http": "http://127.0.0.1:1087",
-    "https": "http://127.0.0.1:1087"
+    'http': 'http://127.0.0.1:1087',
+    'https': 'http://127.0.0.1:1087'
 }
 headers = {
     'authority': 'scholar.google.com',
@@ -54,7 +54,7 @@ headers = {
     'Referer': 'https://scholar.google.com/scholar?start=20&hl=en&as_sdt=2005&sciodt=0,5&cites=9023096709689140743&scipsc=',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36',
     'pragma': 'no-cache',
-    'cookie': r.get("cookies").decode("ASCII"),
+    'cookie': r.get('cookies').decode('ASCII'),
 }
 
 
@@ -62,28 +62,28 @@ def try_if_ssl_error(exception):
     if isinstance(exception, (
             requests.exceptions.SSLError, requests.exceptions.ProxyError, requests.exceptions.ReadTimeout,
             requests.exceptions.ConnectionError)):
-        print(f"代理可能失效 {exception}")
+        print(f'代理可能失效 {exception}')
         return True
-    print(f"意料之外错误 {exception}")
+    print(f'意料之外错误 {exception}')
     return False
 
 
 def try_if_robot(result):
-    if "you're not a robot" in result.text or "人机身份验证" in result.text:
-        print("出现 Robot 检测")
-        headers["cookie"] = r.get("cookies").decode("ASCII")
+    if 'you're not a robot' in result.text or '人机身份验证' in result.text:
+        print('出现 Robot 检测')
+        headers['cookie'] = r.get('cookies').decode('ASCII')
         return True
-    if "detected unusual traffic" in result.text or "异常流量" in result.text:
-        print("出现 流量 检测")
-        headers["cookie"] = r.get("cookies").decode("ASCII")
+    if 'detected unusual traffic' in result.text or '异常流量' in result.text:
+        print('出现 流量 检测')
+        headers['cookie'] = r.get('cookies').decode('ASCII')
         return True
-    if "sending automated queries" in result.text:
-        headers["cookie"] = r.get("cookies").decode("ASCII")
-        print(" your computer or network may be sending automated queries")
+    if 'sending automated queries' in result.text:
+        headers['cookie'] = r.get('cookies').decode('ASCII')
+        print(' your computer or network may be sending automated queries')
         return True
-    if "/recaptcha/api.js" in result.text:
-        headers["cookie"] = r.get("cookies").decode("ASCII")
-        print("出现 验证码 检测 ")
+    if '/recaptcha/api.js' in result.text:
+        headers['cookie'] = r.get('cookies').decode('ASCII')
+        print('出现 验证码 检测 ')
         return True
     return False
 
@@ -91,11 +91,11 @@ def try_if_robot(result):
 @retrying.retry(stop_max_attempt_number=500, retry_on_result=try_if_robot, retry_on_exception=try_if_ssl_error,
                 wait_fixed=10000)
 def fetch(**kwargs):
-    """
+    '''
     :param kwargs:  start cites
     :return:
-    """
-    url = kwargs.get("url")
+    '''
+    url = kwargs.get('url')
     response = requests.get(url, headers=headers, proxies=proxies, timeout=7)
     return response
 
@@ -103,45 +103,45 @@ def fetch(**kwargs):
 class Proceser():
 
     def __init__(self, *args, **kwargs):
-        filename = kwargs.get("filename")
-        with open(filename, "r") as f:
+        filename = kwargs.get('filename')
+        with open(filename, 'r') as f:
             self.data = f.readlines()
         self.t = ThreadPoolExecutor(max_workers=2)
         pass
 
     def _proc(self, kw):
-        """
+        '''
 
         :param kw:
         :return:
-        """
-        kw = '+'.join(kw.split(" "))
-        url = f"/scholar?q={kw}"
-        base_url = "https://scholar.google.com/scholar"
+        '''
+        kw = '+'.join(kw.split(' '))
+        url = f'/scholar?q={kw}'
+        base_url = 'https://scholar.google.com/scholar'
         url = urljoin(base_url, url)
-        url = url.replace("zh-CN", "en")
+        url = url.replace('zh-CN', 'en')
         res = fetch(url=url)
-        return {"res": res, "kw": kw}
+        return {'res': res, 'kw': kw}
 
     def callback(self, result):
         result = result.result()
-        res = result.get("res")
-        kw = result.get("kw")
+        res = result.get('res')
+        kw = result.get('kw')
         seed_infos = self.extract(res, seed=True)
         for seed_info in seed_infos:
-            seed_cites = seed_info.get("cites", 0)
+            seed_cites = seed_info.get('cites', 0)
             try:
                 seed_cites = int(seed_cites)
             except ValueError as e:
-                print(f"Cites ERROR:{res.url}")
+                print(f'Cites ERROR:{res.url}')
             else:
                 for start in range(0, seed_cites, 20):
-                    cite_url = "https://scholar.google.com"+seed_info["cites_url"] + f"&num=20&start={start}"
+                    cite_url = 'https://scholar.google.com'+seed_info['cites_url'] + f'&num=20&start={start}'
                     q.put({
-                        "kw": kw,
-                        "seed_title": seed_info["title"],
-                        "seed_cites": seed_info["cites"],
-                        "cite_url": cite_url,
+                        'kw': kw,
+                        'seed_title': seed_info['title'],
+                        'seed_cites': seed_info['cites'],
+                        'cite_url': cite_url,
                     })
 
     def run(self):
@@ -155,31 +155,31 @@ class Proceser():
             return ''.join(re.findall(r'(\d{0,5})', cites))
 
         def _proc_info(info):
-            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
-            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace('…', '').replace('\xa0', '')
+            author = ''.join(re.findall(r'(.*?)-', info)).replace('…', '').replace('\xa0', '')
             return publish, author
 
-        if not "did not match any articles" in response.text:
+        if not 'did not match any articles' in response.text:
             html = Selector(response)
             if seed:
-                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+                documents = [html.xpath('//div[@id='gs_res_ccl_mid']/div')[0]]
             else:
-                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+                documents = html.xpath('//div[@id='gs_res_ccl_mid']/div')
             infos = []
             for document in documents:
                 title = document.xpath(
-                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
-                    default="")
-                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
-                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
-                    default="")
-                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
-                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                    'string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])').extract_first(
+                    default='')
+                url = document.xpath('.//div[contains(@class,'gs_ri')]/h3/a/@href').extract_first(default='')
+                info = document.xpath('string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])').extract_first(
+                    default='')
+                cites_url = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/@href').extract_first(default='')
+                cites = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/text()').extract_first(default='')
                 cites = _proc_cites(cites)
                 publish, author = _proc_info(info)
                 infos.append(
-                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
-                     "url": url})
+                    {'title': title, 'publish': publish, 'author': author, 'cites_url': cites_url, 'cites': cites,
+                     'url': url})
             return infos
 
 
@@ -188,8 +188,8 @@ class Customer():
         self.savefilename=savefilename
         self.t = ThreadPoolExecutor(max_workers=100)
         self.workbook = Workbook()
-        self.sheet = self.workbook["Sheet"]
-        self.sheet.append(("关键词文件名", "第一匹配结果文献", "本文被引用数", "引用此文文献名", "引用此文作者", "引用此文期刊名", "引用此文文献引用数", "url"))
+        self.sheet = self.workbook['Sheet']
+        self.sheet.append(('关键词文件名', '第一匹配结果文献', '本文被引用数', '引用此文文献名', '引用此文作者', '引用此文期刊名', '引用此文文献引用数', 'url'))
 
     @staticmethod
     def extract(response, seed=False):
@@ -197,41 +197,41 @@ class Customer():
             return ''.join(re.findall(r'(\d{0,5})', cites))
 
         def _proc_info(info):
-            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
-            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace('…', '').replace('\xa0', '')
+            author = ''.join(re.findall(r'(.*?)-', info)).replace('…', '').replace('\xa0', '')
             return publish, author
 
-        if not "did not match any articles" in response.text:
+        if not 'did not match any articles' in response.text:
             html = Selector(response)
             if seed:
-                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+                documents = [html.xpath('//div[@id='gs_res_ccl_mid']/div')[0]]
             else:
-                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+                documents = html.xpath('//div[@id='gs_res_ccl_mid']/div')
             infos = []
             for document in documents:
                 title = document.xpath(
-                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
-                    default="")
-                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
-                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
-                    default="")
-                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
-                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                    'string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])').extract_first(
+                    default='')
+                url = document.xpath('.//div[contains(@class,'gs_ri')]/h3/a/@href').extract_first(default='')
+                info = document.xpath('string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])').extract_first(
+                    default='')
+                cites_url = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/@href').extract_first(default='')
+                cites = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/text()').extract_first(default='')
                 cites = _proc_cites(cites)
                 publish, author = _proc_info(info)
                 infos.append(
-                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
-                     "url": url})
+                    {'title': title, 'publish': publish, 'author': author, 'cites_url': cites_url, 'cites': cites,
+                     'url': url})
             return infos
 
     def get_infos(self):
-        print(f"Queue size is {q.qsize()}")
+        print(f'Queue size is {q.qsize()}')
         try:
             infos = q.get(block=True,timeout=180)
             return infos
         except Empty:
-            print(f"Queue size is {q.qsize()}")
-            print("队列0000000结束了！")
+            print(f'Queue size is {q.qsize()}')
+            print('队列0000000结束了！')
             self.workbook.save(self.savefilename)
 
     def run(self):
@@ -241,7 +241,7 @@ class Customer():
             infos = self.get_infos()
 
     def _fe(self, infos):
-        url = infos.get("cite_url")
+        url = infos.get('cite_url')
         res = fetch(url=url)
         cite_infos = self.extract(res)
         for cite_info in cite_infos:
@@ -250,15 +250,15 @@ class Customer():
 
     def callback(self, result):
         cite_infos = result.result()
-        print(f"添加文献{len(cite_infos)}")
+        print(f'添加文献{len(cite_infos)}')
         for infos in cite_infos:
             self.sheet.append((
-                infos.get("kw"), infos.get("seed_title"), infos.get("seed_cites"), infos.get("title"), infos.get("author"), infos.get("publish"), infos.get("cites"),infos.get("url")
+                infos.get('kw'), infos.get('seed_title'), infos.get('seed_cites'), infos.get('title'), infos.get('author'), infos.get('publish'), infos.get('cites'),infos.get('url')
             ))
 
 if __name__ == '__main__':
-    pr=Proceser(filename="again.txt")
-    cu=Customer(savefilename="test.xlsx")
+    pr=Proceser(filename='again.txt')
+    cu=Customer(savefilename='test.xlsx')
     t1=Thread(target=pr.run)
     t2=Thread(target=cu.run)
     t1.start()
@@ -289,12 +289,12 @@ from scrapy.selector import Selector
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from queue import Queue,Empty
 
-r = redis.Redis("127.0.0.1", db=0)
+r = redis.Redis('127.0.0.1', db=0)
 q = Queue(maxsize=100)
 
 proxies = {
-    "http": "http://127.0.0.1:1087",
-    "https": "http://127.0.0.1:1087"
+    'http': 'http://127.0.0.1:1087',
+    'https': 'http://127.0.0.1:1087'
 }
 headers = {
     'authority': 'scholar.google.com',
@@ -312,7 +312,7 @@ headers = {
     'Referer': 'https://scholar.google.com/scholar?start=20&hl=en&as_sdt=2005&sciodt=0,5&cites=9023096709689140743&scipsc=',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36',
     'pragma': 'no-cache',
-    'cookie': r.get("cookies").decode("ASCII"),
+    'cookie': r.get('cookies').decode('ASCII'),
 }
 
 
@@ -320,28 +320,28 @@ def try_if_ssl_error(exception):
     if isinstance(exception, (
             requests.exceptions.SSLError, requests.exceptions.ProxyError, requests.exceptions.ReadTimeout,
             requests.exceptions.ConnectionError)):
-        print(f"代理可能失效 {exception}")
+        print(f'代理可能失效 {exception}')
         return True
-    print(f"意料之外错误 {exception}")
+    print(f'意料之外错误 {exception}')
     return False
 
 
 def try_if_robot(result):
-    if "you're not a robot" in result.text or "人机身份验证" in result.text:
-        print("出现 Robot 检测")
-        headers["cookie"] = r.get("cookies").decode("ASCII")
+    if 'you're not a robot' in result.text or '人机身份验证' in result.text:
+        print('出现 Robot 检测')
+        headers['cookie'] = r.get('cookies').decode('ASCII')
         return True
-    if "detected unusual traffic" in result.text or "异常流量" in result.text:
-        print("出现 流量 检测")
-        headers["cookie"] = r.get("cookies").decode("ASCII")
+    if 'detected unusual traffic' in result.text or '异常流量' in result.text:
+        print('出现 流量 检测')
+        headers['cookie'] = r.get('cookies').decode('ASCII')
         return True
-    if "sending automated queries" in result.text:
-        headers["cookie"] = r.get("cookies").decode("ASCII")
-        print(" your computer or network may be sending automated queries")
+    if 'sending automated queries' in result.text:
+        headers['cookie'] = r.get('cookies').decode('ASCII')
+        print(' your computer or network may be sending automated queries')
         return True
-    if "/recaptcha/api.js" in result.text:
-        headers["cookie"] = r.get("cookies").decode("ASCII")
-        print("出现 验证码 检测 ")
+    if '/recaptcha/api.js' in result.text:
+        headers['cookie'] = r.get('cookies').decode('ASCII')
+        print('出现 验证码 检测 ')
         return True
     return False
 
@@ -349,11 +349,11 @@ def try_if_robot(result):
 @retrying.retry(stop_max_attempt_number=500, retry_on_result=try_if_robot, retry_on_exception=try_if_ssl_error,
                 wait_fixed=10000)
 def fetch(**kwargs):
-    """
+    '''
     :param kwargs:  start cites
     :return:
-    """
-    url = kwargs.get("url")
+    '''
+    url = kwargs.get('url')
     response = requests.get(url, headers=headers, proxies=proxies, timeout=7)
     return response
 
@@ -361,45 +361,45 @@ def fetch(**kwargs):
 class Proceser():
 
     def __init__(self, *args, **kwargs):
-        filename = kwargs.get("filename")
-        with open(filename, "r") as f:
+        filename = kwargs.get('filename')
+        with open(filename, 'r') as f:
             self.data = f.readlines()
         self.t = ThreadPoolExecutor(max_workers=2)
         pass
 
     def _proc(self, kw):
-        """
+        '''
 
         :param kw:
         :return:
-        """
-        kw = '+'.join(kw.split(" "))
-        url = f"/scholar?q={kw}"
-        base_url = "https://scholar.google.com/scholar"
+        '''
+        kw = '+'.join(kw.split(' '))
+        url = f'/scholar?q={kw}'
+        base_url = 'https://scholar.google.com/scholar'
         url = urljoin(base_url, url)
-        url = url.replace("zh-CN", "en")
+        url = url.replace('zh-CN', 'en')
         res = fetch(url=url)
-        return {"res": res, "kw": kw}
+        return {'res': res, 'kw': kw}
 
     def callback(self, result):
         result = result.result()
-        res = result.get("res")
-        kw = result.get("kw")
+        res = result.get('res')
+        kw = result.get('kw')
         seed_infos = self.extract(res, seed=True)
         for seed_info in seed_infos:
-            seed_cites = seed_info.get("cites", 0)
+            seed_cites = seed_info.get('cites', 0)
             try:
                 seed_cites = int(seed_cites)
             except ValueError as e:
-                print(f"Cites ERROR:{res.url}")
+                print(f'Cites ERROR:{res.url}')
             else:
                 for start in range(0, seed_cites, 20):
-                    cite_url = "https://scholar.google.com"+seed_info["cites_url"] + f"&num=20&start={start}"
+                    cite_url = 'https://scholar.google.com'+seed_info['cites_url'] + f'&num=20&start={start}'
                     q.put({
-                        "kw": kw,
-                        "seed_title": seed_info["title"],
-                        "seed_cites": seed_info["cites"],
-                        "cite_url": cite_url,
+                        'kw': kw,
+                        'seed_title': seed_info['title'],
+                        'seed_cites': seed_info['cites'],
+                        'cite_url': cite_url,
                     })
 
     def run(self):
@@ -413,31 +413,31 @@ class Proceser():
             return ''.join(re.findall(r'(\d{0,5})', cites))
 
         def _proc_info(info):
-            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
-            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace('…', '').replace('\xa0', '')
+            author = ''.join(re.findall(r'(.*?)-', info)).replace('…', '').replace('\xa0', '')
             return publish, author
 
-        if not "did not match any articles" in response.text:
+        if not 'did not match any articles' in response.text:
             html = Selector(response)
             if seed:
-                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+                documents = [html.xpath('//div[@id='gs_res_ccl_mid']/div')[0]]
             else:
-                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+                documents = html.xpath('//div[@id='gs_res_ccl_mid']/div')
             infos = []
             for document in documents:
                 title = document.xpath(
-                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
-                    default="")
-                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
-                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
-                    default="")
-                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
-                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                    'string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])').extract_first(
+                    default='')
+                url = document.xpath('.//div[contains(@class,'gs_ri')]/h3/a/@href').extract_first(default='')
+                info = document.xpath('string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])').extract_first(
+                    default='')
+                cites_url = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/@href').extract_first(default='')
+                cites = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/text()').extract_first(default='')
                 cites = _proc_cites(cites)
                 publish, author = _proc_info(info)
                 infos.append(
-                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
-                     "url": url})
+                    {'title': title, 'publish': publish, 'author': author, 'cites_url': cites_url, 'cites': cites,
+                     'url': url})
             return infos
 
 
@@ -446,8 +446,8 @@ class Customer():
         self.savefilename=savefilename
         self.t = ThreadPoolExecutor(max_workers=100)
         self.workbook = Workbook()
-        self.sheet = self.workbook["Sheet"]
-        self.sheet.append(("关键词文件名", "第一匹配结果文献", "本文被引用数", "引用此文文献名", "引用此文作者", "引用此文期刊名", "引用此文文献引用数", "url"))
+        self.sheet = self.workbook['Sheet']
+        self.sheet.append(('关键词文件名', '第一匹配结果文献', '本文被引用数', '引用此文文献名', '引用此文作者', '引用此文期刊名', '引用此文文献引用数', 'url'))
 
     @staticmethod
     def extract(response, seed=False):
@@ -455,41 +455,41 @@ class Customer():
             return ''.join(re.findall(r'(\d{0,5})', cites))
 
         def _proc_info(info):
-            publish = ''.join(re.findall(r'-(.*?)-', info)).replace("…", "").replace("\xa0", "")
-            author = ''.join(re.findall(r'(.*?)-', info)).replace("…", "").replace("\xa0", "")
+            publish = ''.join(re.findall(r'-(.*?)-', info)).replace('…', '').replace('\xa0', '')
+            author = ''.join(re.findall(r'(.*?)-', info)).replace('…', '').replace('\xa0', '')
             return publish, author
 
-        if not "did not match any articles" in response.text:
+        if not 'did not match any articles' in response.text:
             html = Selector(response)
             if seed:
-                documents = [html.xpath("//div[@id='gs_res_ccl_mid']/div")[0]]
+                documents = [html.xpath('//div[@id='gs_res_ccl_mid']/div')[0]]
             else:
-                documents = html.xpath("//div[@id='gs_res_ccl_mid']/div")
+                documents = html.xpath('//div[@id='gs_res_ccl_mid']/div')
             infos = []
             for document in documents:
                 title = document.xpath(
-                    "string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])").extract_first(
-                    default="")
-                url = document.xpath(".//div[contains(@class,'gs_ri')]/h3/a/@href").extract_first(default="")
-                info = document.xpath("string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])").extract_first(
-                    default="")
-                cites_url = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/@href").extract_first(default="")
-                cites = document.xpath(".//div[contains(@class,'gs_fl')]/a[3]/text()").extract_first(default="")
+                    'string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])').extract_first(
+                    default='')
+                url = document.xpath('.//div[contains(@class,'gs_ri')]/h3/a/@href').extract_first(default='')
+                info = document.xpath('string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])').extract_first(
+                    default='')
+                cites_url = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/@href').extract_first(default='')
+                cites = document.xpath('.//div[contains(@class,'gs_fl')]/a[3]/text()').extract_first(default='')
                 cites = _proc_cites(cites)
                 publish, author = _proc_info(info)
                 infos.append(
-                    {"title": title, "publish": publish, "author": author, "cites_url": cites_url, "cites": cites,
-                     "url": url})
+                    {'title': title, 'publish': publish, 'author': author, 'cites_url': cites_url, 'cites': cites,
+                     'url': url})
             return infos
 
     def get_infos(self):
-        print(f"Queue size is {q.qsize()}")
+        print(f'Queue size is {q.qsize()}')
         try:
             infos = q.get(block=True,timeout=180)
             return infos
         except Empty:
-            print(f"Queue size is {q.qsize()}")
-            print("队列0000000结束了！")
+            print(f'Queue size is {q.qsize()}')
+            print('队列0000000结束了！')
             self.workbook.save(self.savefilename)
 
     def run(self):
@@ -499,7 +499,7 @@ class Customer():
             infos = self.get_infos()
 
     def _fe(self, infos):
-        url = infos.get("cite_url")
+        url = infos.get('cite_url')
         res = fetch(url=url)
         cite_infos = self.extract(res)
         for cite_info in cite_infos:
@@ -508,15 +508,15 @@ class Customer():
 
     def callback(self, result):
         cite_infos = result.result()
-        print(f"添加文献{len(cite_infos)}")
+        print(f'添加文献{len(cite_infos)}')
         for infos in cite_infos:
             self.sheet.append((
-                infos.get("kw"), infos.get("seed_title"), infos.get("seed_cites"), infos.get("title"), infos.get("author"), infos.get("publish"), infos.get("cites"),infos.get("url")
+                infos.get('kw'), infos.get('seed_title'), infos.get('seed_cites'), infos.get('title'), infos.get('author'), infos.get('publish'), infos.get('cites'),infos.get('url')
             ))
 
 if __name__ == '__main__':
-    pr=Proceser(filename="again.txt")
-    cu=Customer(savefilename="test.xlsx")
+    pr=Proceser(filename='again.txt')
+    cu=Customer(savefilename='test.xlsx')
     t1=Thread(target=pr.run)
     t2=Thread(target=cu.run)
     t1.start()
@@ -925,7 +925,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

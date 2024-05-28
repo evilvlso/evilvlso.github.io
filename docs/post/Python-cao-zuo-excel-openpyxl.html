@@ -28,10 +28,10 @@ class Xlsx():
         self.index=1
         pass
 
-    def add_sheet(self,sheetname="Sheet"):
+    def add_sheet(self,sheetname='Sheet'):
         return self.workbook.create_sheet(sheetname,self.index+1)
 
-    def add_data(self,data,sheet="Sheet"):
+    def add_data(self,data,sheet='Sheet'):
         '''
         :param sheet :sheet对象
         :param data: data最好是一个元组
@@ -42,17 +42,17 @@ class Xlsx():
         else:
             sheet.append(tuple(data))
 
-    def set_header_font(self,sheetname="Sheet"):
+    def set_header_font(self,sheetname='Sheet'):
         '''
         格式化行头
         :param sheetname:
         :return:
         '''
         font = Font(u'宋体', size=13, bold=True, color='000000')
-        for i in sheetname["1"]:
+        for i in sheetname['1']:
             i.font = font
             
-    def delete_sheet(self,sheetname="Sheet"):
+    def delete_sheet(self,sheetname='Sheet'):
         '''
         删除sheet
         :param sheetname:
@@ -83,10 +83,10 @@ class Xlsx():
         self.index=1
         pass
 
-    def add_sheet(self,sheetname="Sheet"):
+    def add_sheet(self,sheetname='Sheet'):
         return self.workbook.create_sheet(sheetname,self.index+1)
 
-    def add_data(self,data,sheet="Sheet"):
+    def add_data(self,data,sheet='Sheet'):
         '''
         :param sheet :sheet对象
         :param data: data最好是一个元组
@@ -97,17 +97,17 @@ class Xlsx():
         else:
             sheet.append(tuple(data))
 
-    def set_header_font(self,sheetname="Sheet"):
+    def set_header_font(self,sheetname='Sheet'):
         '''
         格式化行头
         :param sheetname:
         :return:
         '''
         font = Font(u'宋体', size=13, bold=True, color='000000')
-        for i in sheetname["1"]:
+        for i in sheetname['1']:
             i.font = font
             
-    def delete_sheet(self,sheetname="Sheet"):
+    def delete_sheet(self,sheetname='Sheet'):
         '''
         删除sheet
         :param sheetname:
@@ -322,7 +322,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

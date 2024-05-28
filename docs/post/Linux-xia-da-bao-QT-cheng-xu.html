@@ -18,16 +18,16 @@
    ```
    #!/bin/bash
    
-   LibDir=$PWD"/lib"
+   LibDir=$PWD'/lib'
    Target=$1
    
-   lib_array=($(ldd $Target | grep -o "/.*" | grep -o "/.*/[^[:space:]]*"))
+   lib_array=($(ldd $Target | grep -o '/.*' | grep -o '/.*/[^[:space:]]*'))
    
    $(mkdir $LibDir)
    
    for Variable in ${lib_array[@]}
    do
-       cp "$Variable" $LibDir
+       cp '$Variable' $LibDir
    done
    ```
 
@@ -53,13 +53,13 @@
   #!/bin/sh
   appname=`basename $0 | sed s,\.sh$,,`
   dirname=`dirname $0`
-  tmp="${dirname#?}"
-  if [ "${dirname%$tmp}" != "/" ]; then
+  tmp='${dirname#?}'
+  if [ '${dirname%$tmp}' != '/' ]; then
   dirname=$PWD/$dirname
   fi
   LD_LIBRARY_PATH=$dirname
   export LD_LIBRARY_PATH
-  $dirname/$appname "$@"
+  $dirname/$appname '$@'
   ```
 
 
@@ -75,16 +75,16 @@
    ```
    #!/bin/bash
    
-   LibDir=$PWD"/lib"
+   LibDir=$PWD'/lib'
    Target=$1
    
-   lib_array=($(ldd $Target | grep -o "/.*" | grep -o "/.*/[^[:space:]]*"))
+   lib_array=($(ldd $Target | grep -o '/.*' | grep -o '/.*/[^[:space:]]*'))
    
    $(mkdir $LibDir)
    
    for Variable in ${lib_array[@]}
    do
-       cp "$Variable" $LibDir
+       cp '$Variable' $LibDir
    done
    ```
 
@@ -110,13 +110,13 @@
   #!/bin/sh
   appname=`basename $0 | sed s,\.sh$,,`
   dirname=`dirname $0`
-  tmp="${dirname#?}"
-  if [ "${dirname%$tmp}" != "/" ]; then
+  tmp='${dirname#?}'
+  if [ '${dirname%$tmp}' != '/' ]; then
   dirname=$PWD/$dirname
   fi
   LD_LIBRARY_PATH=$dirname
   export LD_LIBRARY_PATH
-  $dirname/$appname "$@"
+  $dirname/$appname '$@'
   ```
 
 
@@ -337,7 +337,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

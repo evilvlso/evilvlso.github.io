@@ -48,7 +48,7 @@
 - 字符串遍历的结果是???
 
   ```go
-  a := "asdasf"
+  a := 'asdasf'
   for _, c := range a {
     fmt.Println(c)
   }
@@ -58,7 +58,7 @@
   97
   115
   102
-  a := "够神呐虐"
+  a := '够神呐虐'
   for _,i := range a {
     fmt.Println(i)
   }
@@ -80,7 +80,7 @@
 - `len()`获得的中文字符串长度不是你想的，获取的是字节长度
 
   ```
-  	a := "够神呐虐"
+  	a := '够神呐虐'
   	fmt.Println(len(a)) # 12 fuck
   	b := []rune(a)   # 4
   	b := []byte(a)  # 4  
@@ -97,7 +97,7 @@
 
 - ```
   pattern []string
-  pattern[0]=="a"  ??
+  pattern[0]=='a'  ??
   ```
 
 - 使用unicode筛选匹配中文
@@ -146,7 +146,7 @@
 - 字符串遍历的结果是???
 
   ```go
-  a := "asdasf"
+  a := 'asdasf'
   for _, c := range a {
     fmt.Println(c)
   }
@@ -156,7 +156,7 @@
   97
   115
   102
-  a := "够神呐虐"
+  a := '够神呐虐'
   for _,i := range a {
     fmt.Println(i)
   }
@@ -178,7 +178,7 @@
 - `len()`获得的中文字符串长度不是你想的，获取的是字节长度
 
   ```
-  	a := "够神呐虐"
+  	a := '够神呐虐'
   	fmt.Println(len(a)) # 12 fuck
   	b := []rune(a)   # 4
   	b := []byte(a)  # 4  
@@ -195,7 +195,7 @@
 
 - ```
   pattern []string
-  pattern[0]=="a"  ??
+  pattern[0]=='a'  ??
   ```
 
 - 使用unicode筛选匹配中文
@@ -446,7 +446,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

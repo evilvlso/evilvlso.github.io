@@ -24,8 +24,8 @@ app=Flask(__name__)
 # 需要定一个api
 api=Api(app)
 # 解决一些跨域问题
-CORS(app,resource={r"/*"})
-# CORS(app, resources={r"/test": {"origins": "*"}})
+CORS(app,resource={r'/*'})
+# CORS(app, resources={r'/test': {'origins': '*'}})
 
 
 # 一定继承自 Resource
@@ -33,13 +33,13 @@ class TestView(Resource):
 	def get(self):
 		# 字段验证
 		parser = reqparse.RequestParser()
-		parser.add_argument("phone",required=True,type=inputs.regex(r'\d{11}'),help="输入正确手机号",trim=True)
-		parser.add_argument("username",required=True,type=str,help="输入姓名")
+		parser.add_argument('phone',required=True,type=inputs.regex(r'\d{11}'),help='输入正确手机号',trim=True)
+		parser.add_argument('username',required=True,type=str,help='输入姓名')
 		args=parser.parse_args() #参数解析完成，直接get即可获取
 		return args
 		pass
 
-api.add_resource(TestView,"/test",endpoint="test")
+api.add_resource(TestView,'/test',endpoint='test')
 	
 if __name__ == '__main__':
     app.run(debug=True)
@@ -142,7 +142,7 @@ def login():
         return make_response(
             'Could not verify',
             401,
-            {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
+            {'WWW-Authenticate': 'Basic realm ='Login required !!''}
         )
 
     user = User.query \
@@ -154,7 +154,7 @@ def login():
         return make_response(
             'Could not verify',
             401,
-            {'WWW-Authenticate': 'Basic realm ="User does not exist !!"'}
+            {'WWW-Authenticate': 'Basic realm ='User does not exist !!''}
         )
 
     if check_password_hash(user.password, auth.get('password')):
@@ -169,7 +169,7 @@ def login():
     return make_response(
         'Could not verify',
         403,
-        {'WWW-Authenticate': 'Basic realm ="Wrong Password !!"'}
+        {'WWW-Authenticate': 'Basic realm ='Wrong Password !!''}
     )
 
 
@@ -205,7 +205,7 @@ def signup():
         return make_response('User already exists. Please Log in.', 202)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # setting debug to True enables hot reload
     # and also provides a debugger shell
     # if you hit an error while running the server
@@ -228,8 +228,8 @@ app=Flask(__name__)
 # 需要定一个api
 api=Api(app)
 # 解决一些跨域问题
-CORS(app,resource={r"/*"})
-# CORS(app, resources={r"/test": {"origins": "*"}})
+CORS(app,resource={r'/*'})
+# CORS(app, resources={r'/test': {'origins': '*'}})
 
 
 # 一定继承自 Resource
@@ -237,13 +237,13 @@ class TestView(Resource):
 	def get(self):
 		# 字段验证
 		parser = reqparse.RequestParser()
-		parser.add_argument("phone",required=True,type=inputs.regex(r'\d{11}'),help="输入正确手机号",trim=True)
-		parser.add_argument("username",required=True,type=str,help="输入姓名")
+		parser.add_argument('phone',required=True,type=inputs.regex(r'\d{11}'),help='输入正确手机号',trim=True)
+		parser.add_argument('username',required=True,type=str,help='输入姓名')
 		args=parser.parse_args() #参数解析完成，直接get即可获取
 		return args
 		pass
 
-api.add_resource(TestView,"/test",endpoint="test")
+api.add_resource(TestView,'/test',endpoint='test')
 	
 if __name__ == '__main__':
     app.run(debug=True)
@@ -346,7 +346,7 @@ def login():
         return make_response(
             'Could not verify',
             401,
-            {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
+            {'WWW-Authenticate': 'Basic realm ='Login required !!''}
         )
 
     user = User.query \
@@ -358,7 +358,7 @@ def login():
         return make_response(
             'Could not verify',
             401,
-            {'WWW-Authenticate': 'Basic realm ="User does not exist !!"'}
+            {'WWW-Authenticate': 'Basic realm ='User does not exist !!''}
         )
 
     if check_password_hash(user.password, auth.get('password')):
@@ -373,7 +373,7 @@ def login():
     return make_response(
         'Could not verify',
         403,
-        {'WWW-Authenticate': 'Basic realm ="Wrong Password !!"'}
+        {'WWW-Authenticate': 'Basic realm ='Wrong Password !!''}
     )
 
 
@@ -409,7 +409,7 @@ def signup():
         return make_response('User already exists. Please Log in.', 202)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # setting debug to True enables hot reload
     # and also provides a debugger shell
     # if you hit an error while running the server
@@ -763,7 +763,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

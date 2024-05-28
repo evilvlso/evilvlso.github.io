@@ -20,56 +20,56 @@ settings.json
 
 ```JSON
 {
-    "launch": {
+    'launch': {
 
-        "configurations": [
-            {"name":"Launch",
-            "type":"python",
-            "request":"launch",
-            "console": "integratedTerminal",
-            "cwd":"${fileDirname}", ## 解决执行路径问题
+        'configurations': [
+            {'name':'Launch',
+            'type':'python',
+            'request':'launch',
+            'console': 'integratedTerminal',
+            'cwd':'${fileDirname}', ## 解决执行路径问题
              //工作路径用打开的顶层目录，影响文件读写相对路径
-            //"cwd": "${workspaceFolder}", 
+            //'cwd': '${workspaceFolder}', 
             //工作路径用当前文件所在目录，影响文件读写相对路径
-            //"cwd": "${fileDirname}",
+            //'cwd': '${fileDirname}',
             //sys.path 会加入顶层目录，影响模块导入查询路径
-            //"env": { "PYTHONPATH": "${workspaceFolder}" }
+            //'env': { 'PYTHONPATH': '${workspaceFolder}' }
             }
         ],
-        "compounds": []
+        'compounds': []
     },
-    "python.pythonPath": "/usr/local/anaconda3/envs/mrcnn/bin/python"
+    'python.pythonPath': '/usr/local/anaconda3/envs/mrcnn/bin/python'
 }
 ```
 launch.json  
 ```JSON
 {
-    "version": "0.2.0",
-    "configurations": [
+    'version': '0.2.0',
+    'configurations': [
 
         {
-            "name": "Python: base",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "pythonPath": "/usr/local/anaconda3/bin/python"
+            'name': 'Python: base',
+            'type': 'python',
+            'request': 'launch',
+            'program': '${file}',
+            'console': 'integratedTerminal',
+            'pythonPath': '/usr/local/anaconda3/bin/python'
         },
         {
-            "name": "Python: env",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "pythonPath": "~/env/bin/python"
+            'name': 'Python: env',
+            'type': 'python',
+            'request': 'launch',
+            'program': '${file}',
+            'console': 'integratedTerminal',
+            'pythonPath': '~/env/bin/python'
         },
         {
-            "name": "Python: mrcnn",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "pythonPath": "/usr/local/anaconda3/envs/mrcnn/bin/python"
+            'name': 'Python: mrcnn',
+            'type': 'python',
+            'request': 'launch',
+            'program': '${file}',
+            'console': 'integratedTerminal',
+            'pythonPath': '/usr/local/anaconda3/envs/mrcnn/bin/python'
         },
     ]
 
@@ -87,56 +87,56 @@ settings.json
 
 ```JSON
 {
-    "launch": {
+    'launch': {
 
-        "configurations": [
-            {"name":"Launch",
-            "type":"python",
-            "request":"launch",
-            "console": "integratedTerminal",
-            "cwd":"${fileDirname}", ## 解决执行路径问题
+        'configurations': [
+            {'name':'Launch',
+            'type':'python',
+            'request':'launch',
+            'console': 'integratedTerminal',
+            'cwd':'${fileDirname}', ## 解决执行路径问题
              //工作路径用打开的顶层目录，影响文件读写相对路径
-            //"cwd": "${workspaceFolder}", 
+            //'cwd': '${workspaceFolder}', 
             //工作路径用当前文件所在目录，影响文件读写相对路径
-            //"cwd": "${fileDirname}",
+            //'cwd': '${fileDirname}',
             //sys.path 会加入顶层目录，影响模块导入查询路径
-            //"env": { "PYTHONPATH": "${workspaceFolder}" }
+            //'env': { 'PYTHONPATH': '${workspaceFolder}' }
             }
         ],
-        "compounds": []
+        'compounds': []
     },
-    "python.pythonPath": "/usr/local/anaconda3/envs/mrcnn/bin/python"
+    'python.pythonPath': '/usr/local/anaconda3/envs/mrcnn/bin/python'
 }
 ```
 launch.json  
 ```JSON
 {
-    "version": "0.2.0",
-    "configurations": [
+    'version': '0.2.0',
+    'configurations': [
 
         {
-            "name": "Python: base",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "pythonPath": "/usr/local/anaconda3/bin/python"
+            'name': 'Python: base',
+            'type': 'python',
+            'request': 'launch',
+            'program': '${file}',
+            'console': 'integratedTerminal',
+            'pythonPath': '/usr/local/anaconda3/bin/python'
         },
         {
-            "name": "Python: env",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "pythonPath": "~/env/bin/python"
+            'name': 'Python: env',
+            'type': 'python',
+            'request': 'launch',
+            'program': '${file}',
+            'console': 'integratedTerminal',
+            'pythonPath': '~/env/bin/python'
         },
         {
-            "name": "Python: mrcnn",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "pythonPath": "/usr/local/anaconda3/envs/mrcnn/bin/python"
+            'name': 'Python: mrcnn',
+            'type': 'python',
+            'request': 'launch',
+            'program': '${file}',
+            'console': 'integratedTerminal',
+            'pythonPath': '/usr/local/anaconda3/envs/mrcnn/bin/python'
         },
     ]
 
@@ -356,7 +356,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

@@ -32,7 +32,7 @@ RSYNC_EXCLUDE='/etc/rsyncd.d/rsync_exclude.lst'
 
 #rsync client pwd check
 if [ ! -e ${rsync_pwd} ];then
-    echo -e "rsync client passwod file ${rsync_pwd} does not exist!"
+    echo -e 'rsync client passwod file ${rsync_pwd} does not exist!'
     exit 0
 fi
 
@@ -57,7 +57,7 @@ inotify_fun >> ${log_file} 2>&1 &
 /usr/local/bin/inotifywait -mrq -e modify,attrib,move,create,delete /test | while read file
 do
     rsync -a --delete /test/ 192.168.1.20:/testbak/
-    echo "$file在`date +'%F %T %A'`同步成功" >> /var/log/rsync.log
+    echo '$file在`date +'%F %T %A'`同步成功' >> /var/log/rsync.log
 done
 ```。">
 <meta property="og:title" content="inotify+rsync同步脚本">
@@ -84,7 +84,7 @@ RSYNC_EXCLUDE='/etc/rsyncd.d/rsync_exclude.lst'
 
 #rsync client pwd check
 if [ ! -e ${rsync_pwd} ];then
-    echo -e "rsync client passwod file ${rsync_pwd} does not exist!"
+    echo -e 'rsync client passwod file ${rsync_pwd} does not exist!'
     exit 0
 fi
 
@@ -109,7 +109,7 @@ inotify_fun >> ${log_file} 2>&1 &
 /usr/local/bin/inotifywait -mrq -e modify,attrib,move,create,delete /test | while read file
 do
     rsync -a --delete /test/ 192.168.1.20:/testbak/
-    echo "$file在`date +'%F %T %A'`同步成功" >> /var/log/rsync.log
+    echo '$file在`date +'%F %T %A'`同步成功' >> /var/log/rsync.log
 done
 ```。">
 <meta property="og:type" content="article">
@@ -310,7 +310,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>

@@ -23,7 +23,7 @@
     y_onehot=y_onehot.reshape(self.num_classes,self.image_size,self.image_size)
     # 这一步是为reshape，但是这种reshape方式的结果呈现并不是直觉理解的（不是通道值互斥的），原因是因为reshape的原理
     # 正确的应该是
-    y_onehot = rearrange(y_onehot,"(h w) c->c h w",h=self.image_size)
+    y_onehot = rearrange(y_onehot,'(h w) c->c h w',h=self.image_size)
    ```
 
 2. pytorch也有one_hot编码方法，代码如下：
@@ -39,7 +39,7 @@
    y_onehot=F.one_hot(torch.Tensor(y.reshpe(-1).to(torch.int64)),num_classes)
    # 这一步结果是one_hot形式了，下一步需要变换shape就行
    # 注意第一个参数是Tensor类型并且要转为torch.int64
-   y_onehot = rearrange(y_onehot,"(h w) c->c h w",h=self.image_size)
+   y_onehot = rearrange(y_onehot,'(h w) c->c h w',h=self.image_size)
    ```
 
 3. keras也有one_host编码方法，随后补充
@@ -64,7 +64,7 @@
     y_onehot=y_onehot.reshape(self.num_classes,self.image_size,self.image_size)
     # 这一步是为reshape，但是这种reshape方式的结果呈现并不是直觉理解的（不是通道值互斥的），原因是因为reshape的原理
     # 正确的应该是
-    y_onehot = rearrange(y_onehot,"(h w) c->c h w",h=self.image_size)
+    y_onehot = rearrange(y_onehot,'(h w) c->c h w',h=self.image_size)
    ```
 
 2. pytorch也有one_hot编码方法，代码如下：
@@ -80,7 +80,7 @@
    y_onehot=F.one_hot(torch.Tensor(y.reshpe(-1).to(torch.int64)),num_classes)
    # 这一步结果是one_hot形式了，下一步需要变换shape就行
    # 注意第一个参数是Tensor类型并且要转为torch.int64
-   y_onehot = rearrange(y_onehot,"(h w) c->c h w",h=self.image_size)
+   y_onehot = rearrange(y_onehot,'(h w) c->c h w',h=self.image_size)
    ```
 
 3. keras也有one_host编码方法，随后补充
@@ -278,7 +278,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>
