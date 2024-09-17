@@ -245,77 +245,78 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <ol>
 <li>
 <p>同步请求数据</p>
-<div class="highlight highlight-source-c++"><pre class="notranslate">QNetworkAccessManager *mgr = <span class="pl-k">new</span> QNetworkAccessManager(<span class="pl-smi">this</span>);
-const QUrl url(QStringLiteral("http://myserver.com/api"));
-QNetworkRequest request(url);
-request.setHeader(<span class="pl-smi">QNetworkRequest</span>::ContentTypeHeader, "application/json");
+<div class="highlight highlight-source-c++"><pre class="notranslate">QNetworkAccessManager *mgr = <span class="pl-k">new</span> QNetworkAccessManager(<span class="pl-c1">this</span>);
+<span class="pl-k">const</span> QUrl <span class="pl-en">url</span>(QStringLiteral(<span class="pl-s"><span class="pl-pds">"</span>http://myserver.com/api<span class="pl-pds">"</span></span>));
+QNetworkRequest <span class="pl-en">request</span>(url);
+request.setHeader(QNetworkRequest::ContentTypeHeader, <span class="pl-s"><span class="pl-pds">"</span>application/json<span class="pl-pds">"</span></span>);
 
 QJsonObject obj;
-obj["key1"] = "value1";
-obj["key2"] = "value2";
-QJsonDocument doc(obj);
+obj[<span class="pl-s"><span class="pl-pds">"</span>key1<span class="pl-pds">"</span></span>] = <span class="pl-s"><span class="pl-pds">"</span>value1<span class="pl-pds">"</span></span>;
+obj[<span class="pl-s"><span class="pl-pds">"</span>key2<span class="pl-pds">"</span></span>] = <span class="pl-s"><span class="pl-pds">"</span>value2<span class="pl-pds">"</span></span>;
+QJsonDocument <span class="pl-en">doc</span>(obj);
 QByteArray data = doc.toJson();
-// or
-// QByteArray data("{\"key1\":\"value1\",\"key2\":\"value2\"}");
-QNetworkReply *reply = mgr-&gt;post(request, data);
+<span class="pl-c"><span class="pl-c">//</span> or</span>
+<span class="pl-c"><span class="pl-c">//</span> QByteArray data("{\"key1\":\"value1\",\"key2\":\"value2\"}");</span>
+QNetworkReply *reply = mgr-&gt;<span class="pl-en">post</span>(request, data);
 
-<span class="pl-smi">QObject</span>::<span class="pl-en">connect</span>(reply, &amp;<span class="pl-smi">QNetworkReply</span>::finished, [=](){
-    if(reply-&gt;error() == <span class="pl-smi">QNetworkReply</span>::NoError){
-        QString contents = <span class="pl-smi">QString</span>::<span class="pl-en">fromUtf8</span>(reply-&gt;readAll());
-        qDebug() &lt;&lt; contents;
+<span class="pl-en">QObject::connect</span>(reply, &amp;QNetworkReply::finished, [=](){
+    <span class="pl-k">if</span>(reply-&gt;<span class="pl-c1">error</span>() == QNetworkReply::NoError){
+        QString contents = <span class="pl-c1">QString::fromUtf8</span>(reply-&gt;<span class="pl-c1">readAll</span>());
+        <span class="pl-c1">qDebug</span>() &lt;&lt; contents;
     }
-    else{
-        QString err = reply-&gt;errorString();
-        qDebug() &lt;&lt; err;
+    <span class="pl-k">else</span>{
+        QString err = reply-&gt;<span class="pl-c1">errorString</span>();
+        <span class="pl-c1">qDebug</span>() &lt;&lt; err;
     }
-    reply-&gt;deleteLater();
+    reply-&gt;<span class="pl-c1">deleteLater</span>();
 });</pre></div>
 </li>
 </ol>
 <ul>
 <li>TableView 初始化</li>
 </ul>
-<div class="highlight highlight-source-c++"><pre class="notranslate">void myc::<span class="pl-en">setTableHead</span>()
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">void</span> <span class="pl-en">myc::setTableHead</span>()
 {
-    if(ui-&gt;tableView-&gt;model()==<span class="pl-c1">nullptr</span>){
-      QStandardItemModel *  theModel = <span class="pl-k">new</span> QStandardItemModel(ui-&gt;tableView);
-      ui-&gt;tableView-&gt;setModel(theModel);
+    <span class="pl-k">if</span>(ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">model</span>()==<span class="pl-c1">nullptr</span>){
+      QStandardItemModel *  theModel = <span class="pl-k">new</span> <span class="pl-c1">QStandardItemModel</span>(ui-&gt;<span class="pl-smi">tableView</span>);
+      ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">setModel</span>(theModel);
    		 }
-    QStandardItemModel * theModel = (QStandardItemModel*) ui-&gt;tableView-&gt;model();
-	 theSelection = <span class="pl-k">new</span> QItemSelectionModel(theModel);//选中模型类 从ui中获取 而不是设置类成员
-	 ui-&gt;tableView-&gt;setSelectionModel(theSelection);
+    QStandardItemModel * theModel = (QStandardItemModel*) ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">model</span>();
+	 theSelection = <span class="pl-k">new</span> <span class="pl-c1">QItemSelectionModel</span>(theModel);<span class="pl-c"><span class="pl-c">//</span>选中模型类 从ui中获取 而不是设置类成员</span>
+	 ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">setSelectionModel</span>(theSelection);
     QStringList headerList;
-    headerList&lt;&lt;"序号"&lt;&lt;"报告编号"&lt;&lt;"姓名"&lt;&lt;"性别"&lt;&lt;"创建时间";
-    theModel-&gt;setHorizontalHeaderLabels(headerList);
-    theModel-&gt;setRowCount(5);  //设置表格行数 
-    ui-&gt;tableView-&gt;setGridStyle(<span class="pl-smi">Qt</span>::SolidLine);
-    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setStretchLastSection(true);
-    ui-&gt;tableView-&gt;horizontalHeader()-&gt;setSectionResizeMode(<span class="pl-smi">QHeaderView</span>::ResizeToContents);
-    ui-&gt;tableView-&gt;verticalHeader()-&gt;setVisible(true);   // 是否隐藏列表头
-    ui-&gt;tableView-&gt;setEditTriggers(<span class="pl-smi">QAbstractItemView</span>::NoEditTriggers); //是否可编辑 cell
-    ui-&gt;tableView-&gt;setContextMenuPolicy(<span class="pl-smi">Qt</span>::CustomContextMenu);    //弹出右键菜单策略
-    ui-&gt;tableView-&gt;setSelectionBehavior(<span class="pl-smi">QAbstractItemView</span>::SelectRows); //一选就选择整行
-    ui-&gt;tableView-&gt;setSelectionMode(<span class="pl-smi">QAbstractItemView</span>::SingleSelection); //只选择一行/多行
+    headerList&lt;&lt;<span class="pl-s"><span class="pl-pds">"</span>序号<span class="pl-pds">"</span></span>&lt;&lt;<span class="pl-s"><span class="pl-pds">"</span>报告编号<span class="pl-pds">"</span></span>&lt;&lt;<span class="pl-s"><span class="pl-pds">"</span>姓名<span class="pl-pds">"</span></span>&lt;&lt;<span class="pl-s"><span class="pl-pds">"</span>性别<span class="pl-pds">"</span></span>&lt;&lt;<span class="pl-s"><span class="pl-pds">"</span>创建时间<span class="pl-pds">"</span></span>;
+    theModel-&gt;<span class="pl-c1">setHorizontalHeaderLabels</span>(headerList);
+    theModel-&gt;<span class="pl-c1">setRowCount</span>(<span class="pl-c1">5</span>);  <span class="pl-c"><span class="pl-c">//</span>设置表格行数 </span>
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">setGridStyle</span>(Qt::SolidLine);
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">horizontalHeader</span>()-&gt;<span class="pl-c1">setStretchLastSection</span>(<span class="pl-c1">true</span>);
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">horizontalHeader</span>()-&gt;<span class="pl-c1">setSectionResizeMode</span>(QHeaderView::ResizeToContents);
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">verticalHeader</span>()-&gt;<span class="pl-c1">setVisible</span>(<span class="pl-c1">true</span>);   <span class="pl-c"><span class="pl-c">//</span> 是否隐藏列表头</span>
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">setEditTriggers</span>(QAbstractItemView::NoEditTriggers); <span class="pl-c"><span class="pl-c">//</span>是否可编辑 cell</span>
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">setContextMenuPolicy</span>(Qt::CustomContextMenu);    <span class="pl-c"><span class="pl-c">//</span>弹出右键菜单策略</span>
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">setSelectionBehavior</span>(QAbstractItemView::SelectRows); <span class="pl-c"><span class="pl-c">//</span>一选就选择整行</span>
+    ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">setSelectionMode</span>(QAbstractItemView::SingleSelection); <span class="pl-c"><span class="pl-c">//</span>只选择一行/多行</span>
 }</pre></div>
 <ul>
 <li>
 <p>添加一行数据</p>
-<div class="highlight highlight-source-c++"><pre class="notranslate">void myc::<span class="pl-en">querybtn_clicked</span>()
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">void</span> <span class="pl-en">myc::querybtn_clicked</span>()
 {
     
-    QStandardItemModel * theModel = (QStandardItemModel*)ui-&gt;tableView-&gt;model();
-    int start= theModel-&gt;rowCount();  // 有start也就是从表格现有的行数下一个开始
-    QString sql =  QString("select * from patients");
-    QList&lt;QList&lt;QVariant&gt;&gt; query_list = con-&gt;dbquery(sql);
-    for(int i=0;i&lt;query_list.length();i++){
+    QStandardItemModel * theModel = (QStandardItemModel*)ui-&gt;<span class="pl-smi">tableView</span>-&gt;<span class="pl-c1">model</span>();
+    <span class="pl-k">int</span> start= theModel-&gt;<span class="pl-c1">rowCount</span>();  <span class="pl-c"><span class="pl-c">//</span> 有start也就是从表格现有的行数下一个开始</span>
+    QString sql =  <span class="pl-c1">QString</span>(<span class="pl-s"><span class="pl-pds">"</span>select * from patients<span class="pl-pds">"</span></span>);
+    QList&lt;QList&lt;QVariant&gt;&gt; query_list = con-&gt;<span class="pl-c1">dbquery</span>(sql);
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;query_list.<span class="pl-c1">length</span>();i++){
         QList&lt;QStandardItem*&gt; ItemList;
-        ItemList&lt;&lt;(<span class="pl-k">new</span> QStandardItem(query_list[i][0].toString()));
-        ItemList&lt;&lt;(<span class="pl-k">new</span> QStandardItem(query_list[i][1].toString()));
-        ItemList&lt;&lt;(<span class="pl-k">new</span> QStandardItem(query_list[i][2].toString()));
-        ItemList&lt;&lt;(<span class="pl-k">new</span> QStandardItem(query_list[i][3].toString()=="0"?"女":"男"));
-        ItemList&lt;&lt;(<span class="pl-k">new</span> QStandardItem(query_list[i][4].toString()));
-        theModel-&gt;insertRow(i+start,ItemList);  // 插入
-    }</pre></div>
+        ItemList&lt;&lt;(<span class="pl-k">new</span> <span class="pl-c1">QStandardItem</span>(query_list[i][<span class="pl-c1">0</span>].<span class="pl-c1">toString</span>()));
+        ItemList&lt;&lt;(<span class="pl-k">new</span> <span class="pl-c1">QStandardItem</span>(query_list[i][<span class="pl-c1">1</span>].<span class="pl-c1">toString</span>()));
+        ItemList&lt;&lt;(<span class="pl-k">new</span> <span class="pl-c1">QStandardItem</span>(query_list[i][<span class="pl-c1">2</span>].<span class="pl-c1">toString</span>()));
+        ItemList&lt;&lt;(<span class="pl-k">new</span> <span class="pl-c1">QStandardItem</span>(query_list[i][<span class="pl-c1">3</span>].<span class="pl-c1">toString</span>()==<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span>?<span class="pl-s"><span class="pl-pds">"</span>女<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>男<span class="pl-pds">"</span></span>));
+        ItemList&lt;&lt;(<span class="pl-k">new</span> <span class="pl-c1">QStandardItem</span>(query_list[i][<span class="pl-c1">4</span>].<span class="pl-c1">toString</span>()));
+        theModel-&gt;<span class="pl-c1">insertRow</span>(i+start,ItemList);  <span class="pl-c"><span class="pl-c">//</span> 插入</span>
+    }
+</pre></div>
 </li>
 </ul></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
