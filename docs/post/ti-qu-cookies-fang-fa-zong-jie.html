@@ -156,12 +156,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </li>
 </ul>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">from</span> <span class="pl-s1">scrapy</span>.<span class="pl-s1">http</span>.<span class="pl-s1">cookies</span> <span class="pl-k">import</span> <span class="pl-v">CookieJar</span>
-<span class="pl-s1">cookie_jar</span> <span class="pl-c1">=</span> <span class="pl-v">CookieJar</span>()
-<span class="pl-s1">cookie_jar</span>.<span class="pl-en">extract_cookies</span>(<span class="pl-s1">response</span>, <span class="pl-s1">response</span>.<span class="pl-s1">request</span>)
-<span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-s1">self</span>.<span class="pl-s1">cookie_jar</span>:
-    <span class="pl-s1">p</span> <span class="pl-c1">=</span> <span class="pl-s1">re</span>.<span class="pl-en">compile</span>(<span class="pl-s">r'&lt;Cookie (.*?) for .*?&gt;'</span>)            
-    <span class="pl-s1">cookies</span> <span class="pl-c1">=</span> <span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s1">p</span>, <span class="pl-en">str</span>(<span class="pl-s1">i</span>))            
-    <span class="pl-s1">cookies</span> <span class="pl-c1">=</span> (<span class="pl-s1">cookie</span>.<span class="pl-en">split</span>(<span class="pl-s">'='</span>, <span class="pl-c1">1</span>) <span class="pl-k">for</span> <span class="pl-s1">cookie</span> <span class="pl-c1">in</span> <span class="pl-s1">cookies</span>)
+<span class="pl-s1">cookie_jar</span> <span class="pl-c1">=</span> <span class="pl-en">CookieJar</span>()
+<span class="pl-s1">cookie_jar</span>.<span class="pl-c1">extract_cookies</span>(<span class="pl-s1">response</span>, <span class="pl-s1">response</span>.<span class="pl-c1">request</span>)
+<span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-s1">self</span>.<span class="pl-c1">cookie_jar</span>:
+    <span class="pl-s1">p</span> <span class="pl-c1">=</span> <span class="pl-s1">re</span>.<span class="pl-c1">compile</span>(<span class="pl-s">r'&lt;Cookie (.*?) for .*?&gt;'</span>)            
+    <span class="pl-s1">cookies</span> <span class="pl-c1">=</span> <span class="pl-s1">re</span>.<span class="pl-c1">findall</span>(<span class="pl-s1">p</span>, <span class="pl-en">str</span>(<span class="pl-s1">i</span>))            
+    <span class="pl-s1">cookies</span> <span class="pl-c1">=</span> (<span class="pl-s1">cookie</span>.<span class="pl-c1">split</span>(<span class="pl-s">'='</span>, <span class="pl-c1">1</span>) <span class="pl-k">for</span> <span class="pl-s1">cookie</span> <span class="pl-c1">in</span> <span class="pl-s1">cookies</span>)
     <span class="pl-s1">cookies</span> <span class="pl-c1">=</span> <span class="pl-en">dict</span>(<span class="pl-s1">cookies</span>)</pre></div>
 <ul>
 <li>
@@ -171,19 +171,19 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">def</span> <span class="pl-en">get_cookies</span>(<span class="pl-s1">response</span>):
     <span class="pl-s1">my_cookies</span> <span class="pl-c1">=</span> <span class="pl-en">dict</span>()
     <span class="pl-c"># 请求包里带的Cookie</span>
-    <span class="pl-k">for</span> <span class="pl-s1">cookie</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-s1">request</span>.<span class="pl-s1">headers</span>.<span class="pl-en">getlist</span>(<span class="pl-s">'Cookie'</span>):
-        <span class="pl-k">for</span> <span class="pl-s1">ck</span> <span class="pl-c1">in</span> <span class="pl-s1">cookie</span>.<span class="pl-en">decode</span>(<span class="pl-s">'utf8'</span>).<span class="pl-en">split</span>(<span class="pl-s">';'</span>):
+    <span class="pl-k">for</span> <span class="pl-s1">cookie</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-c1">request</span>.<span class="pl-c1">headers</span>.<span class="pl-c1">getlist</span>(<span class="pl-s">'Cookie'</span>):
+        <span class="pl-k">for</span> <span class="pl-s1">ck</span> <span class="pl-c1">in</span> <span class="pl-s1">cookie</span>.<span class="pl-c1">decode</span>(<span class="pl-s">'utf8'</span>).<span class="pl-c1">split</span>(<span class="pl-s">';'</span>):
             <span class="pl-k">try</span>:
-                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-en">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-en">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s1">ck</span>.<span class="pl-en">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">1</span>].<span class="pl-en">strip</span>()
+                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-c1">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-c1">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s1">ck</span>.<span class="pl-c1">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">1</span>].<span class="pl-c1">strip</span>()
             <span class="pl-k">except</span>:
-                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-en">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-en">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s">''</span>
+                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-c1">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-c1">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s">''</span>
     <span class="pl-c"># 响应包里给的Set-Cookie</span>
-    <span class="pl-k">for</span> <span class="pl-s1">cookie</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-s1">headers</span>.<span class="pl-en">getlist</span>(<span class="pl-s">'Set-Cookie'</span>):
-        <span class="pl-k">for</span> <span class="pl-s1">ck</span> <span class="pl-c1">in</span> <span class="pl-s1">cookie</span>.<span class="pl-en">decode</span>(<span class="pl-s">'utf8'</span>).<span class="pl-en">split</span>(<span class="pl-s">';'</span>):
+    <span class="pl-k">for</span> <span class="pl-s1">cookie</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-c1">headers</span>.<span class="pl-c1">getlist</span>(<span class="pl-s">'Set-Cookie'</span>):
+        <span class="pl-k">for</span> <span class="pl-s1">ck</span> <span class="pl-c1">in</span> <span class="pl-s1">cookie</span>.<span class="pl-c1">decode</span>(<span class="pl-s">'utf8'</span>).<span class="pl-c1">split</span>(<span class="pl-s">';'</span>):
             <span class="pl-k">try</span>:
-                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-en">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-en">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s1">ck</span>.<span class="pl-en">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">1</span>].<span class="pl-en">strip</span>()
+                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-c1">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-c1">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s1">ck</span>.<span class="pl-c1">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">1</span>].<span class="pl-c1">strip</span>()
             <span class="pl-k">except</span>:
-                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-en">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-en">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s">''</span>
+                <span class="pl-s1">my_cookies</span>[<span class="pl-s1">ck</span>.<span class="pl-c1">split</span>(<span class="pl-s">'='</span>)[<span class="pl-c1">0</span>].<span class="pl-c1">strip</span>()] <span class="pl-c1">=</span> <span class="pl-s">''</span>
     <span class="pl-k">return</span> <span class="pl-s1">my_cookies</span></pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 

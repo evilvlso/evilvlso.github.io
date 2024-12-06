@@ -610,8 +610,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-k">from</span> <span class="pl-s1">concurrent</span>.<span class="pl-s1">futures</span> <span class="pl-k">import</span> <span class="pl-v">ThreadPoolExecutor</span>, <span class="pl-s1">as_completed</span>
 <span class="pl-k">from</span> <span class="pl-s1">queue</span> <span class="pl-k">import</span> <span class="pl-v">Queue</span>,<span class="pl-v">Empty</span>
 
-<span class="pl-s1">r</span> <span class="pl-c1">=</span> <span class="pl-s1">redis</span>.<span class="pl-v">Redis</span>(<span class="pl-s">"127.0.0.1"</span>, <span class="pl-s1">db</span><span class="pl-c1">=</span><span class="pl-c1">0</span>)
-<span class="pl-s1">q</span> <span class="pl-c1">=</span> <span class="pl-v">Queue</span>(<span class="pl-s1">maxsize</span><span class="pl-c1">=</span><span class="pl-c1">100</span>)
+<span class="pl-s1">r</span> <span class="pl-c1">=</span> <span class="pl-s1">redis</span>.<span class="pl-c1">Redis</span>(<span class="pl-s">"127.0.0.1"</span>, <span class="pl-s1">db</span><span class="pl-c1">=</span><span class="pl-c1">0</span>)
+<span class="pl-s1">q</span> <span class="pl-c1">=</span> <span class="pl-en">Queue</span>(<span class="pl-s1">maxsize</span><span class="pl-c1">=</span><span class="pl-c1">100</span>)
 
 <span class="pl-s1">proxies</span> <span class="pl-c1">=</span> {
     <span class="pl-s">"http"</span>: <span class="pl-s">"http://127.0.0.1:1087"</span>,
@@ -633,14 +633,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <span class="pl-s">'Referer'</span>: <span class="pl-s">'https://scholar.google.com/scholar?start=20&amp;hl=en&amp;as_sdt=2005&amp;sciodt=0,5&amp;cites=9023096709689140743&amp;scipsc='</span>,
     <span class="pl-s">'User-Agent'</span>: <span class="pl-s">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'</span>,
     <span class="pl-s">'pragma'</span>: <span class="pl-s">'no-cache'</span>,
-    <span class="pl-s">'cookie'</span>: <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>),
+    <span class="pl-s">'cookie'</span>: <span class="pl-s1">r</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-c1">decode</span>(<span class="pl-s">"ASCII"</span>),
 }
 
 
 <span class="pl-k">def</span> <span class="pl-en">try_if_ssl_error</span>(<span class="pl-s1">exception</span>):
     <span class="pl-k">if</span> <span class="pl-en">isinstance</span>(<span class="pl-s1">exception</span>, (
-            <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">SSLError</span>, <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">ProxyError</span>, <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">ReadTimeout</span>,
-            <span class="pl-s1">requests</span>.<span class="pl-s1">exceptions</span>.<span class="pl-v">ConnectionError</span>)):
+            <span class="pl-s1">requests</span>.<span class="pl-c1">exceptions</span>.<span class="pl-c1">SSLError</span>, <span class="pl-s1">requests</span>.<span class="pl-c1">exceptions</span>.<span class="pl-c1">ProxyError</span>, <span class="pl-s1">requests</span>.<span class="pl-c1">exceptions</span>.<span class="pl-c1">ReadTimeout</span>,
+            <span class="pl-s1">requests</span>.<span class="pl-c1">exceptions</span>.<span class="pl-c1">ConnectionError</span>)):
         <span class="pl-en">print</span>(<span class="pl-s">f"代理可能失效 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">exception</span><span class="pl-kos">}</span></span>"</span>)
         <span class="pl-k">return</span> <span class="pl-c1">True</span>
     <span class="pl-en">print</span>(<span class="pl-s">f"意料之外错误 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">exception</span><span class="pl-kos">}</span></span>"</span>)
@@ -648,44 +648,44 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 
 <span class="pl-k">def</span> <span class="pl-en">try_if_robot</span>(<span class="pl-s1">result</span>):
-    <span class="pl-k">if</span> <span class="pl-s">"you're not a robot"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span> <span class="pl-c1">or</span> <span class="pl-s">"人机身份验证"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
+    <span class="pl-k">if</span> <span class="pl-s">"you're not a robot"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-c1">text</span> <span class="pl-c1">or</span> <span class="pl-s">"人机身份验证"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-c1">text</span>:
         <span class="pl-en">print</span>(<span class="pl-s">"出现 Robot 检测"</span>)
-        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-c1">decode</span>(<span class="pl-s">"ASCII"</span>)
         <span class="pl-k">return</span> <span class="pl-c1">True</span>
-    <span class="pl-k">if</span> <span class="pl-s">"detected unusual traffic"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span> <span class="pl-c1">or</span> <span class="pl-s">"异常流量"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
+    <span class="pl-k">if</span> <span class="pl-s">"detected unusual traffic"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-c1">text</span> <span class="pl-c1">or</span> <span class="pl-s">"异常流量"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-c1">text</span>:
         <span class="pl-en">print</span>(<span class="pl-s">"出现 流量 检测"</span>)
-        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-c1">decode</span>(<span class="pl-s">"ASCII"</span>)
         <span class="pl-k">return</span> <span class="pl-c1">True</span>
-    <span class="pl-k">if</span> <span class="pl-s">"sending automated queries"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
-        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+    <span class="pl-k">if</span> <span class="pl-s">"sending automated queries"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-c1">text</span>:
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-c1">decode</span>(<span class="pl-s">"ASCII"</span>)
         <span class="pl-en">print</span>(<span class="pl-s">" your computer or network may be sending automated queries"</span>)
         <span class="pl-k">return</span> <span class="pl-c1">True</span>
-    <span class="pl-k">if</span> <span class="pl-s">"/recaptcha/api.js"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-s1">text</span>:
-        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-en">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-en">decode</span>(<span class="pl-s">"ASCII"</span>)
+    <span class="pl-k">if</span> <span class="pl-s">"/recaptcha/api.js"</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-c1">text</span>:
+        <span class="pl-s1">headers</span>[<span class="pl-s">"cookie"</span>] <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cookies"</span>).<span class="pl-c1">decode</span>(<span class="pl-s">"ASCII"</span>)
         <span class="pl-en">print</span>(<span class="pl-s">"出现 验证码 检测 "</span>)
         <span class="pl-k">return</span> <span class="pl-c1">True</span>
     <span class="pl-k">return</span> <span class="pl-c1">False</span>
 
 
-<span class="pl-en">@<span class="pl-s1">retrying</span>.<span class="pl-en">retry</span>(<span class="pl-s1">stop_max_attempt_number</span><span class="pl-c1">=</span><span class="pl-c1">500</span>, <span class="pl-s1">retry_on_result</span><span class="pl-c1">=</span><span class="pl-s1">try_if_robot</span>, <span class="pl-s1">retry_on_exception</span><span class="pl-c1">=</span><span class="pl-s1">try_if_ssl_error</span>,</span>
+<span class="pl-en">@<span class="pl-s1">retrying</span>.<span class="pl-c1">retry</span>(<span class="pl-s1">stop_max_attempt_number</span><span class="pl-c1">=</span><span class="pl-c1">500</span>, <span class="pl-s1">retry_on_result</span><span class="pl-c1">=</span><span class="pl-s1">try_if_robot</span>, <span class="pl-s1">retry_on_exception</span><span class="pl-c1">=</span><span class="pl-s1">try_if_ssl_error</span>,</span>
 <span class="pl-en">                <span class="pl-s1">wait_fixed</span><span class="pl-c1">=</span><span class="pl-c1">10000</span>)</span>
 <span class="pl-k">def</span> <span class="pl-en">fetch</span>(<span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
     <span class="pl-s">"""</span>
 <span class="pl-s">    :param kwargs:  start cites</span>
 <span class="pl-s">    :return:</span>
 <span class="pl-s">    """</span>
-    <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">kwargs</span>.<span class="pl-en">get</span>(<span class="pl-s">"url"</span>)
-    <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">requests</span>.<span class="pl-en">get</span>(<span class="pl-s1">url</span>, <span class="pl-s1">headers</span><span class="pl-c1">=</span><span class="pl-s1">headers</span>, <span class="pl-s1">proxies</span><span class="pl-c1">=</span><span class="pl-s1">proxies</span>, <span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">7</span>)
+    <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">kwargs</span>.<span class="pl-c1">get</span>(<span class="pl-s">"url"</span>)
+    <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">requests</span>.<span class="pl-c1">get</span>(<span class="pl-s1">url</span>, <span class="pl-s1">headers</span><span class="pl-c1">=</span><span class="pl-s1">headers</span>, <span class="pl-s1">proxies</span><span class="pl-c1">=</span><span class="pl-s1">proxies</span>, <span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">7</span>)
     <span class="pl-k">return</span> <span class="pl-s1">response</span>
 
 
 <span class="pl-k">class</span> <span class="pl-v">Proceser</span>():
 
     <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>, <span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
-        <span class="pl-s1">filename</span> <span class="pl-c1">=</span> <span class="pl-s1">kwargs</span>.<span class="pl-en">get</span>(<span class="pl-s">"filename"</span>)
+        <span class="pl-s1">filename</span> <span class="pl-c1">=</span> <span class="pl-s1">kwargs</span>.<span class="pl-c1">get</span>(<span class="pl-s">"filename"</span>)
         <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">filename</span>, <span class="pl-s">"r"</span>) <span class="pl-k">as</span> <span class="pl-s1">f</span>:
-            <span class="pl-s1">self</span>.<span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">f</span>.<span class="pl-en">readlines</span>()
-        <span class="pl-s1">self</span>.<span class="pl-s1">t</span> <span class="pl-c1">=</span> <span class="pl-v">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-c1">2</span>)
+            <span class="pl-s1">self</span>.<span class="pl-c1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">f</span>.<span class="pl-c1">readlines</span>()
+        <span class="pl-s1">self</span>.<span class="pl-c1">t</span> <span class="pl-c1">=</span> <span class="pl-en">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-c1">2</span>)
         <span class="pl-k">pass</span>
 
     <span class="pl-k">def</span> <span class="pl-en">_proc</span>(<span class="pl-s1">self</span>, <span class="pl-s1">kw</span>):
@@ -694,29 +694,29 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s">        :param kw:</span>
 <span class="pl-s">        :return:</span>
 <span class="pl-s">        """</span>
-        <span class="pl-s1">kw</span> <span class="pl-c1">=</span> <span class="pl-s">'+'</span>.<span class="pl-en">join</span>(<span class="pl-s1">kw</span>.<span class="pl-en">split</span>(<span class="pl-s">" "</span>))
+        <span class="pl-s1">kw</span> <span class="pl-c1">=</span> <span class="pl-s">'+'</span>.<span class="pl-c1">join</span>(<span class="pl-s1">kw</span>.<span class="pl-c1">split</span>(<span class="pl-s">" "</span>))
         <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s">f"/scholar?q=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">kw</span><span class="pl-kos">}</span></span>"</span>
         <span class="pl-s1">base_url</span> <span class="pl-c1">=</span> <span class="pl-s">"https://scholar.google.com/scholar"</span>
         <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-en">urljoin</span>(<span class="pl-s1">base_url</span>, <span class="pl-s1">url</span>)
-        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">url</span>.<span class="pl-en">replace</span>(<span class="pl-s">"zh-CN"</span>, <span class="pl-s">"en"</span>)
+        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">url</span>.<span class="pl-c1">replace</span>(<span class="pl-s">"zh-CN"</span>, <span class="pl-s">"en"</span>)
         <span class="pl-s1">res</span> <span class="pl-c1">=</span> <span class="pl-en">fetch</span>(<span class="pl-s1">url</span><span class="pl-c1">=</span><span class="pl-s1">url</span>)
         <span class="pl-k">return</span> {<span class="pl-s">"res"</span>: <span class="pl-s1">res</span>, <span class="pl-s">"kw"</span>: <span class="pl-s1">kw</span>}
 
     <span class="pl-k">def</span> <span class="pl-en">callback</span>(<span class="pl-s1">self</span>, <span class="pl-s1">result</span>):
-        <span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">result</span>()
-        <span class="pl-s1">res</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">get</span>(<span class="pl-s">"res"</span>)
-        <span class="pl-s1">kw</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">get</span>(<span class="pl-s">"kw"</span>)
-        <span class="pl-s1">seed_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">extract</span>(<span class="pl-s1">res</span>, <span class="pl-s1">seed</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+        <span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-c1">result</span>()
+        <span class="pl-s1">res</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-c1">get</span>(<span class="pl-s">"res"</span>)
+        <span class="pl-s1">kw</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-c1">get</span>(<span class="pl-s">"kw"</span>)
+        <span class="pl-s1">seed_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">extract</span>(<span class="pl-s1">res</span>, <span class="pl-s1">seed</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
         <span class="pl-k">for</span> <span class="pl-s1">seed_info</span> <span class="pl-c1">in</span> <span class="pl-s1">seed_infos</span>:
-            <span class="pl-s1">seed_cites</span> <span class="pl-c1">=</span> <span class="pl-s1">seed_info</span>.<span class="pl-en">get</span>(<span class="pl-s">"cites"</span>, <span class="pl-c1">0</span>)
+            <span class="pl-s1">seed_cites</span> <span class="pl-c1">=</span> <span class="pl-s1">seed_info</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cites"</span>, <span class="pl-c1">0</span>)
             <span class="pl-k">try</span>:
                 <span class="pl-s1">seed_cites</span> <span class="pl-c1">=</span> <span class="pl-en">int</span>(<span class="pl-s1">seed_cites</span>)
             <span class="pl-k">except</span> <span class="pl-v">ValueError</span> <span class="pl-k">as</span> <span class="pl-s1">e</span>:
-                <span class="pl-en">print</span>(<span class="pl-s">f"Cites ERROR:<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">res</span>.<span class="pl-s1">url</span><span class="pl-kos">}</span></span>"</span>)
+                <span class="pl-en">print</span>(<span class="pl-s">f"Cites ERROR:<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">res</span>.<span class="pl-c1">url</span><span class="pl-kos">}</span></span>"</span>)
             <span class="pl-k">else</span>:
                 <span class="pl-k">for</span> <span class="pl-s1">start</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-c1">0</span>, <span class="pl-s1">seed_cites</span>, <span class="pl-c1">20</span>):
                     <span class="pl-s1">cite_url</span> <span class="pl-c1">=</span> <span class="pl-s">"https://scholar.google.com"</span><span class="pl-c1">+</span><span class="pl-s1">seed_info</span>[<span class="pl-s">"cites_url"</span>] <span class="pl-c1">+</span> <span class="pl-s">f"&amp;num=20&amp;start=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">start</span><span class="pl-kos">}</span></span>"</span>
-                    <span class="pl-s1">q</span>.<span class="pl-en">put</span>({
+                    <span class="pl-s1">q</span>.<span class="pl-c1">put</span>({
                         <span class="pl-s">"kw"</span>: <span class="pl-s1">kw</span>,
                         <span class="pl-s">"seed_title"</span>: <span class="pl-s1">seed_info</span>[<span class="pl-s">"title"</span>],
                         <span class="pl-s">"seed_cites"</span>: <span class="pl-s1">seed_info</span>[<span class="pl-s">"cites"</span>],
@@ -724,39 +724,39 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
                     })
 
     <span class="pl-k">def</span> <span class="pl-en">run</span>(<span class="pl-s1">self</span>):
-        <span class="pl-s1">tasks</span> <span class="pl-c1">=</span> [<span class="pl-s1">self</span>.<span class="pl-s1">t</span>.<span class="pl-en">submit</span>(<span class="pl-s1">self</span>.<span class="pl-s1">_proc</span>, <span class="pl-s1">kw</span>) <span class="pl-k">for</span> <span class="pl-s1">kw</span> <span class="pl-c1">in</span> <span class="pl-s1">self</span>.<span class="pl-s1">data</span>]
+        <span class="pl-s1">tasks</span> <span class="pl-c1">=</span> [<span class="pl-s1">self</span>.<span class="pl-c1">t</span>.<span class="pl-c1">submit</span>(<span class="pl-s1">self</span>.<span class="pl-c1">_proc</span>, <span class="pl-s1">kw</span>) <span class="pl-k">for</span> <span class="pl-s1">kw</span> <span class="pl-c1">in</span> <span class="pl-s1">self</span>.<span class="pl-c1">data</span>]
         <span class="pl-k">for</span> <span class="pl-s1">task</span> <span class="pl-c1">in</span> <span class="pl-en">as_completed</span>(<span class="pl-s1">tasks</span>):
-            <span class="pl-s1">self</span>.<span class="pl-en">callback</span>(<span class="pl-s1">task</span>)
+            <span class="pl-s1">self</span>.<span class="pl-c1">callback</span>(<span class="pl-s1">task</span>)
 
     <span class="pl-en">@<span class="pl-s1">staticmethod</span></span>
     <span class="pl-k">def</span> <span class="pl-en">extract</span>(<span class="pl-s1">response</span>, <span class="pl-s1">seed</span><span class="pl-c1">=</span><span class="pl-c1">False</span>):
         <span class="pl-k">def</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>):
-            <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(\d{0,5})'</span>, <span class="pl-s1">cites</span>))
+            <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">re</span>.<span class="pl-c1">findall</span>(<span class="pl-s">r'(\d{0,5})'</span>, <span class="pl-s1">cites</span>))
 
         <span class="pl-k">def</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>):
-            <span class="pl-s1">publish</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'-(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
-            <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-s1">publish</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">re</span>.<span class="pl-c1">findall</span>(<span class="pl-s">r'-(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-c1">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-c1">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">re</span>.<span class="pl-c1">findall</span>(<span class="pl-s">r'(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-c1">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-c1">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
             <span class="pl-k">return</span> <span class="pl-s1">publish</span>, <span class="pl-s1">author</span>
 
-        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s">"did not match any articles"</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-s1">text</span>:
-            <span class="pl-s1">html</span> <span class="pl-c1">=</span> <span class="pl-v">Selector</span>(<span class="pl-s1">response</span>)
+        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s">"did not match any articles"</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-c1">text</span>:
+            <span class="pl-s1">html</span> <span class="pl-c1">=</span> <span class="pl-en">Selector</span>(<span class="pl-s1">response</span>)
             <span class="pl-k">if</span> <span class="pl-s1">seed</span>:
-                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> [<span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="pl-c1">0</span>]]
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> [<span class="pl-s1">html</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="pl-c1">0</span>]]
             <span class="pl-k">else</span>:
-                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> <span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> <span class="pl-s1">html</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)
             <span class="pl-s1">infos</span> <span class="pl-c1">=</span> []
             <span class="pl-k">for</span> <span class="pl-s1">document</span> <span class="pl-c1">in</span> <span class="pl-s1">documents</span>:
-                <span class="pl-s1">title</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(
-                    <span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).<span class="pl-en">extract_first</span>(
+                <span class="pl-s1">title</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(
+                    <span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).<span class="pl-c1">extract_first</span>(
                     <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">info</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).<span class="pl-en">extract_first</span>(
+                <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).<span class="pl-c1">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">info</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).<span class="pl-c1">extract_first</span>(
                     <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">cites_url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites_url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).<span class="pl-c1">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).<span class="pl-c1">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
                 <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>)
                 <span class="pl-s1">publish</span>, <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>)
-                <span class="pl-s1">infos</span>.<span class="pl-en">append</span>(
+                <span class="pl-s1">infos</span>.<span class="pl-c1">append</span>(
                     {<span class="pl-s">"title"</span>: <span class="pl-s1">title</span>, <span class="pl-s">"publish"</span>: <span class="pl-s1">publish</span>, <span class="pl-s">"author"</span>: <span class="pl-s1">author</span>, <span class="pl-s">"cites_url"</span>: <span class="pl-s1">cites_url</span>, <span class="pl-s">"cites"</span>: <span class="pl-s1">cites</span>,
                      <span class="pl-s">"url"</span>: <span class="pl-s1">url</span>})
             <span class="pl-k">return</span> <span class="pl-s1">infos</span>
@@ -764,86 +764,86 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 <span class="pl-k">class</span> <span class="pl-v">Customer</span>():
     <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>,<span class="pl-s1">savefilename</span>):
-        <span class="pl-s1">self</span>.<span class="pl-s1">savefilename</span><span class="pl-c1">=</span><span class="pl-s1">savefilename</span>
-        <span class="pl-s1">self</span>.<span class="pl-s1">t</span> <span class="pl-c1">=</span> <span class="pl-v">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-c1">100</span>)
-        <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span> <span class="pl-c1">=</span> <span class="pl-v">Workbook</span>()
-        <span class="pl-s1">self</span>.<span class="pl-s1">sheet</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>[<span class="pl-s">"Sheet"</span>]
-        <span class="pl-s1">self</span>.<span class="pl-s1">sheet</span>.<span class="pl-en">append</span>((<span class="pl-s">"关键词文件名"</span>, <span class="pl-s">"第一匹配结果文献"</span>, <span class="pl-s">"本文被引用数"</span>, <span class="pl-s">"引用此文文献名"</span>, <span class="pl-s">"引用此文作者"</span>, <span class="pl-s">"引用此文期刊名"</span>, <span class="pl-s">"引用此文文献引用数"</span>, <span class="pl-s">"url"</span>))
+        <span class="pl-s1">self</span>.<span class="pl-c1">savefilename</span><span class="pl-c1">=</span><span class="pl-s1">savefilename</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">t</span> <span class="pl-c1">=</span> <span class="pl-en">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-c1">100</span>)
+        <span class="pl-s1">self</span>.<span class="pl-c1">workbook</span> <span class="pl-c1">=</span> <span class="pl-en">Workbook</span>()
+        <span class="pl-s1">self</span>.<span class="pl-c1">sheet</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">workbook</span>[<span class="pl-s">"Sheet"</span>]
+        <span class="pl-s1">self</span>.<span class="pl-c1">sheet</span>.<span class="pl-c1">append</span>((<span class="pl-s">"关键词文件名"</span>, <span class="pl-s">"第一匹配结果文献"</span>, <span class="pl-s">"本文被引用数"</span>, <span class="pl-s">"引用此文文献名"</span>, <span class="pl-s">"引用此文作者"</span>, <span class="pl-s">"引用此文期刊名"</span>, <span class="pl-s">"引用此文文献引用数"</span>, <span class="pl-s">"url"</span>))
 
     <span class="pl-en">@<span class="pl-s1">staticmethod</span></span>
     <span class="pl-k">def</span> <span class="pl-en">extract</span>(<span class="pl-s1">response</span>, <span class="pl-s1">seed</span><span class="pl-c1">=</span><span class="pl-c1">False</span>):
         <span class="pl-k">def</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>):
-            <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(\d{0,5})'</span>, <span class="pl-s1">cites</span>))
+            <span class="pl-k">return</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">re</span>.<span class="pl-c1">findall</span>(<span class="pl-s">r'(\d{0,5})'</span>, <span class="pl-s1">cites</span>))
 
         <span class="pl-k">def</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>):
-            <span class="pl-s1">publish</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'-(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
-            <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-en">join</span>(<span class="pl-s1">re</span>.<span class="pl-en">findall</span>(<span class="pl-s">r'(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-en">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-en">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-s1">publish</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">re</span>.<span class="pl-c1">findall</span>(<span class="pl-s">r'-(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-c1">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-c1">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
+            <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">re</span>.<span class="pl-c1">findall</span>(<span class="pl-s">r'(.*?)-'</span>, <span class="pl-s1">info</span>)).<span class="pl-c1">replace</span>(<span class="pl-s">"…"</span>, <span class="pl-s">""</span>).<span class="pl-c1">replace</span>(<span class="pl-s">"<span class="pl-cce">\xa0</span>"</span>, <span class="pl-s">""</span>)
             <span class="pl-k">return</span> <span class="pl-s1">publish</span>, <span class="pl-s1">author</span>
 
-        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s">"did not match any articles"</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-s1">text</span>:
-            <span class="pl-s1">html</span> <span class="pl-c1">=</span> <span class="pl-v">Selector</span>(<span class="pl-s1">response</span>)
+        <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s">"did not match any articles"</span> <span class="pl-c1">in</span> <span class="pl-s1">response</span>.<span class="pl-c1">text</span>:
+            <span class="pl-s1">html</span> <span class="pl-c1">=</span> <span class="pl-en">Selector</span>(<span class="pl-s1">response</span>)
             <span class="pl-k">if</span> <span class="pl-s1">seed</span>:
-                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> [<span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="pl-c1">0</span>]]
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> [<span class="pl-s1">html</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)[<span class="pl-c1">0</span>]]
             <span class="pl-k">else</span>:
-                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> <span class="pl-s1">html</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)
+                <span class="pl-s1">documents</span> <span class="pl-c1">=</span> <span class="pl-s1">html</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">"//div[@id='gs_res_ccl_mid']/div"</span>)
             <span class="pl-s1">infos</span> <span class="pl-c1">=</span> []
             <span class="pl-k">for</span> <span class="pl-s1">document</span> <span class="pl-c1">in</span> <span class="pl-s1">documents</span>:
-                <span class="pl-s1">title</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(
-                    <span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).<span class="pl-en">extract_first</span>(
+                <span class="pl-s1">title</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(
+                    <span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/h3/a|.//div[contains(@class,'gs_ri')]/h3/span[2])"</span>).<span class="pl-c1">extract_first</span>(
                     <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">info</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).<span class="pl-en">extract_first</span>(
+                <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_ri')]/h3/a/@href"</span>).<span class="pl-c1">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">info</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">"string(.//div[contains(@class,'gs_ri')]/div[@class='gs_a'])"</span>).<span class="pl-c1">extract_first</span>(
                     <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">cites_url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
-                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-en">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).<span class="pl-en">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites_url</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/@href"</span>).<span class="pl-c1">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
+                <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-s1">document</span>.<span class="pl-c1">xpath</span>(<span class="pl-s">".//div[contains(@class,'gs_fl')]/a[3]/text()"</span>).<span class="pl-c1">extract_first</span>(<span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-s">""</span>)
                 <span class="pl-s1">cites</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_cites</span>(<span class="pl-s1">cites</span>)
                 <span class="pl-s1">publish</span>, <span class="pl-s1">author</span> <span class="pl-c1">=</span> <span class="pl-en">_proc_info</span>(<span class="pl-s1">info</span>)
-                <span class="pl-s1">infos</span>.<span class="pl-en">append</span>(
+                <span class="pl-s1">infos</span>.<span class="pl-c1">append</span>(
                     {<span class="pl-s">"title"</span>: <span class="pl-s1">title</span>, <span class="pl-s">"publish"</span>: <span class="pl-s1">publish</span>, <span class="pl-s">"author"</span>: <span class="pl-s1">author</span>, <span class="pl-s">"cites_url"</span>: <span class="pl-s1">cites_url</span>, <span class="pl-s">"cites"</span>: <span class="pl-s1">cites</span>,
                      <span class="pl-s">"url"</span>: <span class="pl-s1">url</span>})
             <span class="pl-k">return</span> <span class="pl-s1">infos</span>
 
     <span class="pl-k">def</span> <span class="pl-en">get_infos</span>(<span class="pl-s1">self</span>):
-        <span class="pl-en">print</span>(<span class="pl-s">f"Queue size is <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">q</span>.<span class="pl-en">qsize</span>()<span class="pl-kos">}</span></span>"</span>)
+        <span class="pl-en">print</span>(<span class="pl-s">f"Queue size is <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">q</span>.<span class="pl-c1">qsize</span>()<span class="pl-kos">}</span></span>"</span>)
         <span class="pl-k">try</span>:
-            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">q</span>.<span class="pl-en">get</span>(<span class="pl-s1">block</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">180</span>)
+            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">q</span>.<span class="pl-c1">get</span>(<span class="pl-s1">block</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">180</span>)
             <span class="pl-k">return</span> <span class="pl-s1">infos</span>
         <span class="pl-k">except</span> <span class="pl-v">Empty</span>:
-            <span class="pl-en">print</span>(<span class="pl-s">f"Queue size is <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">q</span>.<span class="pl-en">qsize</span>()<span class="pl-kos">}</span></span>"</span>)
+            <span class="pl-en">print</span>(<span class="pl-s">f"Queue size is <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">q</span>.<span class="pl-c1">qsize</span>()<span class="pl-kos">}</span></span>"</span>)
             <span class="pl-en">print</span>(<span class="pl-s">"队列0000000结束了！"</span>)
-            <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>.<span class="pl-en">save</span>(<span class="pl-s1">self</span>.<span class="pl-s1">savefilename</span>)
+            <span class="pl-s1">self</span>.<span class="pl-c1">workbook</span>.<span class="pl-c1">save</span>(<span class="pl-s1">self</span>.<span class="pl-c1">savefilename</span>)
 
     <span class="pl-k">def</span> <span class="pl-en">run</span>(<span class="pl-s1">self</span>):
-        <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">get_infos</span>()
+        <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">get_infos</span>()
         <span class="pl-k">while</span> <span class="pl-s1">infos</span>:
-            <span class="pl-s1">self</span>.<span class="pl-s1">t</span>.<span class="pl-en">submit</span>(<span class="pl-s1">self</span>.<span class="pl-s1">_fe</span>, <span class="pl-s1">infos</span><span class="pl-c1">=</span><span class="pl-s1">infos</span>).<span class="pl-en">add_done_callback</span>(<span class="pl-s1">self</span>.<span class="pl-s1">callback</span>)
-            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">get_infos</span>()
+            <span class="pl-s1">self</span>.<span class="pl-c1">t</span>.<span class="pl-c1">submit</span>(<span class="pl-s1">self</span>.<span class="pl-c1">_fe</span>, <span class="pl-s1">infos</span><span class="pl-c1">=</span><span class="pl-s1">infos</span>).<span class="pl-c1">add_done_callback</span>(<span class="pl-s1">self</span>.<span class="pl-c1">callback</span>)
+            <span class="pl-s1">infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">get_infos</span>()
 
     <span class="pl-k">def</span> <span class="pl-en">_fe</span>(<span class="pl-s1">self</span>, <span class="pl-s1">infos</span>):
-        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"cite_url"</span>)
+        <span class="pl-s1">url</span> <span class="pl-c1">=</span> <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cite_url"</span>)
         <span class="pl-s1">res</span> <span class="pl-c1">=</span> <span class="pl-en">fetch</span>(<span class="pl-s1">url</span><span class="pl-c1">=</span><span class="pl-s1">url</span>)
-        <span class="pl-s1">cite_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-en">extract</span>(<span class="pl-s1">res</span>)
+        <span class="pl-s1">cite_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">extract</span>(<span class="pl-s1">res</span>)
         <span class="pl-k">for</span> <span class="pl-s1">cite_info</span> <span class="pl-c1">in</span> <span class="pl-s1">cite_infos</span>:
-            <span class="pl-s1">cite_info</span>.<span class="pl-en">update</span>(<span class="pl-s1">infos</span>)
+            <span class="pl-s1">cite_info</span>.<span class="pl-c1">update</span>(<span class="pl-s1">infos</span>)
         <span class="pl-k">return</span> <span class="pl-s1">cite_infos</span>
 
     <span class="pl-k">def</span> <span class="pl-en">callback</span>(<span class="pl-s1">self</span>, <span class="pl-s1">result</span>):
-        <span class="pl-s1">cite_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-en">result</span>()
+        <span class="pl-s1">cite_infos</span> <span class="pl-c1">=</span> <span class="pl-s1">result</span>.<span class="pl-c1">result</span>()
         <span class="pl-en">print</span>(<span class="pl-s">f"添加文献<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">len</span>(<span class="pl-s1">cite_infos</span>)<span class="pl-kos">}</span></span>"</span>)
         <span class="pl-k">for</span> <span class="pl-s1">infos</span> <span class="pl-c1">in</span> <span class="pl-s1">cite_infos</span>:
-            <span class="pl-s1">self</span>.<span class="pl-s1">sheet</span>.<span class="pl-en">append</span>((
-                <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"kw"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"seed_title"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"seed_cites"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"title"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"author"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"publish"</span>), <span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"cites"</span>),<span class="pl-s1">infos</span>.<span class="pl-en">get</span>(<span class="pl-s">"url"</span>)
+            <span class="pl-s1">self</span>.<span class="pl-c1">sheet</span>.<span class="pl-c1">append</span>((
+                <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"kw"</span>), <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"seed_title"</span>), <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"seed_cites"</span>), <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"title"</span>), <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"author"</span>), <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"publish"</span>), <span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"cites"</span>),<span class="pl-s1">infos</span>.<span class="pl-c1">get</span>(<span class="pl-s">"url"</span>)
             ))
 
 <span class="pl-k">if</span> <span class="pl-s1">__name__</span> <span class="pl-c1">==</span> <span class="pl-s">'__main__'</span>:
-    <span class="pl-s1">pr</span><span class="pl-c1">=</span><span class="pl-v">Proceser</span>(<span class="pl-s1">filename</span><span class="pl-c1">=</span><span class="pl-s">"again.txt"</span>)
-    <span class="pl-s1">cu</span><span class="pl-c1">=</span><span class="pl-v">Customer</span>(<span class="pl-s1">savefilename</span><span class="pl-c1">=</span><span class="pl-s">"test.xlsx"</span>)
-    <span class="pl-s1">t1</span><span class="pl-c1">=</span><span class="pl-v">Thread</span>(<span class="pl-s1">target</span><span class="pl-c1">=</span><span class="pl-s1">pr</span>.<span class="pl-s1">run</span>)
-    <span class="pl-s1">t2</span><span class="pl-c1">=</span><span class="pl-v">Thread</span>(<span class="pl-s1">target</span><span class="pl-c1">=</span><span class="pl-s1">cu</span>.<span class="pl-s1">run</span>)
-    <span class="pl-s1">t1</span>.<span class="pl-en">start</span>()
-    <span class="pl-s1">t2</span>.<span class="pl-en">start</span>()
-    <span class="pl-s1">t1</span>.<span class="pl-en">join</span>()
-    <span class="pl-s1">t2</span>.<span class="pl-en">join</span>()</pre></div></div>
+    <span class="pl-s1">pr</span><span class="pl-c1">=</span><span class="pl-en">Proceser</span>(<span class="pl-s1">filename</span><span class="pl-c1">=</span><span class="pl-s">"again.txt"</span>)
+    <span class="pl-s1">cu</span><span class="pl-c1">=</span><span class="pl-en">Customer</span>(<span class="pl-s1">savefilename</span><span class="pl-c1">=</span><span class="pl-s">"test.xlsx"</span>)
+    <span class="pl-s1">t1</span><span class="pl-c1">=</span><span class="pl-en">Thread</span>(<span class="pl-s1">target</span><span class="pl-c1">=</span><span class="pl-s1">pr</span>.<span class="pl-c1">run</span>)
+    <span class="pl-s1">t2</span><span class="pl-c1">=</span><span class="pl-en">Thread</span>(<span class="pl-s1">target</span><span class="pl-c1">=</span><span class="pl-s1">cu</span>.<span class="pl-c1">run</span>)
+    <span class="pl-s1">t1</span>.<span class="pl-c1">start</span>()
+    <span class="pl-s1">t2</span>.<span class="pl-c1">start</span>()
+    <span class="pl-s1">t1</span>.<span class="pl-c1">join</span>()
+    <span class="pl-s1">t2</span>.<span class="pl-c1">join</span>()</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

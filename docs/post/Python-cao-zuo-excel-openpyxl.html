@@ -203,12 +203,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </blockquote>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-v">Xlsx</span>():
     <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>):
-        <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span> <span class="pl-c1">=</span> <span class="pl-v">Workbook</span>()
-        <span class="pl-s1">self</span>.<span class="pl-s1">index</span><span class="pl-c1">=</span><span class="pl-c1">1</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">workbook</span> <span class="pl-c1">=</span> <span class="pl-en">Workbook</span>()
+        <span class="pl-s1">self</span>.<span class="pl-c1">index</span><span class="pl-c1">=</span><span class="pl-c1">1</span>
         <span class="pl-k">pass</span>
 
     <span class="pl-k">def</span> <span class="pl-en">add_sheet</span>(<span class="pl-s1">self</span>,<span class="pl-s1">sheetname</span><span class="pl-c1">=</span><span class="pl-s">"Sheet"</span>):
-        <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>.<span class="pl-en">create_sheet</span>(<span class="pl-s1">sheetname</span>,<span class="pl-s1">self</span>.<span class="pl-s1">index</span><span class="pl-c1">+</span><span class="pl-c1">1</span>)
+        <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-c1">workbook</span>.<span class="pl-c1">create_sheet</span>(<span class="pl-s1">sheetname</span>,<span class="pl-s1">self</span>.<span class="pl-c1">index</span><span class="pl-c1">+</span><span class="pl-c1">1</span>)
 
     <span class="pl-k">def</span> <span class="pl-en">add_data</span>(<span class="pl-s1">self</span>,<span class="pl-s1">data</span>,<span class="pl-s1">sheet</span><span class="pl-c1">=</span><span class="pl-s">"Sheet"</span>):
         <span class="pl-s">'''</span>
@@ -217,9 +217,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s">        :return:</span>
 <span class="pl-s">        '''</span>
         <span class="pl-k">if</span> <span class="pl-en">isinstance</span>(<span class="pl-s1">data</span>,<span class="pl-s1">tuple</span>):
-            <span class="pl-s1">sheet</span>.<span class="pl-en">append</span>(<span class="pl-s1">data</span>)
+            <span class="pl-s1">sheet</span>.<span class="pl-c1">append</span>(<span class="pl-s1">data</span>)
         <span class="pl-k">else</span>:
-            <span class="pl-s1">sheet</span>.<span class="pl-en">append</span>(<span class="pl-en">tuple</span>(<span class="pl-s1">data</span>))
+            <span class="pl-s1">sheet</span>.<span class="pl-c1">append</span>(<span class="pl-en">tuple</span>(<span class="pl-s1">data</span>))
 
     <span class="pl-k">def</span> <span class="pl-en">set_header_font</span>(<span class="pl-s1">self</span>,<span class="pl-s1">sheetname</span><span class="pl-c1">=</span><span class="pl-s">"Sheet"</span>):
         <span class="pl-s">'''</span>
@@ -227,9 +227,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s">        :param sheetname:</span>
 <span class="pl-s">        :return:</span>
 <span class="pl-s">        '''</span>
-        <span class="pl-s1">font</span> <span class="pl-c1">=</span> <span class="pl-v">Font</span>(<span class="pl-s">u'宋体'</span>, <span class="pl-s1">size</span><span class="pl-c1">=</span><span class="pl-c1">13</span>, <span class="pl-s1">bold</span><span class="pl-c1">=</span><span class="pl-c1">True</span>, <span class="pl-s1">color</span><span class="pl-c1">=</span><span class="pl-s">'000000'</span>)
+        <span class="pl-s1">font</span> <span class="pl-c1">=</span> <span class="pl-en">Font</span>(<span class="pl-s">u'宋体'</span>, <span class="pl-s1">size</span><span class="pl-c1">=</span><span class="pl-c1">13</span>, <span class="pl-s1">bold</span><span class="pl-c1">=</span><span class="pl-c1">True</span>, <span class="pl-s1">color</span><span class="pl-c1">=</span><span class="pl-s">'000000'</span>)
         <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-s1">sheetname</span>[<span class="pl-s">"1"</span>]:
-            <span class="pl-s1">i</span>.<span class="pl-s1">font</span> <span class="pl-c1">=</span> <span class="pl-s1">font</span>
+            <span class="pl-s1">i</span>.<span class="pl-c1">font</span> <span class="pl-c1">=</span> <span class="pl-s1">font</span>
             
     <span class="pl-k">def</span> <span class="pl-en">delete_sheet</span>(<span class="pl-s1">self</span>,<span class="pl-s1">sheetname</span><span class="pl-c1">=</span><span class="pl-s">"Sheet"</span>):
         <span class="pl-s">'''</span>
@@ -237,10 +237,10 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-s">        :param sheetname:</span>
 <span class="pl-s">        :return:</span>
 <span class="pl-s">        '''</span>
-        <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>.<span class="pl-en">remove</span>(<span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>[<span class="pl-s1">sheetname</span>])
+        <span class="pl-s1">self</span>.<span class="pl-c1">workbook</span>.<span class="pl-c1">remove</span>(<span class="pl-s1">self</span>.<span class="pl-c1">workbook</span>[<span class="pl-s1">sheetname</span>])
 
     <span class="pl-k">def</span> <span class="pl-en">save</span>(<span class="pl-s1">self</span>,<span class="pl-s1">filename</span>):
-        <span class="pl-s1">self</span>.<span class="pl-s1">workbook</span>.<span class="pl-en">save</span>(<span class="pl-s1">filename</span>)</pre></div></div>
+        <span class="pl-s1">self</span>.<span class="pl-c1">workbook</span>.<span class="pl-c1">save</span>(<span class="pl-s1">filename</span>)</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

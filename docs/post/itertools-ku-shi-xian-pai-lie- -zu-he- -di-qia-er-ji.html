@@ -154,18 +154,18 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div class="markdown-body" id="postBody"><h1>排列 (itertools.permutations)</h1>
 <p>从迭代序列里选取n个数字进行排列，有顺序</p>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">a</span><span class="pl-c1">=</span>[<span class="pl-c1">1</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>]
-<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-en">permutations</span>(<span class="pl-s1">a</span>,<span class="pl-c1">2</span>))
+<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-c1">permutations</span>(<span class="pl-s1">a</span>,<span class="pl-c1">2</span>))
 [(<span class="pl-c1">4</span>, <span class="pl-c1">1</span>), (<span class="pl-c1">4</span>, <span class="pl-c1">3</span>), (<span class="pl-c1">1</span>, <span class="pl-c1">4</span>), (<span class="pl-c1">1</span>, <span class="pl-c1">3</span>), (<span class="pl-c1">3</span>, <span class="pl-c1">4</span>), (<span class="pl-c1">3</span>, <span class="pl-c1">1</span>)]
 
-<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-en">permutations</span>(<span class="pl-s1">a</span>,<span class="pl-c1">3</span>))
+<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-c1">permutations</span>(<span class="pl-s1">a</span>,<span class="pl-c1">3</span>))
 <span class="pl-v">Out</span>[<span class="pl-c1">36</span>]: [(<span class="pl-c1">4</span>, <span class="pl-c1">1</span>, <span class="pl-c1">3</span>), (<span class="pl-c1">4</span>, <span class="pl-c1">3</span>, <span class="pl-c1">1</span>), (<span class="pl-c1">1</span>, <span class="pl-c1">4</span>, <span class="pl-c1">3</span>), (<span class="pl-c1">1</span>, <span class="pl-c1">3</span>, <span class="pl-c1">4</span>), (<span class="pl-c1">3</span>, <span class="pl-c1">4</span>, <span class="pl-c1">1</span>), (<span class="pl-c1">3</span>, <span class="pl-c1">1</span>, <span class="pl-c1">4</span>)]</pre></div>
 <h2>组合(itertools.combinations)</h2>
 <p>从迭代序列里选取n个数字进行组合，重在组合</p>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">a</span><span class="pl-c1">=</span>[<span class="pl-c1">1</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>]
-<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-en">combinations</span>(<span class="pl-s1">a</span>,<span class="pl-c1">2</span>))
+<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-c1">combinations</span>(<span class="pl-s1">a</span>,<span class="pl-c1">2</span>))
 <span class="pl-v">Out</span>[<span class="pl-c1">32</span>]: [(<span class="pl-c1">4</span>, <span class="pl-c1">1</span>), (<span class="pl-c1">4</span>, <span class="pl-c1">3</span>), (<span class="pl-c1">1</span>, <span class="pl-c1">3</span>)]
 
-<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-en">combinations_with_replacement</span>(<span class="pl-s1">a</span>,<span class="pl-c1">2</span>))
+<span class="pl-en">list</span>(<span class="pl-s1">itertools</span>.<span class="pl-c1">combinations_with_replacement</span>(<span class="pl-s1">a</span>,<span class="pl-c1">2</span>))
 <span class="pl-v">Out</span>[<span class="pl-c1">33</span>]: [(<span class="pl-c1">4</span>, <span class="pl-c1">4</span>), (<span class="pl-c1">4</span>, <span class="pl-c1">1</span>), (<span class="pl-c1">4</span>, <span class="pl-c1">3</span>), (<span class="pl-c1">1</span>, <span class="pl-c1">1</span>), (<span class="pl-c1">1</span>, <span class="pl-c1">3</span>), (<span class="pl-c1">3</span>, <span class="pl-c1">3</span>)]  <span class="pl-c">#可重复利用数字</span></pre></div>
 <h2>笛卡尔积(itertools.product)</h2>
 <p>对多个迭代器进行笛卡尔积组合，参数的意思是从每个迭代器中选取几个值进行组合</p>

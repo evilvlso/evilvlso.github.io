@@ -496,11 +496,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>模版：</p>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">from</span> <span class="pl-s1">flask_restful</span> <span class="pl-k">import</span> <span class="pl-v">Api</span>,<span class="pl-s1">reqparse</span>,<span class="pl-v">Resource</span>,<span class="pl-s1">inputs</span>
 <span class="pl-k">from</span> <span class="pl-s1">flask_cors</span> <span class="pl-k">import</span> <span class="pl-c1">*</span>
-<span class="pl-s1">app</span><span class="pl-c1">=</span><span class="pl-v">Flask</span>(<span class="pl-s1">__name__</span>)
+<span class="pl-s1">app</span><span class="pl-c1">=</span><span class="pl-en">Flask</span>(<span class="pl-s1">__name__</span>)
 <span class="pl-c"># 需要定一个api</span>
-<span class="pl-s1">api</span><span class="pl-c1">=</span><span class="pl-v">Api</span>(<span class="pl-s1">app</span>)
+<span class="pl-s1">api</span><span class="pl-c1">=</span><span class="pl-en">Api</span>(<span class="pl-s1">app</span>)
 <span class="pl-c"># 解决一些跨域问题</span>
-<span class="pl-v">CORS</span>(<span class="pl-s1">app</span>,<span class="pl-s1">resource</span><span class="pl-c1">=</span>{<span class="pl-s">r"/*"</span>})
+<span class="pl-en">CORS</span>(<span class="pl-s1">app</span>,<span class="pl-s1">resource</span><span class="pl-c1">=</span>{<span class="pl-s">r"/*"</span>})
 <span class="pl-c"># CORS(app, resources={r"/test": {"origins": "*"}})</span>
 
 
@@ -508,17 +508,17 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-k">class</span> <span class="pl-v">TestView</span>(<span class="pl-v">Resource</span>):
 	<span class="pl-k">def</span> <span class="pl-en">get</span>(<span class="pl-s1">self</span>):
 		<span class="pl-c"># 字段验证</span>
-		<span class="pl-s1">parser</span> <span class="pl-c1">=</span> <span class="pl-s1">reqparse</span>.<span class="pl-v">RequestParser</span>()
-		<span class="pl-s1">parser</span>.<span class="pl-en">add_argument</span>(<span class="pl-s">"phone"</span>,<span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">inputs</span>.<span class="pl-en">regex</span>(<span class="pl-s">r'\d{11}'</span>),<span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"输入正确手机号"</span>,<span class="pl-s1">trim</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
-		<span class="pl-s1">parser</span>.<span class="pl-en">add_argument</span>(<span class="pl-s">"username"</span>,<span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">str</span>,<span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"输入姓名"</span>)
-		<span class="pl-s1">args</span><span class="pl-c1">=</span><span class="pl-s1">parser</span>.<span class="pl-en">parse_args</span>() <span class="pl-c">#参数解析完成，直接get即可获取</span>
+		<span class="pl-s1">parser</span> <span class="pl-c1">=</span> <span class="pl-s1">reqparse</span>.<span class="pl-c1">RequestParser</span>()
+		<span class="pl-s1">parser</span>.<span class="pl-c1">add_argument</span>(<span class="pl-s">"phone"</span>,<span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">inputs</span>.<span class="pl-c1">regex</span>(<span class="pl-s">r'\d{11}'</span>),<span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"输入正确手机号"</span>,<span class="pl-s1">trim</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+		<span class="pl-s1">parser</span>.<span class="pl-c1">add_argument</span>(<span class="pl-s">"username"</span>,<span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>,<span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">str</span>,<span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"输入姓名"</span>)
+		<span class="pl-s1">args</span><span class="pl-c1">=</span><span class="pl-s1">parser</span>.<span class="pl-c1">parse_args</span>() <span class="pl-c">#参数解析完成，直接get即可获取</span>
 		<span class="pl-k">return</span> <span class="pl-s1">args</span>
 		<span class="pl-k">pass</span>
 
-<span class="pl-s1">api</span>.<span class="pl-en">add_resource</span>(<span class="pl-v">TestView</span>,<span class="pl-s">"/test"</span>,<span class="pl-s1">endpoint</span><span class="pl-c1">=</span><span class="pl-s">"test"</span>)
+<span class="pl-s1">api</span>.<span class="pl-c1">add_resource</span>(<span class="pl-v">TestView</span>,<span class="pl-s">"/test"</span>,<span class="pl-s1">endpoint</span><span class="pl-c1">=</span><span class="pl-s">"test"</span>)
 	
 <span class="pl-k">if</span> <span class="pl-s1">__name__</span> <span class="pl-c1">==</span> <span class="pl-s">'__main__'</span>:
-    <span class="pl-s1">app</span>.<span class="pl-en">run</span>(<span class="pl-s1">debug</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)</pre></div>
+    <span class="pl-s1">app</span>.<span class="pl-c1">run</span>(<span class="pl-s1">debug</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)</pre></div>
 <h2>JWT使用</h2>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-c"># flask imports</span>
 <span class="pl-k">from</span> <span class="pl-s1">flask</span> <span class="pl-k">import</span> <span class="pl-v">Flask</span>, <span class="pl-s1">request</span>, <span class="pl-s1">jsonify</span>, <span class="pl-s1">make_response</span>
@@ -531,25 +531,25 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-k">from</span> <span class="pl-s1">functools</span> <span class="pl-k">import</span> <span class="pl-s1">wraps</span>
 
 <span class="pl-c"># creates Flask object</span>
-<span class="pl-s1">app</span> <span class="pl-c1">=</span> <span class="pl-v">Flask</span>(<span class="pl-s1">__name__</span>)
+<span class="pl-s1">app</span> <span class="pl-c1">=</span> <span class="pl-en">Flask</span>(<span class="pl-s1">__name__</span>)
 <span class="pl-c"># configuration</span>
 <span class="pl-c"># NEVER HARDCODE YOUR CONFIGURATION IN YOUR CODE</span>
 <span class="pl-c"># INSTEAD CREATE A .env FILE AND STORE IN IT</span>
-<span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SECRET_KEY'</span>] <span class="pl-c1">=</span> <span class="pl-s">'your secret key'</span>
+<span class="pl-s1">app</span>.<span class="pl-c1">config</span>[<span class="pl-s">'SECRET_KEY'</span>] <span class="pl-c1">=</span> <span class="pl-s">'your secret key'</span>
 <span class="pl-c"># database name</span>
-<span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SQLALCHEMY_DATABASE_URI'</span>] <span class="pl-c1">=</span> <span class="pl-s">'sqlite:///Database.db'</span>
-<span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SQLALCHEMY_TRACK_MODIFICATIONS'</span>] <span class="pl-c1">=</span> <span class="pl-c1">True</span>
+<span class="pl-s1">app</span>.<span class="pl-c1">config</span>[<span class="pl-s">'SQLALCHEMY_DATABASE_URI'</span>] <span class="pl-c1">=</span> <span class="pl-s">'sqlite:///Database.db'</span>
+<span class="pl-s1">app</span>.<span class="pl-c1">config</span>[<span class="pl-s">'SQLALCHEMY_TRACK_MODIFICATIONS'</span>] <span class="pl-c1">=</span> <span class="pl-c1">True</span>
 <span class="pl-c"># creates SQLALCHEMY object</span>
-<span class="pl-s1">db</span> <span class="pl-c1">=</span> <span class="pl-v">SQLAlchemy</span>(<span class="pl-s1">app</span>)
+<span class="pl-s1">db</span> <span class="pl-c1">=</span> <span class="pl-en">SQLAlchemy</span>(<span class="pl-s1">app</span>)
 
 
 <span class="pl-c"># Database ORMs</span>
-<span class="pl-k">class</span> <span class="pl-v">User</span>(<span class="pl-s1">db</span>.<span class="pl-v">Model</span>):
-    <span class="pl-s1">id</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">Integer</span>, <span class="pl-s1">primary_key</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
-    <span class="pl-s1">public_id</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">50</span>), <span class="pl-s1">unique</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
-    <span class="pl-s1">name</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">100</span>))
-    <span class="pl-s1">email</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">70</span>), <span class="pl-s1">unique</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
-    <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-v">Column</span>(<span class="pl-s1">db</span>.<span class="pl-v">String</span>(<span class="pl-c1">80</span>))
+<span class="pl-k">class</span> <span class="pl-v">User</span>(<span class="pl-s1">db</span>.<span class="pl-c1">Model</span>):
+    <span class="pl-s1">id</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-c1">Column</span>(<span class="pl-s1">db</span>.<span class="pl-c1">Integer</span>, <span class="pl-s1">primary_key</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">public_id</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-c1">Column</span>(<span class="pl-s1">db</span>.<span class="pl-c1">String</span>(<span class="pl-c1">50</span>), <span class="pl-s1">unique</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">name</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-c1">Column</span>(<span class="pl-s1">db</span>.<span class="pl-c1">String</span>(<span class="pl-c1">100</span>))
+    <span class="pl-s1">email</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-c1">Column</span>(<span class="pl-s1">db</span>.<span class="pl-c1">String</span>(<span class="pl-c1">70</span>), <span class="pl-s1">unique</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-c1">Column</span>(<span class="pl-s1">db</span>.<span class="pl-c1">String</span>(<span class="pl-c1">80</span>))
 
 
 <span class="pl-c"># decorator for verifying the JWT</span>
@@ -558,18 +558,18 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <span class="pl-k">def</span> <span class="pl-en">decorated</span>(<span class="pl-c1">*</span><span class="pl-s1">args</span>, <span class="pl-c1">**</span><span class="pl-s1">kwargs</span>):
         <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
         <span class="pl-c"># jwt is passed in the request header</span>
-        <span class="pl-k">if</span> <span class="pl-s">'x-access-token'</span> <span class="pl-c1">in</span> <span class="pl-s1">request</span>.<span class="pl-s1">headers</span>:
-            <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-s1">headers</span>[<span class="pl-s">'x-access-token'</span>]
+        <span class="pl-k">if</span> <span class="pl-s">'x-access-token'</span> <span class="pl-c1">in</span> <span class="pl-s1">request</span>.<span class="pl-c1">headers</span>:
+            <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-c1">headers</span>[<span class="pl-s">'x-access-token'</span>]
         <span class="pl-c"># return 401 if token is not passed</span>
         <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">token</span>:
             <span class="pl-k">return</span> <span class="pl-en">jsonify</span>({<span class="pl-s">'message'</span>: <span class="pl-s">'Token is missing !!'</span>}), <span class="pl-c1">401</span>
 
         <span class="pl-k">try</span>:
             <span class="pl-c"># decoding the payload to fetch the stored details</span>
-            <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">jwt</span>.<span class="pl-en">decode</span>(<span class="pl-s1">token</span>, <span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SECRET_KEY'</span>])
-            <span class="pl-s1">current_user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span> \
-                .<span class="pl-en">filter_by</span>(<span class="pl-s1">public_id</span><span class="pl-c1">=</span><span class="pl-s1">data</span>[<span class="pl-s">'public_id'</span>]) \
-                .<span class="pl-en">first</span>()
+            <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">jwt</span>.<span class="pl-c1">decode</span>(<span class="pl-s1">token</span>, <span class="pl-s1">app</span>.<span class="pl-c1">config</span>[<span class="pl-s">'SECRET_KEY'</span>])
+            <span class="pl-s1">current_user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-c1">query</span> \
+                .<span class="pl-c1">filter_by</span>(<span class="pl-s1">public_id</span><span class="pl-c1">=</span><span class="pl-s1">data</span>[<span class="pl-s">'public_id'</span>]) \
+                .<span class="pl-c1">first</span>()
         <span class="pl-k">except</span>:
             <span class="pl-k">return</span> <span class="pl-en">jsonify</span>({
                 <span class="pl-s">'message'</span>: <span class="pl-s">'Token is invalid !!'</span>
@@ -582,34 +582,34 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 <span class="pl-c"># User Database Route</span>
 <span class="pl-c"># this route sends back list of users</span>
-<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-en">route</span>(<span class="pl-s">'/user'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'GET'</span>])</span>
+<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-c1">route</span>(<span class="pl-s">'/user'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'GET'</span>])</span>
 <span class="pl-en">@<span class="pl-s1">token_required</span></span>
 <span class="pl-k">def</span> <span class="pl-en">get_all_users</span>(<span class="pl-s1">current_user</span>):
     <span class="pl-c"># querying the database</span>
     <span class="pl-c"># for all the entries in it</span>
-    <span class="pl-s1">users</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span>.<span class="pl-en">all</span>()
+    <span class="pl-s1">users</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-c1">query</span>.<span class="pl-c1">all</span>()
     <span class="pl-c"># converting the query objects</span>
     <span class="pl-c"># to list of jsons</span>
     <span class="pl-s1">output</span> <span class="pl-c1">=</span> []
     <span class="pl-k">for</span> <span class="pl-s1">user</span> <span class="pl-c1">in</span> <span class="pl-s1">users</span>:
         <span class="pl-c"># appending the user data json</span>
         <span class="pl-c"># to the response list</span>
-        <span class="pl-s1">output</span>.<span class="pl-en">append</span>({
-            <span class="pl-s">'public_id'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">public_id</span>,
-            <span class="pl-s">'name'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">name</span>,
-            <span class="pl-s">'email'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">email</span>
+        <span class="pl-s1">output</span>.<span class="pl-c1">append</span>({
+            <span class="pl-s">'public_id'</span>: <span class="pl-s1">user</span>.<span class="pl-c1">public_id</span>,
+            <span class="pl-s">'name'</span>: <span class="pl-s1">user</span>.<span class="pl-c1">name</span>,
+            <span class="pl-s">'email'</span>: <span class="pl-s1">user</span>.<span class="pl-c1">email</span>
         })
 
     <span class="pl-k">return</span> <span class="pl-en">jsonify</span>({<span class="pl-s">'users'</span>: <span class="pl-s1">output</span>})
 
 
 <span class="pl-c"># route for logging user in</span>
-<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-en">route</span>(<span class="pl-s">'/login'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'POST'</span>])</span>
+<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-c1">route</span>(<span class="pl-s">'/login'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'POST'</span>])</span>
 <span class="pl-k">def</span> <span class="pl-en">login</span>():
     <span class="pl-c"># creates dictionary of form data</span>
-    <span class="pl-s1">auth</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-s1">form</span>
+    <span class="pl-s1">auth</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-c1">form</span>
 
-    <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span> <span class="pl-c1">or</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'email'</span>) <span class="pl-c1">or</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'password'</span>):
+    <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span> <span class="pl-c1">or</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span>.<span class="pl-c1">get</span>(<span class="pl-s">'email'</span>) <span class="pl-c1">or</span> <span class="pl-c1">not</span> <span class="pl-s1">auth</span>.<span class="pl-c1">get</span>(<span class="pl-s">'password'</span>):
         <span class="pl-c"># returns 401 if any email or / and password is missing</span>
         <span class="pl-k">return</span> <span class="pl-en">make_response</span>(
             <span class="pl-s">'Could not verify'</span>,
@@ -617,9 +617,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
             {<span class="pl-s">'WWW-Authenticate'</span>: <span class="pl-s">'Basic realm ="Login required !!"'</span>}
         )
 
-    <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span> \
-        .<span class="pl-en">filter_by</span>(<span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'email'</span>)) \
-        .<span class="pl-en">first</span>()
+    <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-c1">query</span> \
+        .<span class="pl-c1">filter_by</span>(<span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">auth</span>.<span class="pl-c1">get</span>(<span class="pl-s">'email'</span>)) \
+        .<span class="pl-c1">first</span>()
 
     <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">user</span>:
         <span class="pl-c"># returns 401 if user does not exist</span>
@@ -629,14 +629,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
             {<span class="pl-s">'WWW-Authenticate'</span>: <span class="pl-s">'Basic realm ="User does not exist !!"'</span>}
         )
 
-    <span class="pl-k">if</span> <span class="pl-en">check_password_hash</span>(<span class="pl-s1">user</span>.<span class="pl-s1">password</span>, <span class="pl-s1">auth</span>.<span class="pl-en">get</span>(<span class="pl-s">'password'</span>)):
+    <span class="pl-k">if</span> <span class="pl-en">check_password_hash</span>(<span class="pl-s1">user</span>.<span class="pl-c1">password</span>, <span class="pl-s1">auth</span>.<span class="pl-c1">get</span>(<span class="pl-s">'password'</span>)):
         <span class="pl-c"># generates the JWT Token</span>
-        <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-s1">jwt</span>.<span class="pl-en">encode</span>({
-            <span class="pl-s">'public_id'</span>: <span class="pl-s1">user</span>.<span class="pl-s1">public_id</span>,
-            <span class="pl-s">'exp'</span>: <span class="pl-s1">datetime</span>.<span class="pl-en">utcnow</span>() <span class="pl-c1">+</span> <span class="pl-en">timedelta</span>(<span class="pl-s1">minutes</span><span class="pl-c1">=</span><span class="pl-c1">30</span>)
-        }, <span class="pl-s1">app</span>.<span class="pl-s1">config</span>[<span class="pl-s">'SECRET_KEY'</span>])
+        <span class="pl-s1">token</span> <span class="pl-c1">=</span> <span class="pl-s1">jwt</span>.<span class="pl-c1">encode</span>({
+            <span class="pl-s">'public_id'</span>: <span class="pl-s1">user</span>.<span class="pl-c1">public_id</span>,
+            <span class="pl-s">'exp'</span>: <span class="pl-s1">datetime</span>.<span class="pl-c1">utcnow</span>() <span class="pl-c1">+</span> <span class="pl-en">timedelta</span>(<span class="pl-s1">minutes</span><span class="pl-c1">=</span><span class="pl-c1">30</span>)
+        }, <span class="pl-s1">app</span>.<span class="pl-c1">config</span>[<span class="pl-s">'SECRET_KEY'</span>])
 
-        <span class="pl-k">return</span> <span class="pl-en">make_response</span>(<span class="pl-en">jsonify</span>({<span class="pl-s">'token'</span>: <span class="pl-s1">token</span>.<span class="pl-en">decode</span>(<span class="pl-s">'UTF-8'</span>)}), <span class="pl-c1">201</span>)
+        <span class="pl-k">return</span> <span class="pl-en">make_response</span>(<span class="pl-en">jsonify</span>({<span class="pl-s">'token'</span>: <span class="pl-s1">token</span>.<span class="pl-c1">decode</span>(<span class="pl-s">'UTF-8'</span>)}), <span class="pl-c1">201</span>)
     <span class="pl-c"># returns 403 if password is wrong</span>
     <span class="pl-k">return</span> <span class="pl-en">make_response</span>(
         <span class="pl-s">'Could not verify'</span>,
@@ -646,30 +646,30 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 
 <span class="pl-c"># signup route</span>
-<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-en">route</span>(<span class="pl-s">'/signup'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'POST'</span>])</span>
+<span class="pl-en">@<span class="pl-s1">app</span>.<span class="pl-c1">route</span>(<span class="pl-s">'/signup'</span>, <span class="pl-s1">methods</span><span class="pl-c1">=</span>[<span class="pl-s">'POST'</span>])</span>
 <span class="pl-k">def</span> <span class="pl-en">signup</span>():
     <span class="pl-c"># creates a dictionary of the form data</span>
-    <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-s1">form</span>
+    <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-c1">form</span>
 
     <span class="pl-c"># gets name, email and password</span>
-    <span class="pl-s1">name</span>, <span class="pl-s1">email</span> <span class="pl-c1">=</span> <span class="pl-s1">data</span>.<span class="pl-en">get</span>(<span class="pl-s">'name'</span>), <span class="pl-s1">data</span>.<span class="pl-en">get</span>(<span class="pl-s">'email'</span>)
-    <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s1">data</span>.<span class="pl-en">get</span>(<span class="pl-s">'password'</span>)
+    <span class="pl-s1">name</span>, <span class="pl-s1">email</span> <span class="pl-c1">=</span> <span class="pl-s1">data</span>.<span class="pl-c1">get</span>(<span class="pl-s">'name'</span>), <span class="pl-s1">data</span>.<span class="pl-c1">get</span>(<span class="pl-s">'email'</span>)
+    <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s1">data</span>.<span class="pl-c1">get</span>(<span class="pl-s">'password'</span>)
 
     <span class="pl-c"># checking for existing user</span>
-    <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-s1">query</span> \
-        .<span class="pl-en">filter_by</span>(<span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">email</span>) \
-        .<span class="pl-en">first</span>()
+    <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>.<span class="pl-c1">query</span> \
+        .<span class="pl-c1">filter_by</span>(<span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">email</span>) \
+        .<span class="pl-c1">first</span>()
     <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">user</span>:
         <span class="pl-c"># database ORM object</span>
-        <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-v">User</span>(
-            <span class="pl-s1">public_id</span><span class="pl-c1">=</span><span class="pl-en">str</span>(<span class="pl-s1">uuid</span>.<span class="pl-en">uuid4</span>()),
+        <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-en">User</span>(
+            <span class="pl-s1">public_id</span><span class="pl-c1">=</span><span class="pl-en">str</span>(<span class="pl-s1">uuid</span>.<span class="pl-c1">uuid4</span>()),
             <span class="pl-s1">name</span><span class="pl-c1">=</span><span class="pl-s1">name</span>,
             <span class="pl-s1">email</span><span class="pl-c1">=</span><span class="pl-s1">email</span>,
             <span class="pl-s1">password</span><span class="pl-c1">=</span><span class="pl-en">generate_password_hash</span>(<span class="pl-s1">password</span>)
         )
         <span class="pl-c"># insert user</span>
-        <span class="pl-s1">db</span>.<span class="pl-s1">session</span>.<span class="pl-en">add</span>(<span class="pl-s1">user</span>)
-        <span class="pl-s1">db</span>.<span class="pl-s1">session</span>.<span class="pl-en">commit</span>()
+        <span class="pl-s1">db</span>.<span class="pl-c1">session</span>.<span class="pl-c1">add</span>(<span class="pl-s1">user</span>)
+        <span class="pl-s1">db</span>.<span class="pl-c1">session</span>.<span class="pl-c1">commit</span>()
 
         <span class="pl-k">return</span> <span class="pl-en">make_response</span>(<span class="pl-s">'Successfully registered.'</span>, <span class="pl-c1">201</span>)
     <span class="pl-k">else</span>:
@@ -681,7 +681,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <span class="pl-c"># setting debug to True enables hot reload</span>
     <span class="pl-c"># and also provides a debugger shell</span>
     <span class="pl-c"># if you hit an error while running the server</span>
-    <span class="pl-s1">app</span>.<span class="pl-en">run</span>(<span class="pl-s1">debug</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)</pre></div></div>
+    <span class="pl-s1">app</span>.<span class="pl-c1">run</span>(<span class="pl-s1">debug</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

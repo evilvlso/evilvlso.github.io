@@ -165,35 +165,35 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <ol>
 <li>
 <p>常见的是用numpy的方法，代码如下：</p>
-<div class="highlight highlight-source-python"><pre class="notranslate"> <span class="pl-s1">y</span><span class="pl-c1">=</span> <span class="pl-s1">cv2</span>.<span class="pl-en">imread</span>(<span class="pl-s1">maskPath</span>,<span class="pl-s1">cv2</span>.<span class="pl-v">IMREAD_GRAYSCALE</span>)
- <span class="pl-s1">y</span><span class="pl-c1">=</span> <span class="pl-s1">cv2</span>.<span class="pl-en">resize</span>(<span class="pl-s1">y</span>,(<span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>,<span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>))
+<div class="highlight highlight-source-python"><pre class="notranslate"> <span class="pl-s1">y</span><span class="pl-c1">=</span> <span class="pl-s1">cv2</span>.<span class="pl-c1">imread</span>(<span class="pl-s1">maskPath</span>,<span class="pl-s1">cv2</span>.<span class="pl-c1">IMREAD_GRAYSCALE</span>)
+ <span class="pl-s1">y</span><span class="pl-c1">=</span> <span class="pl-s1">cv2</span>.<span class="pl-c1">resize</span>(<span class="pl-s1">y</span>,(<span class="pl-s1">self</span>.<span class="pl-c1">image_size</span>,<span class="pl-s1">self</span>.<span class="pl-c1">image_size</span>))
  <span class="pl-s1">y</span>[<span class="pl-s1">y</span><span class="pl-c1">&lt;=</span><span class="pl-c1">100</span>]<span class="pl-c1">=</span><span class="pl-c1">0</span>  <span class="pl-c">#背景类</span>
  <span class="pl-s1">y</span>[<span class="pl-s1">y</span><span class="pl-c1">&gt;</span><span class="pl-c1">100</span>]<span class="pl-c1">=</span><span class="pl-c1">1</span>   <span class="pl-c">#病灶类</span>
- <span class="pl-s1">y_onehot</span><span class="pl-c1">=</span><span class="pl-s1">np</span>.<span class="pl-en">eye</span>(<span class="pl-s1">self</span>.<span class="pl-s1">num_classes</span>)[<span class="pl-s1">y</span>.<span class="pl-en">reshape</span>([<span class="pl-c1">-</span><span class="pl-c1">1</span>])]
+ <span class="pl-s1">y_onehot</span><span class="pl-c1">=</span><span class="pl-s1">np</span>.<span class="pl-c1">eye</span>(<span class="pl-s1">self</span>.<span class="pl-c1">num_classes</span>)[<span class="pl-s1">y</span>.<span class="pl-c1">reshape</span>([<span class="pl-c1">-</span><span class="pl-c1">1</span>])]
  <span class="pl-c"># 到第五行其实已经成为one_hot编码了,格式为  [[1,0],[1,0],[1,0],[1,0],[1,0],...[0,1],]</span>
- <span class="pl-s1">y_onehot</span><span class="pl-c1">=</span><span class="pl-s1">y_onehot</span>.<span class="pl-en">reshape</span>(<span class="pl-s1">self</span>.<span class="pl-s1">num_classes</span>,<span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>,<span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>)
+ <span class="pl-s1">y_onehot</span><span class="pl-c1">=</span><span class="pl-s1">y_onehot</span>.<span class="pl-c1">reshape</span>(<span class="pl-s1">self</span>.<span class="pl-c1">num_classes</span>,<span class="pl-s1">self</span>.<span class="pl-c1">image_size</span>,<span class="pl-s1">self</span>.<span class="pl-c1">image_size</span>)
  <span class="pl-c"># 这一步是为reshape，但是这种reshape方式的结果呈现并不是直觉理解的（不是通道值互斥的），原因是因为reshape的原理</span>
  <span class="pl-c"># 正确的应该是</span>
- <span class="pl-s1">y_onehot</span> <span class="pl-c1">=</span> <span class="pl-en">rearrange</span>(<span class="pl-s1">y_onehot</span>,<span class="pl-s">"(h w) c-&gt;c h w"</span>,<span class="pl-s1">h</span><span class="pl-c1">=</span><span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>)</pre></div>
+ <span class="pl-s1">y_onehot</span> <span class="pl-c1">=</span> <span class="pl-en">rearrange</span>(<span class="pl-s1">y_onehot</span>,<span class="pl-s">"(h w) c-&gt;c h w"</span>,<span class="pl-s1">h</span><span class="pl-c1">=</span><span class="pl-s1">self</span>.<span class="pl-c1">image_size</span>)</pre></div>
 </li>
 <li>
 <p>pytorch也有one_hot编码方法，代码如下：</p>
-<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">from</span> <span class="pl-s1">torch</span>.<span class="pl-s1">nn</span>.<span class="pl-s1">functional</span> <span class="pl-k">as</span> <span class="pl-v">F</span>
-<span class="pl-s1">y</span><span class="pl-c1">=</span> <span class="pl-s1">cv2</span>.<span class="pl-s1">imread</span>(<span class="pl-s1">self</span>.<span class="pl-v">Y</span>[<span class="pl-s1">index</span>],<span class="pl-s1">cv2</span>.<span class="pl-v">IMREAD_GRAYSCALE</span>)
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">from</span> <span class="pl-s1">torch</span>.<span class="pl-s1">nn</span>.<span class="pl-s1">functional</span> <span class="pl-k">as</span> <span class="pl-c1">F</span>
+<span class="pl-s1">y</span><span class="pl-c1">=</span> <span class="pl-s1">cv2</span>.<span class="pl-s1">imread</span>(<span class="pl-s1">self</span>.<span class="pl-c1">Y</span>[<span class="pl-s1">index</span>],<span class="pl-s1">cv2</span>.<span class="pl-c1">IMREAD_GRAYSCALE</span>)
 <span class="pl-s1">y</span><span class="pl-c1">=</span> <span class="pl-s1">cv2</span>.<span class="pl-s1">resize</span>(<span class="pl-s1">y</span>,(<span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>,<span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>))
 <span class="pl-s1">y</span>[<span class="pl-s1">y</span><span class="pl-c1">&lt;=</span><span class="pl-c1">100</span>]<span class="pl-c1">=</span><span class="pl-c1">0</span>  <span class="pl-c">#背景类</span>
 <span class="pl-s1">y</span>[<span class="pl-s1">y</span><span class="pl-c1">&gt;</span><span class="pl-c1">100</span>]<span class="pl-c1">=</span><span class="pl-c1">1</span>   <span class="pl-c">#病灶类</span>
 <span class="pl-c"># y就是图片的label</span>
 
-<span class="pl-s1">y_onehot</span><span class="pl-c1">=</span><span class="pl-v">F</span>.<span class="pl-en">one_hot</span>(<span class="pl-s1">torch</span>.<span class="pl-v">Tensor</span>(<span class="pl-s1">y</span>.<span class="pl-en">reshpe</span>(<span class="pl-c1">-</span><span class="pl-c1">1</span>).<span class="pl-en">to</span>(<span class="pl-s1">torch</span>.<span class="pl-s1">int64</span>)),<span class="pl-s1">num_classes</span>)
+<span class="pl-s1">y_onehot</span><span class="pl-c1">=</span><span class="pl-c1">F</span>.<span class="pl-c1">one_hot</span>(<span class="pl-s1">torch</span>.<span class="pl-c1">Tensor</span>(<span class="pl-s1">y</span>.<span class="pl-c1">reshpe</span>(<span class="pl-c1">-</span><span class="pl-c1">1</span>).<span class="pl-c1">to</span>(<span class="pl-s1">torch</span>.<span class="pl-c1">int64</span>)),<span class="pl-s1">num_classes</span>)
 <span class="pl-c"># 这一步结果是one_hot形式了，下一步需要变换shape就行</span>
 <span class="pl-c"># 注意第一个参数是Tensor类型并且要转为torch.int64</span>
-<span class="pl-s1">y_onehot</span> <span class="pl-c1">=</span> <span class="pl-en">rearrange</span>(<span class="pl-s1">y_onehot</span>,<span class="pl-s">"(h w) c-&gt;c h w"</span>,<span class="pl-s1">h</span><span class="pl-c1">=</span><span class="pl-s1">self</span>.<span class="pl-s1">image_size</span>)</pre></div>
+<span class="pl-s1">y_onehot</span> <span class="pl-c1">=</span> <span class="pl-en">rearrange</span>(<span class="pl-s1">y_onehot</span>,<span class="pl-s">"(h w) c-&gt;c h w"</span>,<span class="pl-s1">h</span><span class="pl-c1">=</span><span class="pl-s1">self</span>.<span class="pl-c1">image_size</span>)</pre></div>
 </li>
 <li>
 <p>keras也有one_host编码方法，随后补充</p>
 <div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">from</span> <span class="pl-s1">keras</span>.<span class="pl-s1">utils</span> <span class="pl-k">import</span> <span class="pl-s1">to_categorical</span>
-<span class="pl-s1">intput</span><span class="pl-c1">=</span><span class="pl-s1">np</span>.<span class="pl-en">array</span>([<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>])
+<span class="pl-s1">intput</span><span class="pl-c1">=</span><span class="pl-s1">np</span>.<span class="pl-c1">array</span>([<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>])
 <span class="pl-s1">y_onehot</span><span class="pl-c1">=</span><span class="pl-en">to_categorical</span>(<span class="pl-s1">input</span>)</pre></div>
 </li>
 </ol></div>

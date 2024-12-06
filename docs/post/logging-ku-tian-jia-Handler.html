@@ -160,40 +160,40 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
     <div id="content">
 <div class="markdown-body" id="postBody"><h3>logging常用配置</h3>
-<div class="highlight highlight-source-python"><pre class="notranslate">    <span class="pl-s1">logger</span> <span class="pl-c1">=</span> <span class="pl-s1">logging</span>.<span class="pl-en">getLogger</span>(<span class="pl-s">'what'</span>)
-    <span class="pl-s1">logger</span>.<span class="pl-en">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-v">INFO</span>)
+<div class="highlight highlight-source-python"><pre class="notranslate">    <span class="pl-s1">logger</span> <span class="pl-c1">=</span> <span class="pl-s1">logging</span>.<span class="pl-c1">getLogger</span>(<span class="pl-s">'what'</span>)
+    <span class="pl-s1">logger</span>.<span class="pl-c1">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-c1">INFO</span>)
     <span class="pl-c">#设置日志格式</span>
-    <span class="pl-s1">formater</span><span class="pl-c1">=</span><span class="pl-s1">logging</span>.<span class="pl-v">Formatter</span>(<span class="pl-s1">fmt</span><span class="pl-c1">=</span><span class="pl-s">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,<span class="pl-s1">datefmt</span><span class="pl-c1">=</span><span class="pl-s">'%Y/%m/%d %H:%M'</span>)
+    <span class="pl-s1">formater</span><span class="pl-c1">=</span><span class="pl-s1">logging</span>.<span class="pl-c1">Formatter</span>(<span class="pl-s1">fmt</span><span class="pl-c1">=</span><span class="pl-s">'%(name)s %(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s : %(message)s '</span>,<span class="pl-s1">datefmt</span><span class="pl-c1">=</span><span class="pl-s">'%Y/%m/%d %H:%M'</span>)
     <span class="pl-c">#文件Handler</span>
-    <span class="pl-s1">fh</span><span class="pl-c1">=</span><span class="pl-s1">logging</span>.<span class="pl-v">FileHandler</span>(<span class="pl-s">'test.log'</span>,<span class="pl-s">'a'</span>,<span class="pl-s1">encoding</span><span class="pl-c1">=</span><span class="pl-s">'utf-8'</span>)
-    <span class="pl-s1">fh</span>.<span class="pl-en">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-v">ERROR</span>)
-    <span class="pl-s1">fh</span>.<span class="pl-en">setFormatter</span>(<span class="pl-s1">formater</span>)
+    <span class="pl-s1">fh</span><span class="pl-c1">=</span><span class="pl-s1">logging</span>.<span class="pl-c1">FileHandler</span>(<span class="pl-s">'test.log'</span>,<span class="pl-s">'a'</span>,<span class="pl-s1">encoding</span><span class="pl-c1">=</span><span class="pl-s">'utf-8'</span>)
+    <span class="pl-s1">fh</span>.<span class="pl-c1">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-c1">ERROR</span>)
+    <span class="pl-s1">fh</span>.<span class="pl-c1">setFormatter</span>(<span class="pl-s1">formater</span>)
     <span class="pl-c">#自定义Handler</span>
-    <span class="pl-s1">th</span><span class="pl-c1">=</span><span class="pl-v">CustomHandler</span>()
-    <span class="pl-s1">th</span>.<span class="pl-en">setFormatter</span>(<span class="pl-s1">formater</span>)
-    <span class="pl-s1">th</span>.<span class="pl-en">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-v">INFO</span>)
+    <span class="pl-s1">th</span><span class="pl-c1">=</span><span class="pl-en">CustomHandler</span>()
+    <span class="pl-s1">th</span>.<span class="pl-c1">setFormatter</span>(<span class="pl-s1">formater</span>)
+    <span class="pl-s1">th</span>.<span class="pl-c1">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-c1">INFO</span>)
     <span class="pl-c">#终端Handler</span>
-    <span class="pl-s1">ch</span> <span class="pl-c1">=</span> <span class="pl-s1">logging</span>.<span class="pl-v">StreamHandler</span>()
-    <span class="pl-s1">ch</span>.<span class="pl-en">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-v">INFO</span>)
-    <span class="pl-s1">ch</span>.<span class="pl-en">setFormatter</span>(<span class="pl-s1">formater</span>)
+    <span class="pl-s1">ch</span> <span class="pl-c1">=</span> <span class="pl-s1">logging</span>.<span class="pl-c1">StreamHandler</span>()
+    <span class="pl-s1">ch</span>.<span class="pl-c1">setLevel</span>(<span class="pl-s1">logging</span>.<span class="pl-c1">INFO</span>)
+    <span class="pl-s1">ch</span>.<span class="pl-c1">setFormatter</span>(<span class="pl-s1">formater</span>)
     <span class="pl-c">#添加Handler</span>
-    <span class="pl-s1">logger</span>.<span class="pl-en">addHandler</span>(<span class="pl-s1">fh</span>)
-    <span class="pl-s1">logger</span>.<span class="pl-en">addHandler</span>(<span class="pl-s1">ch</span>)
-    <span class="pl-s1">logger</span>.<span class="pl-en">addHandler</span>(<span class="pl-s1">th</span>)</pre></div>
+    <span class="pl-s1">logger</span>.<span class="pl-c1">addHandler</span>(<span class="pl-s1">fh</span>)
+    <span class="pl-s1">logger</span>.<span class="pl-c1">addHandler</span>(<span class="pl-s1">ch</span>)
+    <span class="pl-s1">logger</span>.<span class="pl-c1">addHandler</span>(<span class="pl-s1">th</span>)</pre></div>
 <h3>自定义Hander</h3>
-<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-v">CHandler</span>(<span class="pl-s1">logging</span>.<span class="pl-v">Handler</span>):
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-v">CHandler</span>(<span class="pl-s1">logging</span>.<span class="pl-c1">Handler</span>):
     <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>):
-        <span class="pl-s1">logging</span>.<span class="pl-v">Handler</span>.<span class="pl-en">__init__</span>(<span class="pl-s1">self</span>)
-        <span class="pl-s1">self</span>.<span class="pl-s1">client</span><span class="pl-c1">=</span><span class="pl-s1">pymysql</span>.<span class="pl-v">Connection</span>(<span class="pl-s1">host</span><span class="pl-c1">=</span><span class="pl-s">'127.0.0.1'</span>,<span class="pl-s1">user</span><span class="pl-c1">=</span><span class="pl-s">'root'</span>,<span class="pl-s1">passwd</span><span class="pl-c1">=</span><span class="pl-s">'qweqwe'</span>,<span class="pl-s1">db</span><span class="pl-c1">=</span><span class="pl-s">'sharesnews'</span>,<span class="pl-s1">charset</span><span class="pl-c1">=</span><span class="pl-s">'utf8mb4'</span>,<span class="pl-s1">autocommit</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
-        <span class="pl-s1">self</span>.<span class="pl-s1">cursor</span><span class="pl-c1">=</span><span class="pl-s1">self</span>.<span class="pl-s1">client</span>.<span class="pl-en">cursor</span>()
+        <span class="pl-s1">logging</span>.<span class="pl-c1">Handler</span>.<span class="pl-c1">__init__</span>(<span class="pl-s1">self</span>)
+        <span class="pl-s1">self</span>.<span class="pl-c1">client</span><span class="pl-c1">=</span><span class="pl-s1">pymysql</span>.<span class="pl-c1">Connection</span>(<span class="pl-s1">host</span><span class="pl-c1">=</span><span class="pl-s">'127.0.0.1'</span>,<span class="pl-s1">user</span><span class="pl-c1">=</span><span class="pl-s">'root'</span>,<span class="pl-s1">passwd</span><span class="pl-c1">=</span><span class="pl-s">'qweqwe'</span>,<span class="pl-s1">db</span><span class="pl-c1">=</span><span class="pl-s">'sharesnews'</span>,<span class="pl-s1">charset</span><span class="pl-c1">=</span><span class="pl-s">'utf8mb4'</span>,<span class="pl-s1">autocommit</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+        <span class="pl-s1">self</span>.<span class="pl-c1">cursor</span><span class="pl-c1">=</span><span class="pl-s1">self</span>.<span class="pl-c1">client</span>.<span class="pl-c1">cursor</span>()
     <span class="pl-k">def</span> <span class="pl-en">emit</span>(<span class="pl-s1">self</span>, <span class="pl-s1">record</span>):
         <span class="pl-k">try</span>:
             <span class="pl-s1">sql</span><span class="pl-c1">=</span><span class="pl-s">'insert into exceptions (exception,add_time) VALUES (%s,%s)'</span>
-            <span class="pl-s1">msg</span> <span class="pl-c1">=</span> <span class="pl-s1">sql</span>.<span class="pl-en">format</span>(<span class="pl-s1">record</span>)
-            <span class="pl-s1">self</span>.<span class="pl-s1">cursor</span>.<span class="pl-en">execute</span>(<span class="pl-s1">sql</span>,(<span class="pl-s1">msg</span>,<span class="pl-s1">datetime</span>.<span class="pl-en">now</span>()))
+            <span class="pl-s1">msg</span> <span class="pl-c1">=</span> <span class="pl-s1">sql</span>.<span class="pl-c1">format</span>(<span class="pl-s1">record</span>)
+            <span class="pl-s1">self</span>.<span class="pl-c1">cursor</span>.<span class="pl-c1">execute</span>(<span class="pl-s1">sql</span>,(<span class="pl-s1">msg</span>,<span class="pl-s1">datetime</span>.<span class="pl-c1">now</span>()))
         <span class="pl-k">except</span> <span class="pl-v">Exception</span>:
-            <span class="pl-s1">self</span>.<span class="pl-en">handleError</span>(<span class="pl-s1">record</span>)
-            <span class="pl-s1">self</span>.<span class="pl-s1">client</span>.<span class="pl-en">rollback</span>()</pre></div></div>
+            <span class="pl-s1">self</span>.<span class="pl-c1">handleError</span>(<span class="pl-s1">record</span>)
+            <span class="pl-s1">self</span>.<span class="pl-c1">client</span>.<span class="pl-c1">rollback</span>()</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
